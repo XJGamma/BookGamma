@@ -25,9 +25,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CREATE_BOOKCOMMENT = "create table BookComments( "
             + "id integer primary key autoincrement, "
             + "book_id integer, "
-            + "foreign key(book_id) references Book(id), "
             + "content text, "
-            + "created_time timestamp)";
+            + "created_time timestamp, "
+            + "foreign key(book_id) references Book(id))";
 
     private Context mContext;
 
