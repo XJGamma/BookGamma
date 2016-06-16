@@ -7,7 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by DUAN Yufei on 2016/6/16.
  */
-public class XGDBHelper extends SQLiteOpenHelper {
+public class DBHelper extends SQLiteOpenHelper {
+
+    public static final String DATABASE_NAME = "bookgamma.db";
+    public static final int DATABASE_VERSION = 1;
 
     public static final String CREATE_BOOK = "create table Books ( "
             + "id integer primary key autoincrement, "
@@ -28,8 +31,8 @@ public class XGDBHelper extends SQLiteOpenHelper {
 
     private Context mContext;
 
-    public XGDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public DBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mContext = context;
     }
 
