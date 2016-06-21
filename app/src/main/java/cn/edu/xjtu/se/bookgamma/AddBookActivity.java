@@ -3,6 +3,8 @@ package cn.edu.xjtu.se.bookgamma;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -15,7 +17,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import cn.edu.xjtu.se.dao.DBHelper;
 
@@ -24,6 +30,7 @@ public class AddBookActivity extends AppCompatActivity {
     private DBHelper dbHelper;
 
     public static final int TAKE_PHOTO = 0;
+    public static final int CHOOSE_ALBUM =1;
     public static final int CROP_PHOTO = 1;
 
 
@@ -80,56 +87,50 @@ public class AddBookActivity extends AppCompatActivity {
 
         public void onClick(DialogInterface dialog, int which){
             setIndex(which);
-            File outputImage;
-            Intent intent;
+
             switch (index){
                 case (TAKE_PHOTO):
                     //拍照
-                    outputImage = new File(Environment.getExternalStorageDirectory(),
-                            "output_image.jpg");
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+                    Date now = new Date();
+                    String fileName = formatter.format(now) + ".jpg";
+                    File outputImage = new File(Environment.getExternalStorageDirectory(),
+                            fileName);
                     try {
-                        if (outputImage.exists()) {
-                            outputImage.delete();
-                        }
                         outputImage.createNewFile();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     imageUri = Uri.fromFile(outputImage);
-                    intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                    Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                     startActivityForResult(intent,TAKE_PHOTO);
                     break;
-                case (CROP_PHOTO):
-                    //从相册选择
-                    Log.i("AddBookActivity","点击从相册选择");
-                    Intent intent_c = new Intent();
-                    intent_c.setAction(Intent.ACTION_PICK);
-                    intent_c.setType("image/*");
-                    startActivityForResult(intent_c,CROP_PHOTO);
-                    Log.i("AddBookActivity","启动相册");
-
-
+                case (CHOOSE_ALBUM):
+                    //Choose from Album
+                    ImageSelecter
                     /*
-                    outputImage = new File(Environment.getExternalStorageDirectory(),
-                            "output_image.jpg");
+                    SimpleDateFormat formatter_c = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+                    Date now_c = new Date();
+                    String fileName_c = formatter_c.format(now_c) + ".jpg";
+                    File outputImage_c = new File(Environment.getExternalStorageDirectory(),
+                            fileName_c);
                     try {
-                        if (outputImage.exists()) {
-                            outputImage.delete();
-                        }
-                        outputImage.createNewFile();
+                        outputImage_c.createNewFile();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    imageUri = Uri.fromFile(outputImage);
-                    intent = new Intent(Intent.ACTION_PICK);
-                    intent.setType("image/*");
-                    intent.putExtra("crop", true);
-                    intent.putExtra("scale", true);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(intent, 0);
-                    */
+                    imageUri = Uri.fromFile(outputImage_c);
+                    Intent intent_c = new Intent(Intent.ACTION_PICK);
+                    intent_c.setType("image/*");
+
+                    intent_c.putExtra("crop", true);
+                    intent_c.putExtra("scale", true);
+                    intent_c.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(intent_c, TAKE_PHOTO);
                     break;
+                */
+
             }
             //Toast.makeText(AddBookActivity.this,index+":"+select_pic[index],Toast.LENGTH_LONG).show();
             dialog.dismiss();
@@ -137,38 +138,40 @@ public class AddBookActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mlog("resultCode="+resultCode);
         switch (requestCode) {
             case TAKE_PHOTO:
+                mlog("Choose a Pic");
                 if (resultCode == RESULT_OK) {
                     Intent intent = new Intent("com.android.camera.action.CROP");
                     intent.setDataAndType(imageUri, "image/*");
                     intent.putExtra("scale", true);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                     startActivityForResult(intent, CROP_PHOTO);
+                    //mlog("imageurl="+imageUri.toString());
                 }
-                Log.d("AddBookActivity","Take Photo");
                 break;
 
             case CROP_PHOTO:
+                mlog("Crop the Pic");
+                mlog("imageUri="+imageUri.toString());
                 if (resultCode == RESULT_OK) {
-                    //Here is bug...
-                    Uri uric = data.getData();
-                    Log.i("AddBookActivity",uric.toString());
-                    iv_bookimage.setImageURI(uric);
-                    /*
                     try {
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver()
-                        .openInputStream(imageUri));
+                            .openInputStream(imageUri));
                         iv_bookimage.setImageBitmap(bitmap);
-                        Log.d("AddBookActivity","Crop Photo");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    */
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    private void mlog(String str){
+        Log.i("AddBookActivity",str);
     }
 }
