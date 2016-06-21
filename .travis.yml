@@ -2,5 +2,9 @@ sudo: required
 language: bash
 services:
   - docker
-before_install:
-  - docker build -t gamma/android ./
+before_script:
+  - docker build -t test ./
+script:
+  - docker run test ./gradlew assembleDebug
+  - docker run test ./gradlew test
+  - docker run test ./gradlew cAT
