@@ -1,33 +1,26 @@
 package cn.edu.xjtu.se.bookgamma;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
-import android.app.AlertDialog;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import cn.edu.xjtu.se.dao.DBHelper;
 
-/**
- * Created by DUAN Yufei on 2016/6/17.
- */
-public class AddBookActivity extends Activity{
+public class AddBookActivity extends AppCompatActivity {
+
     private DBHelper dbHelper;
 
     public static final int TAKE_PHOTO = 0;
@@ -44,10 +37,12 @@ public class AddBookActivity extends Activity{
     private EditText et_pages;
     private ImageView iv_bookimage;
     private ListView lv_select_pic;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addbook);
+        setContentView(R.layout.activity_add_book);
+
         dbHelper = new DBHelper(this);
 
         et_bookname = (EditText)findViewById(R.id.et_bookname);
@@ -67,7 +62,6 @@ public class AddBookActivity extends Activity{
 
 
         });
-
     }
     class RadioOnClick implements DialogInterface.OnClickListener{
         private int index;
