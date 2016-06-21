@@ -15,6 +15,7 @@
         <activity
             android:name=".WelcomeActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,8 +26,11 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AddBookActivity" />
+        <activity
+            android:name=".AddBookActivity"
+            android:launchMode="singleTop"/>
     </application>
 
 </manifest>
