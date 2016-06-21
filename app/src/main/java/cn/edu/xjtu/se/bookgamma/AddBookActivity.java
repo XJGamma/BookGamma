@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -17,9 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,14 +28,14 @@ public class AddBookActivity extends AppCompatActivity {
     private DBHelper dbHelper;
 
     public static final int TAKE_PHOTO = 0;
-    public static final int CHOOSE_ALBUM =1;
-    public static final int CROP_PHOTO = 1;
+    public static final int CHOOSE_ALBUM = 1;
+    public static final int CROP_PHOTO = 2;
 
 
     private Uri imageUri;
 
     //弹出选择框
-    private String[] select_pic = new String[]{"拍照","从相册选择"};
+    private String[] select_pic = new String[]{"拍照", "从相册选择"};
     private RadioOnClick radioOnClick = new RadioOnClick();
 
     private EditText et_bookname;
@@ -52,16 +50,16 @@ public class AddBookActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
 
-        et_bookname = (EditText)findViewById(R.id.et_bookname);
-        et_pages = (EditText)findViewById(R.id.et_pages);
-        iv_bookimage = (ImageView)findViewById(R.id.iv_bookimage);
+        et_bookname = (EditText) findViewById(R.id.et_bookname);
+        et_pages = (EditText) findViewById(R.id.et_pages);
+        iv_bookimage = (ImageView) findViewById(R.id.iv_bookimage);
 
         iv_bookimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog ad = new AlertDialog.Builder(AddBookActivity.this)
                         .setTitle(R.string.title_choose_pic)
-                        .setSingleChoiceItems(select_pic,radioOnClick.getIndex(),radioOnClick)
+                        .setSingleChoiceItems(select_pic, radioOnClick.getIndex(), radioOnClick)
                         .create();
                 lv_select_pic = ad.getListView();
                 ad.show();
@@ -70,10 +68,11 @@ public class AddBookActivity extends AppCompatActivity {
 
         });
     }
-    class RadioOnClick implements DialogInterface.OnClickListener{
+
+    class RadioOnClick implements DialogInterface.OnClickListener {
         private int index;
 
-        public RadioOnClick(){
+        public RadioOnClick() {
             this.index = 0;
         }
 
@@ -85,10 +84,11 @@ public class AddBookActivity extends AppCompatActivity {
             this.index = index;
         }
 
-        public void onClick(DialogInterface dialog, int which){
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
             setIndex(which);
 
-            switch (index){
+            switch (index) {
                 case (TAKE_PHOTO):
                     //拍照
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
@@ -104,12 +104,10 @@ public class AddBookActivity extends AppCompatActivity {
                     imageUri = Uri.fromFile(outputImage);
                     Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(intent,TAKE_PHOTO);
+                    startActivityForResult(intent, TAKE_PHOTO);
                     break;
                 case (CHOOSE_ALBUM):
-                    //Choose from Album
-                    ImageSelecter
-                    /*
+                    //Choose from Album Image Selector
                     SimpleDateFormat formatter_c = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
                     Date now_c = new Date();
                     String fileName_c = formatter_c.format(now_c) + ".jpg";
@@ -121,45 +119,55 @@ public class AddBookActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     imageUri = Uri.fromFile(outputImage_c);
-                    Intent intent_c = new Intent(Intent.ACTION_PICK);
-                    intent_c.setType("image/*");
+                    Intent intent_c = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent_c.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
 
-                    intent_c.putExtra("crop", true);
-                    intent_c.putExtra("scale", true);
-                    intent_c.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(intent_c, TAKE_PHOTO);
+//                    intent_c.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(intent_c, CHOOSE_ALBUM);
                     break;
-                */
 
             }
             //Toast.makeText(AddBookActivity.this,index+":"+select_pic[index],Toast.LENGTH_LONG).show();
-            dialog.dismiss();
+
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mlog("resultCode="+resultCode);
+        mlog("resultCode=" + resultCode);
         switch (requestCode) {
             case TAKE_PHOTO:
-                mlog("Choose a Pic");
+                mlog("Take a Pic");
                 if (resultCode == RESULT_OK) {
                     Intent intent = new Intent("com.android.camera.action.CROP");
                     intent.setDataAndType(imageUri, "image/*");
                     intent.putExtra("scale", true);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                     startActivityForResult(intent, CROP_PHOTO);
-                    //mlog("imageurl="+imageUri.toString());
+                    mlog("imageurl=" + imageUri.toString());
                 }
                 break;
 
+            case CHOOSE_ALBUM:
+                mlog("Choose a Pic");
+                if (resultCode == RESULT_OK) {
+                    Uri tmp_uri = data.getData();
+                    Intent intent = new Intent("com.android.camera.action.CROP");
+                    intent.setDataAndType(tmp_uri, "image/*");
+                    intent.putExtra("scale", true);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(intent, CROP_PHOTO);
+                    mlog("imageurl=" + imageUri.toString());
+                }
+
             case CROP_PHOTO:
                 mlog("Crop the Pic");
-                mlog("imageUri="+imageUri.toString());
+                mlog("imageUri=" + imageUri.toString());
                 if (resultCode == RESULT_OK) {
                     try {
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver()
-                            .openInputStream(imageUri));
+                                .openInputStream(imageUri));
                         iv_bookimage.setImageBitmap(bitmap);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -171,7 +179,7 @@ public class AddBookActivity extends AppCompatActivity {
         }
     }
 
-    private void mlog(String str){
-        Log.i("AddBookActivity",str);
+    private void mlog(String str) {
+        Log.i("AddBookActivity", str);
     }
 }
