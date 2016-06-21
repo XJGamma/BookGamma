@@ -3,4 +3,4 @@ sudo: require
 service:
   - docker
 before_install:
-  - docker build docker/
+  - docker build ./
