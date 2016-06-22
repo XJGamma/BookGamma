@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# From https://github.com/ksoichiro/dockerfiles/blob/master/android-emulator/start-emulator
+
 if [ $# -gt 0 ]; then
   CMD=$1
   echo "Starting emulator..."
