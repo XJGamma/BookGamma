@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tx_bookname"
-        android:textSize="24sp"/>
+        android:textSize="16sp"/>
     <EditText
         android:id="@+id/et_bookname"
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tx_pages"
-        android:textSize="24sp"/>
+        android:textSize="16sp"/>
     <EditText
         android:id="@+id/et_pages"
         android:layout_alignTop="@id/tv_pages"
@@ -36,9 +36,24 @@
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"/>
 
+    <Button
+        android:id="@+id/btn_finish_time"
+        android:layout_below="@id/tv_pages"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="@string/btn_select_time"/>
+    <TextView
+        android:id="@+id/tv_finish_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/btn_finish_time"
+        android:layout_toRightOf="@id/btn_finish_time"/>
+
     <ImageView
         android:id="@+id/iv_bookimage"
-        android:layout_below="@id/et_pages"
+        android:layout_below="@id/tv_finish_time"
         android:layout_marginTop="20dp"
         android:layout_width="200dp"
         android:layout_height="200dp"

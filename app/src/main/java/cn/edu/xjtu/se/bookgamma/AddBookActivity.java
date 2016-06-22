@@ -1,6 +1,8 @@
 package cn.edu.xjtu.se.bookgamma;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,13 +14,17 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import cn.edu.xjtu.se.dao.DBHelper;
@@ -31,8 +37,8 @@ public class AddBookActivity extends AppCompatActivity {
     public static final int CHOOSE_ALBUM = 1;
     public static final int CROP_PHOTO = 2;
 
-
     private Uri imageUri;
+    private Calendar finish_time;
 
     //弹出选择框
     private String[] select_pic = new String[]{"拍照", "从相册选择"};
@@ -40,8 +46,13 @@ public class AddBookActivity extends AppCompatActivity {
 
     private EditText et_bookname;
     private EditText et_pages;
+    private DatePicker dp;
+    private Calendar calendar;
     private ImageView iv_bookimage;
     private ListView lv_select_pic;
+    private Button btn_finish_time;
+    private Button btn_save;
+    private TextView tv_finish_time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +65,34 @@ public class AddBookActivity extends AppCompatActivity {
         et_pages = (EditText) findViewById(R.id.et_pages);
         iv_bookimage = (ImageView) findViewById(R.id.iv_bookimage);
 
+        btn_finish_time = (Button) findViewById(R.id.btn_finish_time);
+        tv_finish_time = (TextView) findViewById(R.id.tv_finish_time);
+
+        finish_time = Calendar.getInstance();
+        String str_finish_time = finish_time.get(Calendar.YEAR) + "年"
+                + finish_time.get(Calendar.MONTH) + "月"
+                + finish_time.get(Calendar.DAY_OF_MONTH) + "日";
+        tv_finish_time.setText(str_finish_time);
+
+        btn_finish_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar c = Calendar.getInstance();
+                new DatePickerDialog(AddBookActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                tv_finish_time.setText(year + "年" + monthOfYear + "月" + dayOfMonth + "日");
+                                finish_time.set(year,monthOfYear,dayOfMonth);
+                            }
+                        }
+                        // 设置初始日期
+                        , c.get(Calendar.YEAR), c.get(Calendar.MONTH), c
+                        .get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        iv_bookimage = (ImageView) findViewById(R.id.iv_bookimage);
         iv_bookimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +146,7 @@ public class AddBookActivity extends AppCompatActivity {
                     startActivityForResult(intent, TAKE_PHOTO);
                     break;
                 case (CHOOSE_ALBUM):
+
                     //Choose from Album Image Selector
                     SimpleDateFormat formatter_c = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
                     Date now_c = new Date();
@@ -119,10 +159,10 @@ public class AddBookActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     imageUri = Uri.fromFile(outputImage_c);
-                    Intent intent_c = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent intent_c = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent_c.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
 
-//                    intent_c.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    //intent_c.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                     startActivityForResult(intent_c, CHOOSE_ALBUM);
                     break;
 
