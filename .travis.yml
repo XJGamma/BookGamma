@@ -5,4 +5,4 @@ services:
 before_script:
   - docker build -t test ./
 script:
-
+  - docker run test
