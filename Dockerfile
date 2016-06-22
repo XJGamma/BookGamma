@@ -10,4 +10,4 @@ ADD . $PROJECT
 
 RUN echo "sdk.dir=$ANDROID_HOME" > local.properties
 
-CMD start-emulator "./gradlew assembleDebug test cAT"
+CMD start-emulator -b "./gradlew assembleDebug test" -a "./gradlew cAT"
