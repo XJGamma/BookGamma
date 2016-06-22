@@ -5,6 +5,4 @@ services:
 before_script:
   - docker build -t test ./
 script:
-  - docker run test ./gradlew assembleDebug
-  - docker run test ./gradlew test
-  - docker run test ./gradlew cAT
+
