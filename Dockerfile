@@ -22,4 +22,4 @@ RUN echo "sdk.dir=$ANDROID_HOME" > local.properties
 ADD android-wait-for-emulator /usr/local/bin/
 ADD start-emulator /usr/local/bin/
 
-CMD start-emulator "bash -c \"./gradlew assembleDebug\" && bash -c \"./gradlew test\" && bash -c \"./gradlew cAT\""
+CMD start-emulator "./gradlew assembleDebug test cAT"
