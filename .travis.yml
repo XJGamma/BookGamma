@@ -1,7 +1,20 @@
 sudo: required
+language: bash
 services:
-  - docker
+- docker
 before_script:
-  - docker build -t test ./
+- docker build -t test ./
 script:
-  - docker run test
+- docker run test
+before_deploy:
+- docker run --name release test ./gradlew assembleRelease
+- docker cp release:/project/app/build/outputs/apk/app-release-unsigned.apk BookGamma-$TRAVIS_TAG.apk
+deploy:
+  provider: releases
+  api_key:
+    secure: mQ6V1N+5bXcpGDfMx4Os/hX6YS0IUXW6EJbvyC/2M3dEHd0BbMDrGkrFceg0cfYsyKY7fgjf47fccpFsUwtVQab5M47tQWfbY7eo/jIxy2kVqHcuFkZJC9kmM5GwJL37bzeXrCH6vJzklCAhF/UWwXwrI+Ea50ql6yzSGTPxq2BLFDlZxNJDPMCn6pN0poOOpZq0PET5gry43FKOHj3l47YMkFVx3TNvT/34LUsgfV71I1Ruu9A2A/YTofjLQZLkHwFz6jmD9mfHv1XiO/tE1ceioVHlx+blHxk9A4k1z8984ucVrya3iAXFefey0e1kCsp9CM/WMDXmo/72B+T7NS3DkGRD10JUZxNrjzsoMTKn34LKLVh7vBG/83GYNfHjwXjc+iOln4Y6uQC/B7yuLg5vzl3XaXq3RIVdXBOt7+ZJYViiPMbqOvqHr8LA7P0KAXYjSVyga0Mxi4Iv8k/+8qs6b4Z3Sx/22VHISONe2XZya9upxbTVdFgVlXMhMt1AimZWXKkXA+RpxVyAtmjKn2GqgT2EcZAxgbcEYiKrQKzDa9bTLHu0vvFuec4jdGQoDk7FRIKaLF0idlxxF3Yzk/HcDqNNfsTze98R7UxJCzcAuXaBfdUBQ+31Xh87gbT/wBwtPxAN7DNn6D26AWDe2RwPK010DT/7BFa2nZkD6pY=
+  file: BookGamma-$TRAVIS_TAG.apk
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: XJGamma/BookGamma
