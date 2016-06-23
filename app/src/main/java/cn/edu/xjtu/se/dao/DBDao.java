@@ -28,6 +28,6 @@ public class DBDao {
         values.put("finish_time",dateFormat.format(finish_time));
         values.put("total_reading_time",0);
         Log.i("DBDao","insert...");
-        return db.insert("Book",null,values);
+        return db.insert("Books",null,values);
     }
 }
