@@ -7,7 +7,8 @@ before_script:
 script:
 - docker run test
 before_deploy:
-- docker cp `docker run -d test ./gradlew assembleRelease`:/project/app/build/outputs/apk/app-release-unsigned.apk BookGamma.apk
+- container_id=`docker run -d test ./gradlew assembleRelease`
+- docker cp $container_id:/project/app/build/outputs/apk/app-release-unsigned.apk BookGamma.apk
 deploy:
   provider: releases
   api_key:
