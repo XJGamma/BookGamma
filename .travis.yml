@@ -5,7 +5,7 @@ services:
 before_script:
 - docker build -t test ./
 script:
-- #docker run test
+- docker run test
 before_deploy:
 - docker run --name release test ./gradlew assembleRelease
 - docker cp release:/project/app/build/outputs/apk/app-release-unsigned.apk BookGamma-$TRAVIS_TAG.apk
