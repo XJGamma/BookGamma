@@ -5,7 +5,7 @@ services:
 before_script:
 - docker build -t test ./
 script:
-- docker run test
+- #docker run test
 before_deploy:
 - container_id=`docker run -d test ./gradlew assembleRelease`
 - docker cp $container_id:/project/app/build/outputs/apk/app-release-unsigned.apk BookGamma.apk
