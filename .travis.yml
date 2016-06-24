@@ -2,13 +2,13 @@ sudo: required
 language: bash
 services:
 - docker
-before_install:
-- docker --version
 before_script:
-- openssl aes-256-cbc -K $encrypted_569adc779ef7_key -iv $encrypted_569adc779ef7_iv -in book_gamma.jks.enc -out book_gamma.jks -d
-- docker build --build-arg release_flag=yes --build-arg keystore_pass=KEYSTORE_PASS --build-arg alias_name=$ALIAS_NAME --build-arg alias_pass=$ALIAS_PASS -t test ./
+- openssl aes-256-cbc -K $encrypted_569adc779ef7_key -iv $encrypted_569adc779ef7_iv
+  -in book_gamma.jks.enc -out book_gamma.jks -d
+- docker build --build-arg release_flag=yes --build-arg keystore_pass=$KEYSTORE_PASS
+  --build-arg alias_name=$ALIAS_NAME --build-arg alias_pass=$ALIAS_PASS -t test ./
 script:
-- #docker run test
+- 
 before_deploy:
 - docker run --name release test ./gradlew assembleRelease
 - docker cp release:/project/app/build/outputs/apk/app-release.apk BookGamma-$TRAVIS_TAG.apk
@@ -23,4 +23,4 @@ deploy:
     repo: XJGamma/BookGamma
 env:
   global:
-    secure: Wh+Lq1URehpyJ/JEWpiCKMFXkzXPNy0XxDDSVL8OjNUQHVlZ54ZsxB9gmsUrIPh/RCiCj1vH/ba3InPIp8tHIMvCaE7eCfsh2a1oWLCAQsXq3O9TFJCrKPXj3ZJXbkCocXbWdpSQ1oLegnesNaBKga6aJMl2vDpL4cH15LRSo4fIqEPwNYva4ferVMqB5YwUf0+YrToBpURXKdWhyJB//08W84ayf6l05qLLaIuvR15CqqxvUnPmaQc3obqngVVBU6zoA6LCoRnkBFBtYwE8D8TrO7Af9pcfUz86B8oo3bQ83srA95S2iE/BB+x8TiydER2cnj2AgKWxKhQ+2ieKQh/7akvfgpG5kuNHTCCz5EHv5HZAcVUsn+F0GvWSPWKom7RA0bDRSZNdDgLzWuk3SETH3kdGE3bdBvYavfgKjB2pMiX/VG3h0aOaNlpFpbnIc9us6GFgHdIQ3nXp9iYod+oqsLegY/7x9JKQtevVvUss9Zd4bPZKGVyppSSU3hX6Jtpao0EwECuP/ZOf5c2Ejp1LYOoFfJ5k6yHESk45Ru/lZC/AO48bV65CFNedz7oNUMGD/ezTc9ia9DFEnczSwKuGv4JiBn/wWc+Ttug+uOfNFjDXgLoPUfdwzB1YEmtI+gDIEl85gnSjdxm2O3/Yl/g01PxwyqoYTx3hUeBWsV4=
+    secure: B7Mhs33HuLKp8+3LTG77bzuy5d3BXuCWVZlyYfzWRQfIbklfm0L51D9LyWU88/bMWIZ12AtSf2a62Pet1zmGHZspijqY5ohSDxDuE+XcNptUZMej7vN1fsa+VMIETiucTt3JWpvXutelgGNOmd15ci0eYHHcCkOOQyJKMMigkgkV1pkTbwlJLX1hxCPvbdpdExPb0TNhlGQL+0Ib+ivY+54vCU4w6gKuvJX0qxCsKtoNEgJY4D8BJaRrqdEMVXqU58jcMQMpBhN32Qd1Vltv7zyHwtkizEHvlHOR1wTwyYGsR6ztzbOJo0GEfNCbSW6s0iY92aQ/Num04Se61YoKjyHdyODPXkSiUcUGiBKc10SBOgPAkY19k7bHSnISPl4m7q/th9uPbJwRld0rs7S+m5dBIpAyzvMw63mGS7NPAhdKMH/pSuJGPE9Si3+7yM5K6eK5QxINwUKF28HNmcJnSld6FTe5ChQ1Yft4zly9lPCFZf6iBSjw5nxVG1npoHZDaUAGyPfevL5ykvM+MQICIwGIzx9tY+bfWzN5Uk2mzr6ylayvapTAKXxL1TQQfxbM+s35twgIFLjLZ8ijf0CsDhjtCPVnTCxjcG4HotnFEy+FS/qoVAk1eoP3+FAzjKhBddmDycPnGic8gh+TtejwPXU177A8yB+H9iJWRsCoQqw=
