@@ -13,13 +13,13 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.view.View.OnClickListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +29,7 @@ import java.util.Date;
 
 import cn.edu.xjtu.se.dao.DBDao;
 
-public class AddBookActivity extends AppCompatActivity implements OnClickListener{
+public class AddBookActivity extends AppCompatActivity implements OnClickListener {
 
     public static final int TAKE_PHOTO = 0;
     public static final int CHOOSE_ALBUM = 1;
@@ -75,9 +75,8 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     }
 
 
-
     @Override
-    public void onClick(View v){
+    public void onClick(View v) {
         mlog(v.toString());
         switch (v.getId()) {
             case R.id.btn_finish_time:
@@ -87,7 +86,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 tv_finish_time.setText(year + "年" + monthOfYear + "月" + dayOfMonth + "日");
-                                finish_time.set(year,monthOfYear,dayOfMonth);
+                                finish_time.set(year, monthOfYear, dayOfMonth);
                             }
                         }
                         // 设置初始日期
@@ -105,8 +104,8 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                 break;
             case R.id.btn_addbook:
                 //check
-                long row = DBDao.addBook(et_bookname.getText().toString(),Integer.valueOf(et_pages.getText().toString()),finish_time.getTime(),"",imageUri.toString());
-                mlog("rowID="+row);
+                long row = DBDao.addBook(et_bookname.getText().toString(), Integer.valueOf(et_pages.getText().toString()), finish_time.getTime(), "", imageUri.toString());
+                mlog("rowID=" + row);
             default:
                 break;
         }
