@@ -14,7 +14,7 @@ public class DBHelperTest extends AndroidTestCase {
     private SQLiteDatabase db;
 
     @Override
-    public void setUp() throws Exception {
+    protected void setUp() throws Exception {
         super.setUp();
         RenamingDelegatingContext context = new RenamingDelegatingContext(getContext(), "test_");
         DBHelper dbHelper = new DBHelper(context);
@@ -26,7 +26,7 @@ public class DBHelperTest extends AndroidTestCase {
     }
 
     @Override
-    public void tearDown() throws Exception {
+    protected void tearDown() throws Exception {
         super.tearDown();
         db.close();
     }
