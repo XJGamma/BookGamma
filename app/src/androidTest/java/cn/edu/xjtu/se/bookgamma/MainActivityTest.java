@@ -35,5 +35,6 @@ public class MainActivityTest {
     @Test
     public void testButtonAddBook() {
         onView(withId(R.id.fab)).perform(click());
+        onView(withId(R.id.tv_bookname)).check(matches(withText(R.string.tx_bookname)));
     }
 }
