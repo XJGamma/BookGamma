@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,8 +45,6 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
 
     private EditText et_bookname;
     private EditText et_pages;
-    private DatePicker dp;
-    private Calendar calendar;
     private ImageView iv_bookimage;
     private ListView lv_select_pic;
     private Button btn_finish_time;
@@ -103,12 +102,30 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                 ad.show();
                 break;
             case R.id.btn_addbook:
-                //check
                 //完整性检查
+                if(et_bookname.getText().length()==0){
+                    mToast(R.string.tip_no_book_name);
+                    break;
+                }
+                if(et_pages.getText().length()==0){
+                    mToast(R.string.tip_no_book_pages);
+                    break;
+                }
+                if(imageUri==null){
+                    mToast(R.string.tip_no_book_image);
+                    break;
+                }
                 //完成日期不能晚于当前日期
-
+                Calendar now = Calendar.getInstance();
+                now.set(now.YEAR,now.MONTH,now.DAY_OF_MONTH,0,0,0);
+                mlog(now.getTime().toString());
+                if(finish_time.before(now)){
+                    mToast(R.string.tip_err_finish_time);
+                    break;
+                }
                 long row = DBDao.addBook(et_bookname.getText().toString(), Integer.valueOf(et_pages.getText().toString()), finish_time.getTime(), "", imageUri.toString());
                 mlog("rowID=" + row);
+                mToast(R.string.tip_add_book_succeed);
             default:
                 break;
         }
@@ -221,5 +238,8 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
 
     private void mlog(String str) {
         Log.i("AddBookActivity", str);
+    }
+    private void mToast(int str){
+        Toast.makeText(AddBookActivity.this,getResources().getString(str),Toast.LENGTH_LONG).show();
     }
 }
