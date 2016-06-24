@@ -104,6 +104,9 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                 break;
             case R.id.btn_addbook:
                 //check
+                //完整性检查
+                //完成日期不能晚于当前日期
+
                 long row = DBDao.addBook(et_bookname.getText().toString(), Integer.valueOf(et_pages.getText().toString()), finish_time.getTime(), "", imageUri.toString());
                 mlog("rowID=" + row);
             default:
