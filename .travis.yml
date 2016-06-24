@@ -4,11 +4,11 @@ services:
 - docker
 before_install:
 - openssl aes-256-cbc -K $encrypted_569adc779ef7_key -iv $encrypted_569adc779ef7_iv
-  -in book_gamma.jks.enc -out ~\/.apk_keys/book_gamma.jks -d
+  -in book_gamma.jks.enc -out book_gamma.jks -d
 before_script:
 - docker build --build-arg travis=$TRAVIS --build-arg keystore_pass=KEYSTORE_PASS --build-arg alias_name=$ALIAS_NAME --build-arg alias_pass=$ALIAS_PASS -t test ./
 script:
-- docker run test
+- #docker run test
 before_deploy:
 - docker run --name release test ./gradlew assembleRelease
 - docker cp release:/project/app/build/outputs/apk/app-release-unsigned.apk BookGamma-$TRAVIS_TAG.apk
