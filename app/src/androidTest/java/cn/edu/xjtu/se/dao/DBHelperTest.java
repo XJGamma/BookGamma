@@ -4,10 +4,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
 
+import org.junit.Test;
+
 /**
  * Created by DUAN Yufei on 2016/6/16.
  */
-public class DBHelperTest extends AndroidTestCase{
+public class DBHelperTest extends AndroidTestCase {
 
     private SQLiteDatabase db;
 
@@ -19,9 +21,15 @@ public class DBHelperTest extends AndroidTestCase{
         db = dbHelper.getWritableDatabase();
     }
 
+    public void testHelper() throws Exception {
+        assertEquals(true, db.isOpen());
+    }
+
     @Override
     public void tearDown() throws Exception {
-        db.close();
         super.tearDown();
+        db.close();
     }
+
+
 }
