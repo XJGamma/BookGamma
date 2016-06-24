@@ -8,7 +8,7 @@ before_script:
 - docker build --build-arg release_flag=yes --build-arg keystore_pass=$KEYSTORE_PASS
   --build-arg alias_name=$ALIAS_NAME --build-arg alias_pass=$ALIAS_PASS -t test ./
 script:
-- 
+- docker run test
 before_deploy:
 - docker run --name release test ./gradlew assembleRelease
 - docker cp release:/project/app/build/outputs/apk/app-release.apk BookGamma-$TRAVIS_TAG.apk
