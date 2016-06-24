@@ -10,4 +10,9 @@
     <string name="title_choose_pic">选择图片</string>
     <string name="tx_finish_time">完成日期</string>
     <string name="btn_select_time">完成日期</string>
+    <string name="tip_no_book_name">没有填写书名</string>
+    <string name="tip_no_book_pages">没有填写总页数</string>
+    <string name="tip_no_book_image">没有选择图片</string>
+    <string name="tip_err_finish_time">完成日期早于今天</string>
+    <string name="tip_add_book_succeed">添加书籍成功</string>
 </resources>
