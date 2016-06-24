@@ -2,6 +2,17 @@ FROM totran/bndroid:latest
 
 MAINTAINER Jingkai Tang <jingkaitang@gmail.com>
 
+# args
+ARG travis
+ARG keystore_pass
+ARG alias_name
+ARG alias_pass
+
+ENV TRAVIS $travis
+ENV KEYSTORE_PASS $keystore_pass
+ENV ALIAS_NAME $alias_name
+ENV ALIAS_PASS $alias_pass
+
 # attach project
 ENV PROJECT /project
 RUN mkdir $PROJECT
