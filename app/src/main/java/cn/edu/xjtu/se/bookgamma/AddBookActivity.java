@@ -103,29 +103,33 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                 break;
             case R.id.btn_addbook:
                 //完整性检查
-                if(et_bookname.getText().length()==0){
+                if (et_bookname.getText().length() == 0) {
                     mToast(R.string.tip_no_book_name);
                     break;
                 }
-                if(et_pages.getText().length()==0){
+                if (et_pages.getText().length() == 0) {
                     mToast(R.string.tip_no_book_pages);
                     break;
                 }
-                if(imageUri==null){
+                if (imageUri == null) {
                     mToast(R.string.tip_no_book_image);
                     break;
                 }
                 //完成日期不能晚于当前日期
                 Calendar now = Calendar.getInstance();
-                now.set(now.YEAR,now.MONTH,now.DAY_OF_MONTH,0,0,0);
+                now.set(Calendar.HOUR_OF_DAY, 0);
+                now.set(Calendar.MINUTE, 0);
+                now.set(Calendar.SECOND, 0);
                 mlog(now.getTime().toString());
-                if(finish_time.before(now)){
+                if (finish_time.before(now)) {
                     mToast(R.string.tip_err_finish_time);
                     break;
                 }
                 long row = DBDao.addBook(et_bookname.getText().toString(), Integer.valueOf(et_pages.getText().toString()), finish_time.getTime(), "", imageUri.toString());
                 mlog("rowID=" + row);
                 mToast(R.string.tip_add_book_succeed);
+                AddBookActivity.this.finish();
+                break;
             default:
                 break;
         }
@@ -134,11 +138,17 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     class RadioOnClick implements DialogInterface.OnClickListener {
         private int index;
 
-        public RadioOnClick() { this.index = 0; }
+        public RadioOnClick() {
+            this.index = 0;
+        }
 
-        public int getIndex() { return index; }
+        public int getIndex() {
+            return index;
+        }
 
-        public void setIndex(int index) { this.index = index; }
+        public void setIndex(int index) {
+            this.index = index;
+        }
 
         public void onClick(DialogInterface dialog, int which) {
             dialog.dismiss();
@@ -239,7 +249,8 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     private void mlog(String str) {
         Log.i("AddBookActivity", str);
     }
-    private void mToast(int str){
-        Toast.makeText(AddBookActivity.this,getResources().getString(str),Toast.LENGTH_LONG).show();
+
+    private void mToast(int str) {
+        Toast.makeText(AddBookActivity.this, getResources().getString(str), Toast.LENGTH_LONG).show();
     }
 }
