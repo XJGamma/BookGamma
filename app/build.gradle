@@ -14,7 +14,7 @@ android {
     }
 
     signingConfigs {
-        if (System.getenv("TRAVIS")) {
+        if (System.getenv("RELEASE_FLAG")) {
             release {
                 storeFile rootProject.file('book_gamma.jks')
                 storePassword System.getenv("KEYSTORE_PASS")
@@ -28,6 +28,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            if (System.getenv("RELEASE_FLAG")) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }
