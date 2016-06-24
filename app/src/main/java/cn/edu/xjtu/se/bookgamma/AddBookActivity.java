@@ -115,17 +115,11 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     class RadioOnClick implements DialogInterface.OnClickListener {
         private int index;
 
-        public RadioOnClick() {
-            this.index = 0;
-        }
+        public RadioOnClick() { this.index = 0; }
 
-        public int getIndex() {
-            return index;
-        }
+        public int getIndex() { return index; }
 
-        public void setIndex(int index) {
-            this.index = index;
-        }
+        public void setIndex(int index) { this.index = index; }
 
         public void onClick(DialogInterface dialog, int which) {
             dialog.dismiss();
