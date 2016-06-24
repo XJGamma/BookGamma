@@ -11,8 +11,19 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
-
     }
+
+    signingConfigs {
+        if (System.getenv("TRAVIS")) {
+            release {
+                storeFile rootProject.file('book_gamma.jks')
+                storePassword System.getenv("KEYSTORE_PASS")
+                keyAlias System.getenv("ALIAS_NAME")
+                keyPassword System.getenv("ALIAS_PASS")
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
