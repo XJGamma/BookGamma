@@ -3,9 +3,9 @@ language: bash
 services:
 - docker
 before_install:
-- openssl aes-256-cbc -K $encrypted_569adc779ef7_key -iv $encrypted_569adc779ef7_iv
-  -in book_gamma.jks.enc -out book_gamma.jks -d
+- docker --version
 before_script:
+- openssl aes-256-cbc -K $encrypted_569adc779ef7_key -iv $encrypted_569adc779ef7_iv -in book_gamma.jks.enc -out book_gamma.jks -d
 - docker build --build-arg release_flag=yes --build-arg keystore_pass=KEYSTORE_PASS --build-arg alias_name=$ALIAS_NAME --build-arg alias_pass=$ALIAS_PASS -t test ./
 script:
 - #docker run test
