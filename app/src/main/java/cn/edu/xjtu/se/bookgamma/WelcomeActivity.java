@@ -10,7 +10,7 @@ import android.view.WindowManager;
 /**
  * Created by DUAN Yufei on 2016/6/16.
  */
-public class WelcomeActivity extends Activity{
+public class WelcomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
