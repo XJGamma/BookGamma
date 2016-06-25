@@ -15,4 +15,5 @@
     <string name="tip_no_book_image">没有选择图片</string>
     <string name="tip_err_finish_time">完成日期早于今天</string>
     <string name="tip_add_book_succeed">添加书籍成功</string>
+    <string name="tip_err_create_folder">在SD卡创建文件夹失败</string>
 </resources>

@@ -75,7 +75,9 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         btn_save.setOnClickListener(this);
         iv_bookimage.setOnClickListener(this);
 
-        XGFile.createPath(FOLDER);
+        if(!XGFile.createPath(FOLDER)){
+            mToast(R.string.tip_err_create_folder);
+        }
     }
 
 
@@ -159,48 +161,34 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
             dialog.dismiss();
             setIndex(which);
 
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+            Date now = new Date();
+            String fileName = FOLDER + formatter.format(now) + ".jpg";
+            File outputImage = new File(Environment.getExternalStorageDirectory(),
+                    fileName);
+            try {
+                outputImage.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            imageUri = Uri.fromFile(outputImage);
+
             switch (index) {
                 case (TAKE_PHOTO):
                     //拍照
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
-                    Date now = new Date();
-                    String fileName = FOLDER + formatter.format(now) + ".jpg";
-                    File outputImage = new File(Environment.getExternalStorageDirectory(),
-                            fileName);
-                    try {
-                        outputImage.createNewFile();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    imageUri = Uri.fromFile(outputImage);
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(intent, TAKE_PHOTO);
+                    Intent intentPhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intentPhoto.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(intentPhoto, TAKE_PHOTO);
                     break;
                 case (CHOOSE_ALBUM):
-
                     //Choose from Album Image Selector
-                    SimpleDateFormat formatter_c = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
-                    Date now_c = new Date();
-                    String fileName_c = FOLDER + formatter_c.format(now_c) + ".jpg";
-                    File outputImage_c = new File(Environment.getExternalStorageDirectory(),
-                            fileName_c);
-                    try {
-                        outputImage_c.createNewFile();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    imageUri = Uri.fromFile(outputImage_c);
-                    Intent intent_c = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent_c.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-
-                    //intent_c.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(intent_c, CHOOSE_ALBUM);
+                    Intent intentAlbum = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intentAlbum.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(intentAlbum, CHOOSE_ALBUM);
                     break;
 
             }
             //Toast.makeText(AddBookActivity.this,index+":"+select_pic[index],Toast.LENGTH_LONG).show();
-
         }
     }
 
