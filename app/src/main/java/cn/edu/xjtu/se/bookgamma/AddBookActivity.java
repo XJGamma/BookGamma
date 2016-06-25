@@ -168,7 +168,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                         e.printStackTrace();
                     }
                     imageUri = Uri.fromFile(outputImage);
-                    Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                     startActivityForResult(intent, TAKE_PHOTO);
                     break;
