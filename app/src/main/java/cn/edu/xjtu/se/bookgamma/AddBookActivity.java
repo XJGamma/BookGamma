@@ -29,12 +29,15 @@ import java.util.Calendar;
 import java.util.Date;
 
 import cn.edu.xjtu.se.dao.DBDao;
+import cn.edu.xjtu.se.util.XGFile;
 
 public class AddBookActivity extends AppCompatActivity implements OnClickListener {
 
     public static final int TAKE_PHOTO = 0;
     public static final int CHOOSE_ALBUM = 1;
     public static final int CROP_PHOTO = 2;
+
+    private static final String FOLDER = "/BookGamma/image/";
 
     private Uri imageUri;
     private Calendar finish_time;
@@ -71,12 +74,14 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         btn_finish_time.setOnClickListener(this);
         btn_save.setOnClickListener(this);
         iv_bookimage.setOnClickListener(this);
+
+        XGFile.createPath(FOLDER);
     }
 
 
     @Override
     public void onClick(View v) {
-        mlog(v.toString());
+        mLog(v.toString());
         switch (v.getId()) {
             case R.id.btn_finish_time:
                 Calendar c = Calendar.getInstance();
@@ -120,13 +125,13 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                 now.set(Calendar.HOUR_OF_DAY, 0);
                 now.set(Calendar.MINUTE, 0);
                 now.set(Calendar.SECOND, 0);
-                mlog(now.getTime().toString());
+                mLog(now.getTime().toString());
                 if (finish_time.before(now)) {
                     mToast(R.string.tip_err_finish_time);
                     break;
                 }
                 long row = DBDao.addBook(et_bookname.getText().toString(), Integer.valueOf(et_pages.getText().toString()), finish_time.getTime(), "", imageUri.toString());
-                mlog("rowID=" + row);
+                mLog("rowID=" + row);
                 mToast(R.string.tip_add_book_succeed);
                 AddBookActivity.this.finish();
                 break;
@@ -159,7 +164,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                     //拍照
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
                     Date now = new Date();
-                    String fileName = formatter.format(now) + ".jpg";
+                    String fileName = FOLDER + formatter.format(now) + ".jpg";
                     File outputImage = new File(Environment.getExternalStorageDirectory(),
                             fileName);
                     try {
@@ -177,7 +182,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                     //Choose from Album Image Selector
                     SimpleDateFormat formatter_c = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
                     Date now_c = new Date();
-                    String fileName_c = formatter_c.format(now_c) + ".jpg";
+                    String fileName_c = FOLDER + formatter_c.format(now_c) + ".jpg";
                     File outputImage_c = new File(Environment.getExternalStorageDirectory(),
                             fileName_c);
                     try {
@@ -202,22 +207,22 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mlog("resultCode=" + resultCode);
+        mLog("resultCode=" + resultCode);
         switch (requestCode) {
             case TAKE_PHOTO:
-                mlog("Take a Pic");
+                mLog("Take a Pic");
                 if (resultCode == RESULT_OK) {
                     Intent intent = new Intent("com.android.camera.action.CROP");
                     intent.setDataAndType(imageUri, "image/*");
                     intent.putExtra("scale", true);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                     startActivityForResult(intent, CROP_PHOTO);
-                    mlog("imageurl=" + imageUri.toString());
+                    mLog("imageurl=" + imageUri.toString());
                 }
                 break;
 
             case CHOOSE_ALBUM:
-                mlog("Choose a Pic");
+                mLog("Choose a Pic");
                 if (resultCode == RESULT_OK) {
                     Uri tmp_uri = data.getData();
                     Intent intent = new Intent("com.android.camera.action.CROP");
@@ -225,12 +230,12 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                     intent.putExtra("scale", true);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                     startActivityForResult(intent, CROP_PHOTO);
-                    mlog("imageurl=" + imageUri.toString());
+                    mLog("imageurl=" + imageUri.toString());
                 }
 
             case CROP_PHOTO:
-                mlog("Crop the Pic");
-                mlog("imageUri=" + imageUri.toString());
+                mLog("Crop the Pic");
+                mLog("imageUri=" + imageUri.toString());
                 if (resultCode == RESULT_OK) {
                     try {
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver()
@@ -246,7 +251,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         }
     }
 
-    private void mlog(String str) {
+    private void mLog(String str) {
         Log.i("AddBookActivity", str);
     }
 
