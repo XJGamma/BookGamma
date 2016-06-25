@@ -18,6 +18,8 @@ public class XGFile {
             Log.i("XGFile",newFolder.getAbsolutePath());
             if(!newFolder.exists()){
                 return newFolder.mkdirs();
+            }else{
+                return true;
             }
         }
         return false;
