@@ -133,9 +133,12 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                     break;
                 }
                 long row = DBDao.addBook(et_bookname.getText().toString(), Integer.valueOf(et_pages.getText().toString()), finish_time.getTime(), "", imageUri.toString());
-                mLog("rowID=" + row);
-                mToast(R.string.tip_add_book_succeed);
-                AddBookActivity.this.finish();
+                if(row>0){
+                    mToast(R.string.tip_add_book_succeed);
+                    AddBookActivity.this.finish();
+                }else{
+                    mToast(R.string.tip_add_book_fail);
+                }
                 break;
             default:
                 break;
