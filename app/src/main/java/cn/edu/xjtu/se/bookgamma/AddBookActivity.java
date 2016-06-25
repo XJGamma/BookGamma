@@ -75,7 +75,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         btn_save.setOnClickListener(this);
         iv_bookimage.setOnClickListener(this);
 
-        if(!XGFile.createPath(FOLDER)){
+        if (!XGFile.createPath(FOLDER)) {
             mToast(R.string.tip_err_create_folder);
         }
     }
@@ -164,8 +164,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
             Date now = new Date();
             String fileName = FOLDER + formatter.format(now) + ".jpg";
-            File outputImage = new File(Environment.getExternalStorageDirectory(),
-                    fileName);
+            File outputImage = new File(Environment.getExternalStorageDirectory(), fileName);
             try {
                 outputImage.createNewFile();
             } catch (IOException e) {
@@ -186,44 +185,30 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                     intentAlbum.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                     startActivityForResult(intentAlbum, CHOOSE_ALBUM);
                     break;
-
             }
-            //Toast.makeText(AddBookActivity.this,index+":"+select_pic[index],Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mLog("resultCode=" + resultCode);
         switch (requestCode) {
+            case CHOOSE_ALBUM:
+                if (resultCode == RESULT_OK) {
+                    imageUri = data.getData();
+                }
+
             case TAKE_PHOTO:
-                mLog("Take a Pic");
                 if (resultCode == RESULT_OK) {
                     Intent intent = new Intent("com.android.camera.action.CROP");
                     intent.setDataAndType(imageUri, "image/*");
                     intent.putExtra("scale", true);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                     startActivityForResult(intent, CROP_PHOTO);
-                    mLog("imageurl=" + imageUri.toString());
                 }
                 break;
 
-            case CHOOSE_ALBUM:
-                mLog("Choose a Pic");
-                if (resultCode == RESULT_OK) {
-                    Uri tmp_uri = data.getData();
-                    Intent intent = new Intent("com.android.camera.action.CROP");
-                    intent.setDataAndType(tmp_uri, "image/*");
-                    intent.putExtra("scale", true);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(intent, CROP_PHOTO);
-                    mLog("imageurl=" + imageUri.toString());
-                }
-
             case CROP_PHOTO:
-                mLog("Crop the Pic");
-                mLog("imageUri=" + imageUri.toString());
                 if (resultCode == RESULT_OK) {
                     try {
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver()
@@ -233,8 +218,6 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                         e.printStackTrace();
                     }
                 }
-                break;
-            default:
                 break;
         }
     }
