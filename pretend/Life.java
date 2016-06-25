@@ -18,4 +18,5 @@ public class Life {
     private void make_problem() {
         System.out.println("find_year" + big_thing_or_woman);
     }
+
 }
