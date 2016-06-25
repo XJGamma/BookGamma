@@ -24,6 +24,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
@@ -78,13 +79,14 @@ public class AddBookActivityTest extends ActivityInstrumentationTestCase2<AddBoo
         retData.putExtra("data", icon);
         Instrumentation.ActivityResult result =
                 new Instrumentation.ActivityResult(Activity.RESULT_OK, retData);
-        intending(toPackage("com.android.camera2")).respondWith(result);
+        intending(toPackage("com.android.camera")).respondWith(result);
         onView(withId(R.id.iv_bookimage)).perform(click());
         onView(withText("拍照")).perform(click());
-        onView(withId(R.id.iv_bookimage)).check(matches(hasDrawable()));
+        intended(toPackage("com.android.camera"));
 
+        onView(withId(R.id.iv_bookimage)).check(matches(hasDrawable()));
         onView(withId(R.id.btn_addbook)).perform(click());
-        onView(withId(R.id.fab)).perform(click());
+//        onView(withId(R.id.fab)).perform(click());
     }
 
 }
