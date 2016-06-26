@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -80,6 +81,11 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_book,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     public void onClick(View v) {
