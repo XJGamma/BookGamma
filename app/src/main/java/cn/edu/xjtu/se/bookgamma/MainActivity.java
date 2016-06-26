@@ -23,8 +23,8 @@ import cn.edu.xjtu.se.dao.DBDao;
 
 public class MainActivity extends AppCompatActivity {
 
-    private List<Book> bookList = new ArrayList<Book>();
-    private MyDatabaseHelper dbHelper;
+    private  List<Book> bookList = new ArrayList<Book>();
+    private  MyDatabaseHelper dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +92,23 @@ public class MainActivity extends AppCompatActivity {
 //        Book aQ = new Book("阿Q正传",R.drawable.aq, "194");
 //        bookList.add(aQ);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        bookList.clear();
+        initBook();
+        BookAdapter adapter = new BookAdapter(MainActivity.this, R.layout.book_item, bookList);
+        ListView listView = (ListView) findViewById(R.id.list_view);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Book book = bookList.get(position);
+                Toast.makeText(MainActivity.this, book.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

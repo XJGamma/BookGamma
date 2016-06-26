@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import java.io.File;
 import java.util.List;
 
 /**
@@ -50,7 +50,8 @@ public class BookAdapter extends ArrayAdapter<Book>{
         }
 //        viewHolder.bookImage.setImageResource(book.getImage());
 //        viewHolder.bookImage.setImageURI(Uri.parse(book.getImage()));
-        viewHolder.bookImage.setImageResource(R.drawable.santi);
+        viewHolder.bookImage.setImageURI(Uri.parse(new File(book.getImage()).toString()));
+//        viewHolder.bookImage.setImageResource(R.drawable.santi);
         viewHolder.bookName.setText(book.getName());
         viewHolder.bookPages.setText( Integer.toString(book.getPages()));
         return view;
