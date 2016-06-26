@@ -39,7 +39,7 @@
         <activity
             android:name=".AddBookActivity"
             android:launchMode="singleTop" />
-        <activity android:name=".CaptureActivity"></activity>
+        <activity android:name="cn.edu.xjtu.se.scanner.CaptureActivity"></activity>
     </application>
 
 </manifest>
