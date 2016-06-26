@@ -39,6 +39,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     public static final int TAKE_PHOTO = 0;
     public static final int CHOOSE_ALBUM = 1;
     public static final int CROP_PHOTO = 2;
+    public static final int GET_ISBN = 3;
 
     private static final String FOLDER = "/BookGamma/image/";
 
@@ -94,7 +95,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         if (item.getItemId() == R.id.action_scan) {
             mLog("scanIntent");
             Intent scanIntent = new Intent(AddBookActivity.this, CaptureActivity.class);
-            startActivity(scanIntent);
+            startActivityForResult(scanIntent, GET_ISBN);
             mLog("scanActivity");
         }
         return true;
@@ -240,6 +241,17 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                         e.printStackTrace();
                     }
                 }
+                break;
+
+            case GET_ISBN:
+                mLog("get isbn");
+                if (resultCode == RESULT_OK) {
+
+                    String isbn = data.getStringExtra("isbn");
+                    Toast.makeText(AddBookActivity.this, isbn, Toast.LENGTH_LONG).show();
+                }
+
+            default:
                 break;
         }
     }

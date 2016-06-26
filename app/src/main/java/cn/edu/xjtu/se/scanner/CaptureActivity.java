@@ -17,6 +17,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
@@ -57,6 +58,8 @@ public final class CaptureActivity extends Activity implements
 
     private static final int PARSE_BARCODE_FAIL = 300;
     private static final int PARSE_BARCODE_SUC = 200;
+
+    private static final int GET_ISBN = 3;
 
     /**
      * 是否有预览
@@ -125,6 +128,8 @@ public final class CaptureActivity extends Activity implements
 
     private Handler mHandler = new MyHandler(this);
 
+    private ImageView btn_capture_flashlight;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,9 +144,10 @@ public final class CaptureActivity extends Activity implements
         ambientLightManager = new AmbientLightManager(this);
 
         // 监听图片识别按钮
-        findViewById(R.id.btn_capture_photo).setOnClickListener(this);
+        //findViewById(R.id.btn_capture_photo).setOnClickListener(this);
 
-        findViewById(R.id.btn_capture_flashlight).setOnClickListener(this);
+        btn_capture_flashlight = (ImageView) findViewById(R.id.btn_capture_flashlight);
+        btn_capture_flashlight.setOnClickListener(this);
 
         mLog("Capture onCreate");
     }
@@ -356,9 +362,16 @@ public final class CaptureActivity extends Activity implements
 
         beepManager.playBeepSoundAndVibrate();
 
-        Toast.makeText(this,
+        /*Toast.makeText(this,
                 "识别结果:" + ResultParser.parseResult(rawResult).toString(),
-                Toast.LENGTH_SHORT).show();
+                Toast.LENGTH_SHORT).show();*/
+
+        //barCode(CaptureActivity.this, ResultParser.parseResult(rawResult).toString());
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("isbn", ResultParser.parseResult(rawResult).toString());
+        setResult(RESULT_OK, resultIntent);
+        mLog("isbn="+ResultParser.parseResult(rawResult).toString());
+        finish();
 
     }
 
@@ -455,21 +468,23 @@ public final class CaptureActivity extends Activity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_capture_photo: // 图片识别
+/*            case R.id.btn_capture_photo: // 图片识别
                 // 打开手机中的相册
                 Intent innerIntent = new Intent(Intent.ACTION_GET_CONTENT); // "android.intent.action.GET_CONTENT"
-                innerIntent.setType("image/*");
+                innerIntent.setType("image*//*");
                 Intent wrapperIntent = Intent.createChooser(innerIntent,
                         "选择二维码图片");
                 this.startActivityForResult(wrapperIntent, REQUEST_CODE);
-                break;
+                break;*/
 
             case R.id.btn_capture_flashlight:
                 if (isFlashlightOpen) {
                     cameraManager.setTorch(false); // 关闭闪光灯
+                    btn_capture_flashlight.setImageResource(R.mipmap.scan_flashlight_normal);
                     isFlashlightOpen = false;
                 } else {
                     cameraManager.setTorch(true); // 打开闪光灯
+                    btn_capture_flashlight.setImageResource(R.mipmap.scan_flashlight_pressed);
                     isFlashlightOpen = true;
                 }
                 break;
@@ -477,10 +492,6 @@ public final class CaptureActivity extends Activity implements
                 break;
         }
 
-    }
-
-    private void mLog(String str) {
-        Log.d("CaptureActivity", str);
     }
 
     static class MyHandler extends Handler {
@@ -496,8 +507,9 @@ public final class CaptureActivity extends Activity implements
 
             switch (msg.what) {
                 case PARSE_BARCODE_SUC: // 解析图片成功
-                    Toast.makeText(activityReference.get(),
-                            "解析成功，结果为：" + msg.obj, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(activityReference.get(),
+//                            "解析成功，结果为：" + msg.obj, Toast.LENGTH_SHORT).show();
+                    barCode(activityReference.get(), (String) msg.obj);
                     break;
 
                 case PARSE_BARCODE_FAIL:// 解析图片失败
@@ -513,6 +525,17 @@ public final class CaptureActivity extends Activity implements
             super.handleMessage(msg);
         }
 
+    }
+
+    private void mLog(String str) {
+        Log.d("CaptureActivity", str);
+    }
+
+    private static void barCode(Activity activity, String bar) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("isbn", bar);
+        activity.setResult(RESULT_OK, resultIntent);
+        activity.finish();
     }
 
 }

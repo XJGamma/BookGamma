@@ -60,14 +60,14 @@
             android:gravity="center"
             android:orientation="horizontal" >
 
-            <ImageView
+            <!--<ImageView
                 android:id="@+id/btn_capture_photo"
                 android:layout_width="30.0dip"
                 android:layout_height="30.0dip"
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
                 android:scaleType="fitCenter"
-                android:src="@mipmap/scan_photo_normal" />
+                android:src="@mipmap/scan_photo_normal" />-->
         </LinearLayout>
     </LinearLayout>
 
@@ -78,7 +78,7 @@
         android:background="@color/capture_text_cover_bg"
         android:orientation="horizontal" >
 
-        <TextView
+        <!--<TextView
             android:id="@+id/capture_bottom_hint"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
@@ -88,7 +88,7 @@
             android:layout_marginRight="120dp"
             android:text="@string/tip_bottom"
             android:textColor="#ffffffff"
-            android:textSize="13.0sp" />
+            android:textSize="13.0sp" />-->
 
     </LinearLayout>
 
