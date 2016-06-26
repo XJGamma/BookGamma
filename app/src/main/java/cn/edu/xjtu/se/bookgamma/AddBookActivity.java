@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -83,8 +84,16 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_book,menu);
+        getMenuInflater().inflate(R.menu.menu_add_book, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_scan) {
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -139,10 +148,10 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                     break;
                 }
                 long row = DBDao.addBook(et_bookname.getText().toString(), Integer.valueOf(et_pages.getText().toString()), finish_time.getTime(), "", imageUri.toString());
-                if(row>0){
+                if (row > 0) {
                     mToast(R.string.tip_add_book_succeed);
                     AddBookActivity.this.finish();
-                }else{
+                } else {
                     mToast(R.string.tip_add_book_fail);
                 }
                 break;
