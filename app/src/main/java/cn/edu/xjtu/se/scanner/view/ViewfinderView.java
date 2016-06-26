@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.hardware.camera2.CameraManager;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -20,6 +19,7 @@ import java.util.Collection;
 import java.util.List;
 
 import cn.edu.xjtu.se.bookgamma.R;
+import cn.edu.xjtu.se.scanner.camera.CameraManager;
 
 /**
  * Created by DUAN Yufei on 16-6-26.
@@ -195,7 +195,7 @@ public final class ViewfinderView extends View{
         lineRect.top = slideTop;
         lineRect.bottom = (slideTop + MIDDLE_LINE_WIDTH);
         canvas.drawBitmap(((BitmapDrawable) (BitmapDrawable) getResources()
-                        .getDrawable(R.drawable.scan_laser)).getBitmap(), null,
+                        .getDrawable(R.mipmap.scan_laser)).getBitmap(), null,
                 lineRect, paint);
 
     }

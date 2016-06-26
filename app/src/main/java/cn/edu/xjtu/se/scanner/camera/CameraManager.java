@@ -16,8 +16,6 @@
 
 package cn.edu.xjtu.se.scanner.camera;
 
-import java.io.IOException;
-
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -27,6 +25,8 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.google.zxing.PlanarYUVLuminanceSource;
+
+import java.io.IOException;
 
 /**
  * This object wraps the Camera service object and expects to be the only one
@@ -197,10 +197,6 @@ public final class CameraManager {
 		}
 	}
 
-	/**
-	 * Convenience method for
-	 * {@link org.madmatrix.zxing.android.CaptureActivity}
-	 */
 	public synchronized void setTorch(boolean newSetting) {
 		if (newSetting != configManager.getTorchState(camera)) {
 			if (camera != null) {
