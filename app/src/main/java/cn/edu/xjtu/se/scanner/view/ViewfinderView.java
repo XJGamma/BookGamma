@@ -24,65 +24,51 @@ import cn.edu.xjtu.se.scanner.camera.CameraManager;
 /**
  * Created by DUAN Yufei on 16-6-26.
  */
-public final class ViewfinderView extends View{
+public final class ViewfinderView extends View {
     /**
      * 刷新界面的时间
      */
     private static final long ANIMATION_DELAY = 10L;
     private static final int OPAQUE = 0xFF;
-
-    private int CORNER_PADDING;
-
-    /**
-     * 扫描框中的中间线的宽度
-     */
-    private static int MIDDLE_LINE_WIDTH;
-
-    /**
-     * 扫描框中的中间线的与扫描框左右的间隙
-     */
-    private static int MIDDLE_LINE_PADDING;
-
     /**
      * 中间那条线每次刷新移动的距离
      */
     private static final int SPEEN_DISTANCE = 10;
-
-    /**
-     * 画笔对象的引用
-     */
-    private Paint paint;
-
-    /**
-     * 中间滑动线的最顶端位置
-     */
-    private int slideTop;
-
-    /**
-     * 中间滑动线的最底端位置
-     */
-    private int slideBottom;
-
     private static final int MAX_RESULT_POINTS = 20;
-
-    private Bitmap resultBitmap;
-
+    /**
+     * 扫描框中的中间线的宽度
+     */
+    private static int MIDDLE_LINE_WIDTH;
+    /**
+     * 扫描框中的中间线的与扫描框左右的间隙
+     */
+    private static int MIDDLE_LINE_PADDING;
     /**
      * 遮掩层的颜色
      */
     private final int maskColor;
     private final int resultColor;
-
     private final int resultPointColor;
-    private List<ResultPoint> possibleResultPoints;
-
-    private List<ResultPoint> lastPossibleResultPoints;
-
     /**
      * 第一次绘制控件
      */
     boolean isFirst = true;
-
+    private int CORNER_PADDING;
+    /**
+     * 画笔对象的引用
+     */
+    private Paint paint;
+    /**
+     * 中间滑动线的最顶端位置
+     */
+    private int slideTop;
+    /**
+     * 中间滑动线的最底端位置
+     */
+    private int slideBottom;
+    private Bitmap resultBitmap;
+    private List<ResultPoint> possibleResultPoints;
+    private List<ResultPoint> lastPossibleResultPoints;
     private CameraManager cameraManager;
 
     // This constructor is used when the class is built from an XML resource.
@@ -126,8 +112,7 @@ public final class ViewfinderView extends View{
             // Draw the opaque result bitmap over the scanning rectangle
             paint.setAlpha(0xA0);
             canvas.drawBitmap(resultBitmap, null, frame, paint);
-        }
-        else {
+        } else {
 
             // 画扫描框边上的角
             drawRectEdges(canvas, frame);
@@ -139,8 +124,7 @@ public final class ViewfinderView extends View{
             Collection<ResultPoint> currentLast = lastPossibleResultPoints;
             if (currentPossible.isEmpty()) {
                 lastPossibleResultPoints = null;
-            }
-            else {
+            } else {
                 possibleResultPoints = new ArrayList<ResultPoint>(5);
                 lastPossibleResultPoints = currentPossible;
                 paint.setAlpha(OPAQUE);
@@ -170,8 +154,7 @@ public final class ViewfinderView extends View{
      * 绘制扫描线
      *
      * @param canvas
-     * @param frame
-     *            扫描框
+     * @param frame  扫描框
      */
     private void drawScanningLine(Canvas canvas, Rect frame) {
 
@@ -284,8 +267,7 @@ public final class ViewfinderView extends View{
      * Draw a bitmap with the result points highlighted instead of the live
      * scanning display.
      *
-     * @param barcode
-     *            An image of the decoded barcode.
+     * @param barcode An image of the decoded barcode.
      */
     public void drawResultBitmap(Bitmap barcode) {
         resultBitmap = barcode;

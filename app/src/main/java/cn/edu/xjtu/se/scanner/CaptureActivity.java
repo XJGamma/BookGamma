@@ -41,7 +41,7 @@ import cn.edu.xjtu.se.scanner.view.ViewfinderView;
  * thread. It draws a viewfinder to help the user place the barcode correctly,
  * shows feedback as the image processing is happening, and then overlays the
  * results when a scan is successful.
- *
+ * <p/>
  * 此Activity所做的事： 1.开启camera，在后台独立线程中完成扫描任务；
  * 2.绘制了一个扫描区（viewfinder）来帮助用户将条码置于其中以准确扫描； 3.扫描成功后会将扫描结果展示在界面上。
  *
@@ -125,38 +125,6 @@ public final class CaptureActivity extends Activity implements
 
     private Handler mHandler = new MyHandler(this);
 
-    static class MyHandler extends Handler {
-
-        private WeakReference<Activity> activityReference;
-
-        public MyHandler(Activity activity) {
-            activityReference = new WeakReference<Activity>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-
-            switch (msg.what) {
-                case PARSE_BARCODE_SUC: // 解析图片成功
-                    Toast.makeText(activityReference.get(),
-                            "解析成功，结果为：" + msg.obj, Toast.LENGTH_SHORT).show();
-                    break;
-
-                case PARSE_BARCODE_FAIL:// 解析图片失败
-
-                    Toast.makeText(activityReference.get(), "解析图片失败",
-                            Toast.LENGTH_SHORT).show();
-                    break;
-
-                default:
-                    break;
-            }
-
-            super.handleMessage(msg);
-        }
-
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,6 +143,7 @@ public final class CaptureActivity extends Activity implements
 
         findViewById(R.id.btn_capture_flashlight).setOnClickListener(this);
 
+        mLog("Capture onCreate");
     }
 
     @Override
@@ -211,8 +180,7 @@ public final class CaptureActivity extends Activity implements
             // surfaceCreated() won't be called, so init the camera here.
             initCamera(surfaceHolder);
 
-        }
-        else {
+        } else {
             // 防止sdk8的设备初始化预览异常
             surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
@@ -327,8 +295,7 @@ public final class CaptureActivity extends Activity implements
                                 m.obj = ResultParser.parseResult(result)
                                         .toString();
                                 mHandler.sendMessage(m);
-                            }
-                            else {
+                            } else {
                                 Message m = mHandler.obtainMessage();
                                 m.what = PARSE_BARCODE_FAIL;
                                 mHandler.sendMessage(m);
@@ -361,7 +328,7 @@ public final class CaptureActivity extends Activity implements
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                int height) {
-		/*hasSurface = false;*/
+        /*hasSurface = false;*/
     }
 
     @Override
@@ -373,12 +340,9 @@ public final class CaptureActivity extends Activity implements
      * A valid barcode has been found, so give an indication of success and show
      * the results.
      *
-     * @param rawResult
-     *            The contents of the barcode.
-     * @param scaleFactor
-     *            amount by which thumbnail was scaled
-     * @param barcode
-     *            A greyscale bitmap of the camera data which was decoded.
+     * @param rawResult   The contents of the barcode.
+     * @param scaleFactor amount by which thumbnail was scaled
+     * @param barcode     A greyscale bitmap of the camera data which was decoded.
      */
     public void handleDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
 
@@ -445,12 +409,10 @@ public final class CaptureActivity extends Activity implements
                         decodeHints, characterSet, cameraManager);
             }
             decodeOrStoreSavedBitmap(null, null);
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             Log.w(TAG, ioe);
             displayFrameworkBugMessageAndExit();
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             // Barcode Scanner has seen crashes in the wild of this variety:
             // java.?lang.?RuntimeException: Fail to connect to camera service
             Log.w(TAG, "Unexpected error initializing camera", e);
@@ -468,8 +430,7 @@ public final class CaptureActivity extends Activity implements
         // Bitmap isn't used yet -- will be used soon
         if (handler == null) {
             savedResultToShow = result;
-        }
-        else {
+        } else {
             if (result != null) {
                 savedResultToShow = result;
             }
@@ -507,14 +468,49 @@ public final class CaptureActivity extends Activity implements
                 if (isFlashlightOpen) {
                     cameraManager.setTorch(false); // 关闭闪光灯
                     isFlashlightOpen = false;
-                }
-                else {
+                } else {
                     cameraManager.setTorch(true); // 打开闪光灯
                     isFlashlightOpen = true;
                 }
                 break;
             default:
                 break;
+        }
+
+    }
+
+    private void mLog(String str) {
+        Log.d("CaptureActivity", str);
+    }
+
+    static class MyHandler extends Handler {
+
+        private WeakReference<Activity> activityReference;
+
+        public MyHandler(Activity activity) {
+            activityReference = new WeakReference<Activity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case PARSE_BARCODE_SUC: // 解析图片成功
+                    Toast.makeText(activityReference.get(),
+                            "解析成功，结果为：" + msg.obj, Toast.LENGTH_SHORT).show();
+                    break;
+
+                case PARSE_BARCODE_FAIL:// 解析图片失败
+
+                    Toast.makeText(activityReference.get(), "解析图片失败",
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                default:
+                    break;
+            }
+
+            super.handleMessage(msg);
         }
 
     }

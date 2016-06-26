@@ -31,6 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import cn.edu.xjtu.se.dao.DBDao;
+import cn.edu.xjtu.se.scanner.CaptureActivity;
 import cn.edu.xjtu.se.util.XGFile;
 
 public class AddBookActivity extends AppCompatActivity implements OnClickListener {
@@ -91,9 +92,12 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_scan) {
-
+            mLog("scanIntent");
+            Intent scanIntent = new Intent(AddBookActivity.this, CaptureActivity.class);
+            startActivity(scanIntent);
+            mLog("scanActivity");
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override
