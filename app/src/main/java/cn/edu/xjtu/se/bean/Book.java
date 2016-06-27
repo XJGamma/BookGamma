@@ -198,5 +198,38 @@ public class Book implements Serializable {
         public void setNumRaters(int numRaters) {
             this.numRaters = numRaters;
         }
+
+        @Override
+        public String toString() {
+            return "RatingEntity{" +
+                    "average='" + average + '\'' +
+                    ", max=" + max +
+                    ", numRaters=" + numRaters +
+                    ", min=" + min +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "alt_title='" + alt_title + '\'' +
+                ", rating=" + rating +
+                ", subtitle='" + subtitle + '\'' +
+                ", pubdate='" + pubdate + '\'' +
+                ", origin_title='" + origin_title + '\'' +
+                ", image='" + image + '\'' +
+                ", binding='" + binding + '\'' +
+                ", catalog='" + catalog + '\'' +
+                ", pages='" + pages + '\'' +
+                ", id='" + id + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", isbn10='" + isbn10 + '\'' +
+                ", isbn13='" + isbn13 + '\'' +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                ", price='" + price + '\'' +
+                ", author=" + author +
+                '}';
     }
 }
