@@ -30,4 +30,7 @@
     <string name="cancel">取消</string>
     <string name="msg_camera_framework_bug">抱歉，Android相机出现问题。您可能需要重启设备。</string>
     <string name="button_ok">确定</string>
+    <string name="msg_loading">正在加载数据…</string>
+    <string name="msg_no_book">很抱歉，没有这本书的资料</string>
+    <string name="msg_internet_error">网络连接出错</string>
 </resources>

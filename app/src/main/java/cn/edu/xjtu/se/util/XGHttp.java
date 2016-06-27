@@ -20,7 +20,7 @@ public class XGHttp {
     //获取UI线程
     private Handler mHandler= new Handler(Looper.getMainLooper());
     //回调接口
-    interface MOkCallBack{
+    public interface MOkCallBack{
         void onSuccess(String str);
         void onError();
     }
@@ -70,5 +70,5 @@ public class XGHttp {
                 });
             }
         });
-    }//get
+    }
 }

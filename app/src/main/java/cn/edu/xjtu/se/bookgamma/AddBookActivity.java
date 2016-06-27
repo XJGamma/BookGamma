@@ -2,6 +2,7 @@ package cn.edu.xjtu.se.bookgamma;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,15 +25,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.dao.DBDao;
 import cn.edu.xjtu.se.scanner.CaptureActivity;
 import cn.edu.xjtu.se.util.XGFile;
+import cn.edu.xjtu.se.util.XGHttp;
 
 public class AddBookActivity extends AppCompatActivity implements OnClickListener {
 
@@ -58,6 +63,10 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     private Button btn_save;
     private TextView tv_finish_time;
 
+    private XGHttp xgHttp = XGHttp.getInstance();
+    private ProgressDialog dialog = null;
+    private Gson gson = new Gson();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,12 +91,17 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         if (!XGFile.createPath(FOLDER)) {
             mToast(R.string.tip_err_create_folder);
         }
+
+        dialog = new ProgressDialog(this);
+        dialog.setMessage(getResources().getString(R.string.msg_loading));
+        dialog.setCancelable(false);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_add_book, menu);
-        return super.onCreateOptionsMenu(menu);
+        mLog("create scan menu");
+        return true;
     }
 
     @Override
@@ -245,15 +259,46 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
 
             case GET_ISBN:
                 mLog("get isbn");
+                mLog("resultCode=" + resultCode);
                 if (resultCode == RESULT_OK) {
-
                     String isbn = data.getStringExtra("isbn");
-                    Toast.makeText(AddBookActivity.this, isbn, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(AddBookActivity.this, isbn, Toast.LENGTH_LONG).show();
+                    isbnGetBookObject(isbn);
+
                 }
 
             default:
                 break;
         }
+    }
+
+    private void isbnGetBookObject(String isbn) {
+        mLog("dialog show");
+        dialog.show();
+        mLog("http get");
+        xgHttp.get("https://api.douban.com/v2/book/isbn/" + isbn.trim(), new XGHttp.MOkCallBack() {
+            @Override
+            public void onSuccess(String str) {
+                Book book = gson.fromJson(str, Book.class);
+                if (book.getId() != null) {
+                    //这里传book给详情页面
+//                    Intent it=new Intent(MainActivity.this,BookInfoActivity.class);
+//                    it.putExtra("book",isbnBook);
+//                    startActivityForResult(it, 666);
+                    mLog(book.toString());
+                    mToast(R.string.app_name);
+                } else {
+                    mToast(R.string.msg_no_book);
+                }
+                dialog.hide();
+            }
+
+            @Override
+            public void onError() {
+                mToast(R.string.msg_internet_error);
+                dialog.hide();
+            }
+        });
     }
 
     private void mLog(String str) {
