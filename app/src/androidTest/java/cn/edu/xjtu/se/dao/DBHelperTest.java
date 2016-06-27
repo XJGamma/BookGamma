@@ -30,6 +30,4 @@ public class DBHelperTest extends AndroidTestCase {
         super.tearDown();
         db.close();
     }
-
-
 }
