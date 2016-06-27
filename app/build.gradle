@@ -27,10 +27,11 @@ android {
                 versionName vn
             }
         }
-
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
-//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
 
     signingConfigs {
         if (System.getenv("RELEASE_FLAG")) {
