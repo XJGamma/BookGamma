@@ -26,6 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +49,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     public static final int CROP_PHOTO = 2;
     public static final int GET_ISBN = 3;
 
-    private static final String FOLDER = "/BookGamma/image/";
+    public static final String FOLDER = "/BookGamma/image/";
 
     private Uri imageUri;
     private Calendar finish_time;
@@ -66,6 +69,8 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     private XGHttp xgHttp = XGHttp.getInstance();
     private ProgressDialog dialog = null;
     private Gson gson = new Gson();
+    private ImageLoader imageLoader;
+    private DisplayImageOptions options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,13 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         dialog = new ProgressDialog(this);
         dialog.setMessage(getResources().getString(R.string.msg_loading));
         dialog.setCancelable(false);
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(this));
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.mipmap.loading)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .build();
     }
 
     @Override
@@ -198,9 +210,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
             dialog.dismiss();
             setIndex(which);
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
-            Date now = new Date();
-            String fileName = FOLDER + formatter.format(now) + ".jpg";
+            String fileName = generateFileName();
             File outputImage = new File(Environment.getExternalStorageDirectory(), fileName);
             try {
                 outputImage.createNewFile();
@@ -264,7 +274,6 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                     String isbn = data.getStringExtra("isbn");
 //                    Toast.makeText(AddBookActivity.this, isbn, Toast.LENGTH_LONG).show();
                     isbnGetBookObject(isbn);
-
                 }
 
             default:
@@ -273,20 +282,17 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     }
 
     private void isbnGetBookObject(String isbn) {
-        mLog("dialog show");
         dialog.show();
-        mLog("http get");
         xgHttp.get("https://api.douban.com/v2/book/isbn/" + isbn.trim(), new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
                 Book book = gson.fromJson(str, Book.class);
                 if (book.getId() != null) {
-                    //这里传book给详情页面
-//                    Intent it=new Intent(MainActivity.this,BookInfoActivity.class);
-//                    it.putExtra("book",isbnBook);
-//                    startActivityForResult(it, 666);
-                    mLog(book.toString());
-                    mToast(R.string.app_name);
+                    et_bookname.setText(book.getTitle());
+                    et_pages.setText(book.getPages());
+
+                    imageLoader.displayImage(book.getImage(), iv_bookimage, options);
+                    imageUri = Uri.parse(book.getImage());
                 } else {
                     mToast(R.string.msg_no_book);
                 }
@@ -307,5 +313,11 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
 
     private void mToast(int str) {
         Toast.makeText(AddBookActivity.this, getResources().getString(str), Toast.LENGTH_LONG).show();
+    }
+
+    private String generateFileName() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+        Date now = new Date();
+        return FOLDER + formatter.format(now) + ".jpg";
     }
 }
