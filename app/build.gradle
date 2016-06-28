@@ -61,13 +61,13 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:support-v4:23.1.0'
-    compile files('libs/android-core-3.1.1-SNAPSHOT.jar')
-    compile files('libs/core-3.1.1-SNAPSHOT.jar')
-    compile files('libs/okhttp-2.7.0.jar')
-    compile files('libs/okio-1.6.0.jar')
-    compile files('libs/gson-2.2.4.jar')
-    compile files('libs/universal-image-loader-1.9.4-with-sources.jar')
-    compile files('libs/jsoup-1.8.3.jar')
+
+    compile 'com.google.code.gson:gson:2.2.+'
+    compile 'org.jsoup:jsoup:1.8.1'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile 'com.squareup.okio:okio:1.8.0'
+    compile 'com.squareup.okhttp:okhttp:2.7.0'
+    compile 'com.google.zxing:core:3.2.0'
 
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
