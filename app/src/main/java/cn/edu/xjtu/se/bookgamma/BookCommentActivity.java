@@ -2,8 +2,8 @@ package cn.edu.xjtu.se.bookgamma;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class BookCommentActivity extends AppCompatActivity {
     public static final String TAG = BookCommentActivity.class.getSimpleName();
 
     private RecyclerView rv_book;
-    private RecyclerView.LayoutManager layoutManager;
+    private StaggeredGridLayoutManager layoutManager;
     private BookAdapter bookAdapter;
 
 
@@ -28,7 +28,7 @@ public class BookCommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_comment);
         rv_book = (RecyclerView) findViewById(R.id.rv_book);
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL);
         rv_book.setLayoutManager(layoutManager);
         rv_book.setHasFixedSize(true);
 
