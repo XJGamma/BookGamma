@@ -6,7 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import java.util.List;
+
+import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.bookgamma.adapter.BookAdapter;
+import cn.edu.xjtu.se.dao.DBDao;
 
 public class BookCommentActivity extends AppCompatActivity {
 
@@ -30,6 +34,8 @@ public class BookCommentActivity extends AppCompatActivity {
 
         bookAdapter = new BookAdapter(temp);
         rv_book.setAdapter(bookAdapter);
+
+        List<Book> books = DBDao.findAll();
 
         mLog("load");
     }
