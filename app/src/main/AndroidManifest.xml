@@ -39,9 +39,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddBookActivity"
-            android:launchMode="singleTop" />
-        <activity android:name="cn.edu.xjtu.se.scanner.CaptureActivity" />
-        <activity android:name=".BookCommentActivity"></activity>
+            android:launchMode="singleTop"
+            android:label="@string/label_add_book"/>
+        <activity android:name="cn.edu.xjtu.se.scanner.CaptureActivity"
+            android:label="@string/label_scanner"/>
+        <activity android:name=".BookCommentActivity"
+            android:label="@string/label_book_list">
+        </activity>
     </application>
 
 </manifest>
