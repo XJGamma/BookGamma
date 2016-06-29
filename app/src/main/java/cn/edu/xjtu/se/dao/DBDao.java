@@ -2,7 +2,6 @@ package cn.edu.xjtu.se.dao;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,7 +25,26 @@ public class DBDao {
         values.put("current_page", 0);
         values.put("finish_time", dateFormat.format(finish_time));
         values.put("total_reading_time", 0);
-        Log.i("DBDao", "insert...");
+        db.close();
+        dbHelper.close();
         return db.insert("Books", null, values);
     }
+
+//    public List<Book> findAll(){
+//        DBHelper dbHelper = new DBHelper(XGApplication.getContext());
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//        Cursor cursor = db.rawQuery("select * from Books",null);
+//        List<Book> list = new ArrayList<Book>();
+//        while(cursor.moveToNext()){
+//            int id = cursor.getInt(cursor.getColumnIndex("id"));
+//            String text = cursor.getString(cursor.getColumnIndex("text"));
+//            long mdate  = cursor.getLong(cursor.getColumnIndex("mdate"));
+//            cal.setTimeInMillis(mdate);
+//            Book m = new Book(id,text,cal.getTime());
+//            list.add(m);
+//        }
+//        cursor.close();
+//        db.close();
+//        return list;
+//    }
 }

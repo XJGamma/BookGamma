@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by DUAN Yufei on 16-6-27.
  */
-public class Book implements Serializable {
+public class DoubanBook implements Serializable {
     private RatingEntity rating;//评分
     private String subtitle;
     private String pubdate;//出版日期

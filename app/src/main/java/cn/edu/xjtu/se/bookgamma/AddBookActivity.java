@@ -36,7 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import cn.edu.xjtu.se.bean.Book;
+import cn.edu.xjtu.se.bean.DoubanBook;
 import cn.edu.xjtu.se.dao.DBDao;
 import cn.edu.xjtu.se.scanner.CaptureActivity;
 import cn.edu.xjtu.se.util.XGFile;
@@ -286,7 +286,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         xgHttp.get("https://api.douban.com/v2/book/isbn/" + isbn.trim(), new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
-                Book book = gson.fromJson(str, Book.class);
+                DoubanBook book = gson.fromJson(str, DoubanBook.class);
                 if (book.getId() != null) {
                     et_bookname.setText(book.getTitle());
                     et_pages.setText(book.getPages());
