@@ -41,6 +41,7 @@
             android:name=".AddBookActivity"
             android:launchMode="singleTop" />
         <activity android:name="cn.edu.xjtu.se.scanner.CaptureActivity" />
+        <activity android:name=".BookCommentActivity"></activity>
     </application>
 
 </manifest>

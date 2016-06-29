@@ -2,6 +2,7 @@
     <string name="app_name">BookGamma</string>
     <string name="action_settings">设置</string>
     <string name="action_addbook">添加书籍</string>
+    <string name="action_comment">读书笔记</string>
     <string name="tx_bookname">书名</string>
     <string name="tx_pages">总页数</string>
     <string name="tx_images">图片</string>
