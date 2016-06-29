@@ -38,6 +38,10 @@ public class Book implements Serializable {
         this.total_reading_time = 0;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public int getCurrent_page() {
         return current_page;
     }
