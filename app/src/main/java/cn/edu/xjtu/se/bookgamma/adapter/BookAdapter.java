@@ -1,22 +1,39 @@
 package cn.edu.xjtu.se.bookgamma.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import java.util.List;
+
+import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.bookgamma.R;
 
 /**
  * Created by DUAN Yufei on 16-6-28.
  */
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
-    public String[] datas = null;
+    public List<Book> books = null;
+    private ImageLoader imageLoader;
+    private DisplayImageOptions options;
 
-    public BookAdapter(String[] datas) {
-        this.datas = datas;
+    public BookAdapter(List<Book> books,Context context) {
+        this.books = books;
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.mipmap.loading)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .build();
     }
 
     @Override
@@ -28,20 +45,23 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.mTextView.setText(datas[position]);
+        viewHolder.bookName.setText(books.get(position).getName());
+        imageLoader.displayImage(books.get(position).getImage(), viewHolder.bookImage, options);
     }
 
     @Override
     public int getItemCount() {
-        return datas.length;
+        return books.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
+        public TextView bookName;
+        public ImageView bookImage;
 
         public ViewHolder(View view) {
             super(view);
-            mTextView = (TextView) view.findViewById(R.id.it_book_name);
+            bookName = (TextView) view.findViewById(R.id.it_book_name);
+            bookImage = (ImageView) view.findViewById(R.id.iv_book_image);
         }
     }
 }

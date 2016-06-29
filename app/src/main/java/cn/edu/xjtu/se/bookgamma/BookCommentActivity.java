@@ -20,6 +20,9 @@ public class BookCommentActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private BookAdapter bookAdapter;
 
+
+    private List<Book> books;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,15 +32,12 @@ public class BookCommentActivity extends AppCompatActivity {
         rv_book.setLayoutManager(layoutManager);
         rv_book.setHasFixedSize(true);
 
-        String[] temp = new String[]{"a", "b", "c"};
-        mLog(temp.toString());
+        books = DBDao.findAll();
 
-        bookAdapter = new BookAdapter(temp);
+        bookAdapter = new BookAdapter(books, BookCommentActivity.this);
         rv_book.setAdapter(bookAdapter);
 
-        List<Book> books = DBDao.findAll();
 
-        mLog("load");
     }
 
     private void mLog(String msg) {
