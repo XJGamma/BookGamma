@@ -1,5 +1,6 @@
 package cn.edu.xjtu.se.bookgamma;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -18,12 +19,14 @@ public class BookCommentActivity extends AppCompatActivity {
 
     public static final String TAG = BookCommentActivity.class.getSimpleName();
 
+
     private RecyclerView rv_book;
     private StaggeredGridLayoutManager layoutManager;
     private BookAdapter bookAdapter;
 
 
     private List<Book> books;
+    private int book_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,6 @@ public class BookCommentActivity extends AppCompatActivity {
         layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         rv_book.setLayoutManager(layoutManager);
         rv_book.setHasFixedSize(true);
-
         books = DBDao.findBooksAll();
 
         bookAdapter = new BookAdapter(books, BookCommentActivity.this);
@@ -42,8 +44,13 @@ public class BookCommentActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int id) {
                 //jump to comment activity
+                Intent commentIntent = new Intent(BookCommentActivity.this, CommentActivity.class);
+                commentIntent.putExtra("book_id", id);
+                startActivity(commentIntent);
             }
         });
+
+
     }
 
     private void mLog(String msg) {
