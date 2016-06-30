@@ -49,8 +49,6 @@ public class BookCommentActivity extends AppCompatActivity {
                 startActivity(commentIntent);
             }
         });
-
-
     }
 
     private void mLog(String msg) {
@@ -58,7 +56,7 @@ public class BookCommentActivity extends AppCompatActivity {
     }
 
     private void mToast(int str) {
-        Toast.makeText(BookCommentActivity.this, getResources().getString(str), Toast.LENGTH_LONG).show();
+        Toast.makeText(BookCommentActivity.this, str, Toast.LENGTH_LONG).show();
     }
 
 }

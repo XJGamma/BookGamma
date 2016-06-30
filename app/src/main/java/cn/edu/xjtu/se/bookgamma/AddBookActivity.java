@@ -191,51 +191,6 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         }
     }
 
-    class RadioOnClick implements DialogInterface.OnClickListener {
-        private int index;
-
-        public RadioOnClick() {
-            this.index = 0;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setIndex(int index) {
-            this.index = index;
-        }
-
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-            setIndex(which);
-
-            String fileName = generateFileName();
-            File outputImage = new File(Environment.getExternalStorageDirectory(), fileName);
-            try {
-                outputImage.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            imageUri = Uri.fromFile(outputImage);
-
-            switch (index) {
-                case (TAKE_PHOTO):
-                    //拍照
-                    Intent intentPhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intentPhoto.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(intentPhoto, TAKE_PHOTO);
-                    break;
-                case (CHOOSE_ALBUM):
-                    //Choose from Album Image Selector
-                    Intent intentAlbum = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intentAlbum.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                    startActivityForResult(intentAlbum, CHOOSE_ALBUM);
-                    break;
-            }
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -312,12 +267,57 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     }
 
     private void mToast(int str) {
-        Toast.makeText(AddBookActivity.this, getResources().getString(str), Toast.LENGTH_LONG).show();
+        Toast.makeText(AddBookActivity.this, str, Toast.LENGTH_LONG).show();
     }
 
     private String generateFileName() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
         Date now = new Date();
         return FOLDER + formatter.format(now) + ".jpg";
+    }
+
+    class RadioOnClick implements DialogInterface.OnClickListener {
+        private int index;
+
+        public RadioOnClick() {
+            this.index = 0;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
+
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+            setIndex(which);
+
+            String fileName = generateFileName();
+            File outputImage = new File(Environment.getExternalStorageDirectory(), fileName);
+            try {
+                outputImage.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            imageUri = Uri.fromFile(outputImage);
+
+            switch (index) {
+                case (TAKE_PHOTO):
+                    //拍照
+                    Intent intentPhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intentPhoto.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(intentPhoto, TAKE_PHOTO);
+                    break;
+                case (CHOOSE_ALBUM):
+                    //Choose from Album Image Selector
+                    Intent intentAlbum = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intentAlbum.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(intentAlbum, CHOOSE_ALBUM);
+                    break;
+            }
+        }
     }
 }

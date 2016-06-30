@@ -46,11 +46,12 @@
             android:label="@string/label_scanner" />
         <activity
             android:name=".BookCommentActivity"
-            android:label="@string/label_book_list"></activity>
+            android:label="@string/label_book_list" />
         <activity
             android:name=".CommentActivity"
             android:label="@string/title_activity_comment"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".AddCommentActivity"></activity>
     </application>
 
 </manifest>
