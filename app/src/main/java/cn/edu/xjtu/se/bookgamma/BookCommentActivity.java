@@ -34,7 +34,7 @@ public class BookCommentActivity extends AppCompatActivity {
         rv_book.setLayoutManager(layoutManager);
         rv_book.setHasFixedSize(true);
 
-        books = DBDao.findAll();
+        books = DBDao.findBooksAll();
 
         bookAdapter = new BookAdapter(books, BookCommentActivity.this);
         rv_book.setAdapter(bookAdapter);

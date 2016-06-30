@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class DBDao {
         return rowID;
     }
 
-    public static List<Book> findAll() {
+    public static List<Book> findBooksAll() {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.query("Books", null, null, null, null, null, null);
@@ -54,10 +55,23 @@ public class DBDao {
         return list;
     }
 
-    private static List<Comment> getCommentByBook(int book_id) {
+    public static long addComment(int book_id, String content){
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from Comments where book_id = ? order by created_time",
+        ContentValues values = new ContentValues();
+        values.put("book_id", book_id);
+        values.put("content", content);
+        values.put("created_time", dateFormat.format(Calendar.getInstance().getTime()));
+        long rowID = db.insert("BookComments", null, values);
+        db.close();
+        dbHelper.close();
+        return rowID;
+    }
+
+    public static List<Comment> getCommentByBook(int book_id) {
+        DBHelper dbHelper = new DBHelper(XGApplication.getContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from BookComments where book_id = ? order by created_time",
                 new String[]{String.valueOf(book_id)});
         List<Comment> list = new ArrayList<Comment>();
         while (cursor.moveToNext()) {
