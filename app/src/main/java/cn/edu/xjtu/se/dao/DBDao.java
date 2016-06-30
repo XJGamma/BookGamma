@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import cn.edu.xjtu.se.bean.Book;
+import cn.edu.xjtu.se.bean.Comment;
 import cn.edu.xjtu.se.util.XGApplication;
 
 /**
@@ -40,12 +41,27 @@ public class DBDao {
     public static List<Book> findAll() {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from Books", null);
+        Cursor cursor = db.query("Books", null, null, null, null, null, null);
         List<Book> list = new ArrayList<Book>();
         while (cursor.moveToNext()) {
             if (Cursor2Book(cursor) != null) {
                 list.add(Cursor2Book(cursor));
             }
+        }
+        cursor.close();
+        db.close();
+        dbHelper.close();
+        return list;
+    }
+
+    private static List<Comment> getCommentByBook(int book_id) {
+        DBHelper dbHelper = new DBHelper(XGApplication.getContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from Comments where book_id = ? order by created_time",
+                new String[]{String.valueOf(book_id)});
+        List<Comment> list = new ArrayList<Comment>();
+        while (cursor.moveToNext()) {
+            list.add(Cursor2Comment(cursor));
         }
         cursor.close();
         db.close();
@@ -67,5 +83,19 @@ public class DBDao {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private static Comment Cursor2Comment(Cursor cursor) {
+        int id = cursor.getInt(cursor.getColumnIndex("id"));
+        int book_id = cursor.getInt(cursor.getColumnIndex("book_id"));
+        String content = cursor.getString(cursor.getColumnIndex("content"));
+        String created_time = cursor.getString(cursor.getColumnIndex("created_time"));
+
+        try {
+            return new Comment(id, book_id, dateFormat.parse(created_time), content);
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 }

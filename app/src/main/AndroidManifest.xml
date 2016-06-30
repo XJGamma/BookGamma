@@ -39,13 +39,18 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddBookActivity"
-            android:launchMode="singleTop"
-            android:label="@string/label_add_book"/>
-        <activity android:name="cn.edu.xjtu.se.scanner.CaptureActivity"
-            android:label="@string/label_scanner"/>
-        <activity android:name=".BookCommentActivity"
-            android:label="@string/label_book_list">
-        </activity>
+            android:label="@string/label_add_book"
+            android:launchMode="singleTop" />
+        <activity
+            android:name="cn.edu.xjtu.se.scanner.CaptureActivity"
+            android:label="@string/label_scanner" />
+        <activity
+            android:name=".BookCommentActivity"
+            android:label="@string/label_book_list"></activity>
+        <activity
+            android:name=".CommentActivity"
+            android:label="@string/title_activity_comment"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
