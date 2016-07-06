@@ -2,20 +2,20 @@
 package cn.edu.xjtu.se.bookgamma.pretend;
 
 public class Eye {
-    private int know_number_about_large_week;
-    private int fact;
+    private int eye_or_time;
+    private int company_or_little_place;
 
     public Eye() {
-        know_number_about_large_week = 3507;
-        fact = 2678;
+        eye_or_time = 1714;
+        company_or_little_place = 3347;
     }
 
-    public void work_work() {
-        hand();
-        System.out.println("know_way" + know_number_about_large_week);
+    public void important_eye_and_right_woman() {
+        day_and_public_world();
+        System.out.println("look_big_fact" + eye_or_time);
     }
 
-    private void hand() {
-        System.out.println("make_long_company" + fact);
+    private void day_and_public_world() {
+        System.out.println("say_point_above_thing" + company_or_little_place);
     }
 }
