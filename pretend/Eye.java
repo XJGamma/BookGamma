@@ -2,20 +2,20 @@
 package cn.edu.xjtu.se.bookgamma.pretend;
 
 public class Eye {
-    private int same_eye_or_bad_problem;
-    private int give_little_child_over_different_child;
+    private int find_problem_above_few_hand;
+    private int right_week_or_world;
 
     public Eye() {
-        same_eye_or_bad_problem = 3286;
-        give_little_child_over_different_child = 1672;
+        find_problem_above_few_hand = 95;
+        right_week_or_world = 3802;
     }
 
-    public void day() {
-        bad_child();
-        System.out.println("think_long_place" + same_eye_or_bad_problem);
+    public void different_woman() {
+        fact();
+        System.out.println("few_number" + find_problem_above_few_hand);
     }
 
-    private void bad_child() {
-        System.out.println("young_day_or_little_year" + give_little_child_over_different_child);
+    private void fact() {
+        System.out.println("few_woman" + right_week_or_world);
     }
 }
