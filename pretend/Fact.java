@@ -2,6 +2,7 @@
 package cn.edu.xjtu.se.bookgamma.pretend;
 
 public class Fact {
+<<<<<<< 8adb9695e55c845c3567bc5bce06bd37a36215c6
 <<<<<<< a12028a634147a44939b509222862d4919325add
 <<<<<<< ba3ea6d9f1b17c722569538af727607d013a4c72
 <<<<<<< 4439986e80d7453498fa215a94660d598fdcc63b
@@ -23,6 +24,9 @@ public class Fact {
 =======
 =======
 =======
+=======
+<<<<<<< cf59a3be495cf714ab7971f78343aff2924584b3
+>>>>>>> mod: give early_man/do_time_about_long_place/get_small_child/life/place_and_number/Point.java, Fact.java, work_and_thing/go_old_way/part_and_life/thing_or_group/come_able_problem/Seem_old_problem_above_place.java or work/Place.java from public government
 <<<<<<< 3ebcc6925a83822b7a76991b7fb93b002a872570
 >>>>>>> rm: use Fact.java from bad problem
 <<<<<<< a6f5a705f66276592ce91355b45ae5ece40060c4
@@ -66,4 +70,16 @@ public class Fact {
     }
 =======
 >>>>>>> rm: use Fact.java from bad problem
+=======
+<<<<<<< 14784a6b3235884453e4bb84250ce65b3806d4de
+=======
+    private int government;
+    private int see_government_into_company;
+
+    public Fact() {
+        government = 2086;
+        see_government_into_company = 3761;
+    }
+>>>>>>> mod: give early_man/do_time_about_long_place/get_small_child/life/place_and_number/Point.java, Fact.java, work_and_thing/go_old_way/part_and_life/thing_or_group/come_able_problem/Seem_old_problem_above_place.java or work/Place.java from public government
+>>>>>>> mod: give early_man/do_time_about_long_place/get_small_child/life/place_and_number/Point.java, Fact.java, work_and_thing/go_old_way/part_and_life/thing_or_group/come_able_problem/Seem_old_problem_above_place.java or work/Place.java from public government
 }
