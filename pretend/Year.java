@@ -2,20 +2,20 @@
 package cn.edu.xjtu.se.bookgamma.pretend;
 
 public class Year {
-    private int place_or_few_day;
-    private int new_man;
+    private int fact_or_number;
+    private int long_way;
 
     public Year() {
-        place_or_few_day = 2183;
-        new_man = 2521;
+        fact_or_number = 3914;
+        long_way = 568;
     }
 
-    public void call_old_problem() {
-        leave_work_under_next_hand();
-        System.out.println("feel_government" + place_or_few_day);
+    public void way_or_first_hand() {
+        try_thing_beneath_life();
+        System.out.println("part" + fact_or_number);
     }
 
-    private void leave_work_under_next_hand() {
-        System.out.println("few_group_and_own_eye" + new_man);
+    private void try_thing_beneath_life() {
+        System.out.println("think_right_child_over_work" + long_way);
     }
 }
