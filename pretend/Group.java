@@ -2,20 +2,20 @@
 package cn.edu.xjtu.se.bookgamma.pretend;
 
 public class Group {
-    private int own_day_or_good_man;
-    private int person;
+    private int small_problem;
+    private int same_eye;
 
     public Group() {
-        own_day_or_good_man = 3698;
-        person = 1455;
+        small_problem = 1512;
+        same_eye = 3826;
     }
 
-    public void same_life_or_fact() {
-        point();
-        System.out.println("ask_few_time_for_own_man" + own_day_or_good_man);
+    public void same_week() {
+        new_hand();
+        System.out.println("call_able_world_beneath_government" + small_problem);
     }
 
-    private void point() {
-        System.out.println("last_week_or_large_week" + person);
+    private void new_hand() {
+        System.out.println("first_time" + same_eye);
     }
 }
