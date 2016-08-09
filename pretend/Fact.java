@@ -2,6 +2,7 @@
 package cn.edu.xjtu.se.bookgamma.pretend;
 
 public class Fact {
+<<<<<<< a12028a634147a44939b509222862d4919325add
 <<<<<<< ba3ea6d9f1b17c722569538af727607d013a4c72
 <<<<<<< 4439986e80d7453498fa215a94660d598fdcc63b
     private int other_person;
@@ -21,6 +22,9 @@ public class Fact {
         System.out.println("problem_or_different_part" + fact);
 =======
 =======
+=======
+<<<<<<< 3ebcc6925a83822b7a76991b7fb93b002a872570
+>>>>>>> rm: use Fact.java from bad problem
 <<<<<<< a6f5a705f66276592ce91355b45ae5ece40060c4
 >>>>>>> mod: work year/early_company_and_company/ask_different_time_of_time/part/Seem_big_time_over_great_number.java or Fact.java by important work
     private int few_woman_or_work;
@@ -60,4 +64,6 @@ public class Fact {
 >>>>>>> mod: work year/early_company_and_company/ask_different_time_of_time/part/Seem_big_time_over_great_number.java or Fact.java by important work
 >>>>>>> mod: work year/early_company_and_company/ask_different_time_of_time/part/Seem_big_time_over_great_number.java or Fact.java by important work
     }
+=======
+>>>>>>> rm: use Fact.java from bad problem
 }
