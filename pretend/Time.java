@@ -18,4 +18,5 @@ public class Time {
     private void bad_day() {
         System.out.println("number_and_part" + own_problem_or_man);
     }
+
 }
