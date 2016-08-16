@@ -26,6 +26,10 @@ public class Comment implements Serializable {
         this.created_time = created_time;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public int getBook_id() {
         return book_id;
     }

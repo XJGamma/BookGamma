@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import cn.edu.xjtu.se.bean.Comment;
+import cn.edu.xjtu.se.bookgamma.adapter.CommentAdapter;
 import cn.edu.xjtu.se.dao.DBDao;
 
 public class CommentActivity extends AppCompatActivity {
@@ -27,6 +28,7 @@ public class CommentActivity extends AppCompatActivity {
     private StaggeredGridLayoutManager layoutManager;
 
     private List<Comment> comments;
+    private CommentAdapter commentAdapter;
     private int book_id;
 
     @Override
@@ -71,14 +73,14 @@ public class CommentActivity extends AppCompatActivity {
         } else {
             tv_msg_comment.setVisibility(View.GONE);
             rv_comment.setVisibility(View.VISIBLE);
-//            bookAdapter = new BookAdapter(books, BookCommentActivity.this);
-//            rv_comment.setAdapter(bookAdapter);
-//            bookAdapter.setOnItemClickListener(new BookAdapter.OnRecyclerViewItemClickListener() {
-//                @Override
-//                public void onItemClick(View view, int id) {
-//                    //jump to comment activity
-//                }
-//            });
+            commentAdapter = new CommentAdapter(comments, CommentActivity.this);
+            rv_comment.setAdapter(commentAdapter);
+            commentAdapter.setOnItemClickListener(new CommentAdapter.OnRecyclerViewItemClickListener() {
+                @Override
+                public void onItemClick(View view, int id) {
+                    //jump to comment activity
+                }
+            });
         }
     }
 

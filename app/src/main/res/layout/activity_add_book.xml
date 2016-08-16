@@ -53,7 +53,7 @@
 
     <ImageView
         android:id="@+id/iv_bookimage"
-        android:layout_below="@id/tv_finish_time"
+        android:layout_below="@id/btn_finish_time"
         android:layout_marginTop="20dp"
         android:layout_width="200dp"
         android:layout_height="200dp"
