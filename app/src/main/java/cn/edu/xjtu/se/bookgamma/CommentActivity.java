@@ -9,6 +9,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,7 +57,7 @@ public class CommentActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //add a comment
                 Intent addCommentIntent = new Intent(CommentActivity.this, AddCommentActivity.class);
-                addCommentIntent.putExtra("book_id",book_id);
+                addCommentIntent.putExtra("book_id", book_id);
                 startActivity(addCommentIntent);
             }
         });
@@ -78,7 +79,16 @@ public class CommentActivity extends AppCompatActivity {
             commentAdapter.setOnItemClickListener(new CommentAdapter.OnRecyclerViewItemClickListener() {
                 @Override
                 public void onItemClick(View view, int id) {
-                    //jump to comment activity
+                    Intent intent = new Intent(CommentActivity.this, AddCommentActivity.class);
+                    intent.putExtra("comment_id", id);
+                    startActivity(intent);
+                }
+            });
+            commentAdapter.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    return false;
                 }
             });
         }

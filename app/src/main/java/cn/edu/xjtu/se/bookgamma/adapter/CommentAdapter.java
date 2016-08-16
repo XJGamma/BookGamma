@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -18,12 +19,13 @@ import cn.edu.xjtu.se.bookgamma.R;
 /**
  * Created by DUAN Yufei on 16-6-29.
  */
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> implements View.OnClickListener{
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> implements View.OnClickListener, View.OnLongClickListener {
     public List<Comment> comments = null;
     private ImageLoader imageLoader;
     private DisplayImageOptions options;
 
     private OnRecyclerViewItemClickListener onItemClickListener = null;
+    private AdapterView.OnItemLongClickListener onItemLongClickListener = null;
 
     public CommentAdapter(List<Comment> comments, Context context) {
         this.comments = comments;
@@ -63,8 +65,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onClick(View v) {
         if (onItemClickListener != null) {
             //注意这里使用getTag方法获取数据
-            onItemClickListener.onItemClick(v,(int)v.getTag());
+            onItemClickListener.onItemClick(v, (int) v.getTag());
         }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        if (onItemLongClickListener != null) {
+            onItemClickListener.onItemClick(view, (int) view.getTag());
+        }
+        return false;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -80,6 +90,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
         this.onItemClickListener = listener;
+    }
+
+    public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener listener) {
+        this.onItemLongClickListener = listener;
     }
 
     public interface OnRecyclerViewItemClickListener {
