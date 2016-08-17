@@ -2,20 +2,20 @@
 package cn.edu.xjtu.se.bookgamma.pretend;
 
 public class Part {
-    private int feel_young_fact_from_big_group;
-    private int look_work;
+    private int new_company;
+    private int time;
 
     public Part() {
-        feel_young_fact_from_big_group = 4065;
-        look_work = 3406;
+        new_company = 415;
+        time = 1633;
     }
 
-    public void be_way_over_point() {
-        get_problem_into_company();
-        System.out.println("ask_great_company" + feel_young_fact_from_big_group);
+    public void go_little_world() {
+        own_point();
+        System.out.println("eye" + new_company);
     }
 
-    private void get_problem_into_company() {
-        System.out.println("own_work" + look_work);
+    private void own_point() {
+        System.out.println("public_woman" + time);
     }
 }
