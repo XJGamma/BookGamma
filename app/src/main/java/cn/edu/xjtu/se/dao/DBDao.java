@@ -55,7 +55,7 @@ public class DBDao {
         return list;
     }
 
-    public static long addComment(int book_id, String content){
+    public static long addComment(int book_id, String content) {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -83,7 +83,7 @@ public class DBDao {
         return list;
     }
 
-    public static Comment getComment(int id){
+    public static Comment getComment(int id) {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("select * from BookComments where id = ?",
@@ -96,12 +96,12 @@ public class DBDao {
         return comment;
     }
 
-    public static int updComment(int id, String content){
+    public static int updComment(int id, String content) {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("content",content);
-        int ret = db.update("BookComments",values,"id = ?",new String[]{String.valueOf(id)});
+        values.put("content", content);
+        int ret = db.update("BookComments", values, "id = ?", new String[]{String.valueOf(id)});
         db.close();
         return ret;
     }
