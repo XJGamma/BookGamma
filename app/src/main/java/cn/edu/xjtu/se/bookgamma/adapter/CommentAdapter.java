@@ -5,11 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -19,41 +15,57 @@ import cn.edu.xjtu.se.bookgamma.R;
 /**
  * Created by DUAN Yufei on 16-6-29.
  */
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> implements View.OnClickListener, View.OnLongClickListener {
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHolder> {
     public List<Comment> comments = null;
-    private ImageLoader imageLoader;
-    private DisplayImageOptions options;
+    private LayoutInflater mInflater;
 
-    private OnRecyclerViewItemClickListener onItemClickListener = null;
-    private AdapterView.OnItemLongClickListener onItemLongClickListener = null;
+    public interface onItemClickListener {
+        void onItemClick(View view, int id);
 
-    public CommentAdapter(List<Comment> comments, Context context) {
-        this.comments = comments;
-//        imageLoader = ImageLoader.getInstance();
-//        imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-        options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.mipmap.loading)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .build();
+        void onItemLongClick(View view, int pos, int id);
+    }
+
+    private onItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(onItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+
+    public CommentAdapter(Context context, List<Comment> datas) {
+        mInflater = LayoutInflater.from(context);
+        comments = datas;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_comment, viewGroup, false);
-        ViewHolder vh = new ViewHolder(view);
-        view.setOnClickListener(this);
-        return vh;
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        MyViewHolder holder = new MyViewHolder(mInflater.inflate(
+                R.layout.item_comment, parent, false));
+        return holder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.commentTime.setText(comments.get(position).getCreated_time().toString());
-        viewHolder.commentContent.setText(comments.get(position).getContent());
-        viewHolder.itemView.setTag(comments.get(position).getId());
-//        viewHolder.bookName.setText(comments.get(position).getName());
-//        imageLoader.displayImage(comments.get(position).getImage(), viewHolder.bookImage, options);
-//        viewHolder.itemView.setTag(comments.get(position).getId());
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        holder.commentTime.setText(comments.get(position).getCreated_time().toString());
+        holder.commentContent.setText(comments.get(position).getContent());
+        holder.itemView.setTag(comments.get(position).getId());
+
+        if (onItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(holder.itemView, (int)v.getTag());
+
+                }
+            });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    onItemClickListener.onItemLongClick(holder.itemView, holder.getLayoutPosition(), (int)v.getTag());
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
@@ -61,42 +73,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return comments.size();
     }
 
-    @Override
-    public void onClick(View v) {
-        if (onItemClickListener != null) {
-            //注意这里使用getTag方法获取数据
-            onItemClickListener.onItemClick(v, (int) v.getTag());
-        }
+    public void removeItem(int pos){
+        comments.remove(pos);
     }
 
-    @Override
-    public boolean onLongClick(View view) {
-        if (onItemLongClickListener != null) {
-            onItemClickListener.onItemClick(view, (int) view.getTag());
-        }
-        return false;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView commentTime;
         public TextView commentContent;
 
-        public ViewHolder(View view) {
+        public MyViewHolder(View view) {
             super(view);
             commentTime = (TextView) view.findViewById(R.id.it_comment_time);
             commentContent = (TextView) view.findViewById(R.id.it_comment_content);
         }
-    }
-
-    public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
-        this.onItemClickListener = listener;
-    }
-
-    public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener listener) {
-        this.onItemLongClickListener = listener;
-    }
-
-    public interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view, int tag);
     }
 }

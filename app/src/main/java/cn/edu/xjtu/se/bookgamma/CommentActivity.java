@@ -9,7 +9,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,21 +73,27 @@ public class CommentActivity extends AppCompatActivity {
         } else {
             tv_msg_comment.setVisibility(View.GONE);
             rv_comment.setVisibility(View.VISIBLE);
-            commentAdapter = new CommentAdapter(comments, CommentActivity.this);
+            commentAdapter = new CommentAdapter(CommentActivity.this, comments);
             rv_comment.setAdapter(commentAdapter);
-            commentAdapter.setOnItemClickListener(new CommentAdapter.OnRecyclerViewItemClickListener() {
+            commentAdapter.setOnItemClickListener(new CommentAdapter.onItemClickListener() {
                 @Override
                 public void onItemClick(View view, int id) {
                     Intent intent = new Intent(CommentActivity.this, AddCommentActivity.class);
                     intent.putExtra("comment_id", id);
                     startActivity(intent);
                 }
-            });
-            commentAdapter.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    return false;
+                @Override
+                public void onItemLongClick(View view, int pos, int id) {
+                    int ret = DBDao.delComment((int) id);
+                    if (ret > 0) {
+                        mToast(R.string.tip_del_comment_succeed);
+                        commentAdapter.removeItem(pos);
+                        commentAdapter.notifyDataSetChanged();
+
+                    } else {
+                        mToast(R.string.tip_del_comment_fail);
+                    }
                 }
             });
         }

@@ -45,5 +45,7 @@
     <string name="tip_add_comment_fail">添加笔记失败</string>
     <string name="tip_upd_comment_succeed">修改笔记成功</string>
     <string name="tip_upd_comment_fail">修改笔记失败</string>
+    <string name="tip_del_comment_succeed">删除笔记成功</string>
+    <string name="tip_del_comment_fail">删除笔记失败</string>
 
 </resources>
