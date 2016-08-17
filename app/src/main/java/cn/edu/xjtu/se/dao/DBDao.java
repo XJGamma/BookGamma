@@ -83,6 +83,29 @@ public class DBDao {
         return list;
     }
 
+    public static Comment getComment(int id){
+        DBHelper dbHelper = new DBHelper(XGApplication.getContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from BookComments where id = ?",
+                new String[]{String.valueOf(id)});
+        cursor.moveToNext();
+        Comment comment = Cursor2Comment(cursor);
+        cursor.close();
+        db.close();
+        dbHelper.close();
+        return comment;
+    }
+
+    public static int updComment(int id, String content){
+        DBHelper dbHelper = new DBHelper(XGApplication.getContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("content",content);
+        int ret = db.update("BookComments",values,"id = ?",new String[]{String.valueOf(id)});
+        db.close();
+        return ret;
+    }
+
     private static Book Cursor2Book(Cursor cursor) {
         int id = cursor.getInt(cursor.getColumnIndex("id"));
         String name = cursor.getString(cursor.getColumnIndex("name"));

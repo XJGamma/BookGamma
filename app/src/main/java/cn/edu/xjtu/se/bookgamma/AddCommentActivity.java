@@ -47,7 +47,13 @@ public class AddCommentActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.btn_finish_comment) {
             //add a comment
             if(commentId>0){
-                
+                int ret = DBDao.updComment(commentId,et_add_comment.getText().toString());
+                if(ret >0){
+                    Toast.makeText(AddCommentActivity.this, R.string.tip_upd_comment_succeed, Toast.LENGTH_LONG).show();
+                    AddCommentActivity.this.finish();
+                }else {
+                    Toast.makeText(AddCommentActivity.this, R.string.tip_upd_comment_fail, Toast.LENGTH_LONG).show();
+                }
             }else {
                 long rowID = DBDao.addComment(bookId, et_add_comment.getText().toString());
                 if (rowID > 0) {
