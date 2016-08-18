@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.edu.xjtu.se.bookgamma.R;
+
 /**
  * Created by Jingkai Tang on 8/17/16.
  */
@@ -33,7 +35,7 @@ public class UpdateTask extends AsyncTask<String, Void, String> {
 
     public UpdateTask(Context context) {
         this.context = context;
-        Toast.makeText(context, "Checking Update...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, context.getString(R.string.update_checking), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -51,8 +53,8 @@ public class UpdateTask extends AsyncTask<String, Void, String> {
                 Log.e(TAG, "Request Failed!");
             }
         } catch (IOException e) {
+            Log.e(TAG, "No Response!");
             e.printStackTrace();
-            Log.i(TAG, "No Response!");
         }
 
         return result;
@@ -65,17 +67,18 @@ public class UpdateTask extends AsyncTask<String, Void, String> {
             String latestVersion = verJSON.getString("tag_name");
 
             String version = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+
             Log.i(TAG, "Latest Version: " + latestVersion);
-            Log.i(TAG, "Version: " + version);
+            Log.i(TAG, "This Version: " + version);
 
             if (isUpdated(latestVersion, version)) {
-                Toast.makeText(context, "Congratulations! You are updated!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.update_already_updated), Toast.LENGTH_SHORT).show();
             } else {
                 final String downloadUrl = verJSON.getJSONArray("assets").getJSONObject(0).getString("browser_download_url");
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("New Version " + latestVersion);
-                builder.setMessage("Download?");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setTitle(context.getString(R.string.update_dialog_title) + latestVersion);
+                builder.setMessage(context.getString(R.string.update_dialog_message));
+                builder.setPositiveButton(context.getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl));
@@ -83,10 +86,10 @@ public class UpdateTask extends AsyncTask<String, Void, String> {
                         context.startActivity(browserIntent);
                     }
                 });
-                builder.setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(context.getString(R.string.button_later), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Note to remind later
+                        // TODO: Note to remind later
                     }
                 });
                 builder.create().show();

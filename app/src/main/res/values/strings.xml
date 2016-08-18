@@ -3,6 +3,10 @@
     <string name="action_settings">设置</string>
     <string name="action_addbook">添加书籍</string>
     <string name="action_update">检查更新</string>
+    <string name="update_checking">正在检查更新...</string>
+    <string name="update_already_updated">恭喜！无需更新～</string>
+    <string name="update_dialog_title">发现新版本</string>
+    <string name="update_dialog_message">前往下载？</string>
     <string name="tx_bookname">书名</string>
     <string name="tx_pages">总页数</string>
     <string name="tx_images">图片</string>
@@ -31,6 +35,7 @@
     <string name="cancel">取消</string>
     <string name="msg_camera_framework_bug">抱歉，Android相机出现问题。您可能需要重启设备。</string>
     <string name="button_ok">确定</string>
+    <string name="button_later">以后再说</string>
     <string name="msg_loading">正在加载数据…</string>
     <string name="msg_no_book">很抱歉，没有这本书的资料</string>
     <string name="msg_internet_error">网络连接出错</string>
