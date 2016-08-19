@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import cn.edu.xjtu.se.util.UpdateTask;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case (R.id.action_settings):
                 break;
+            case (R.id.action_update):
+                new UpdateTask(MainActivity.this).update();
         }
 
         return super.onOptionsItemSelected(item);
