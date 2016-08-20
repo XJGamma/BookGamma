@@ -2,10 +2,7 @@ package cn.edu.xjtu.se.bookgamma;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-<<<<<<< HEAD
 import android.app.ProgressDialog;
-=======
->>>>>>> origin/book_list
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,11 +13,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-<<<<<<< HEAD
 import android.view.Menu;
 import android.view.MenuItem;
-=======
->>>>>>> origin/book_list
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -31,41 +25,31 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< HEAD
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-=======
->>>>>>> origin/book_list
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-<<<<<<< HEAD
 import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.dao.DBDao;
 import cn.edu.xjtu.se.scanner.CaptureActivity;
 import cn.edu.xjtu.se.util.XGFile;
 import cn.edu.xjtu.se.util.XGHttp;
-=======
-import cn.edu.xjtu.se.dao.DBDao;
-import cn.edu.xjtu.se.util.XGFile;
->>>>>>> origin/book_list
 
 public class AddBookActivity extends AppCompatActivity implements OnClickListener {
 
     public static final int TAKE_PHOTO = 0;
     public static final int CHOOSE_ALBUM = 1;
     public static final int CROP_PHOTO = 2;
-<<<<<<< HEAD
     public static final int GET_ISBN = 3;
 
     public static final String FOLDER = "/BookGamma/image/";
->>>>>>> origin/book_list
 
     private Uri imageUri;
     private Calendar finish_time;
@@ -82,15 +66,12 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     private Button btn_save;
     private TextView tv_finish_time;
 
-<<<<<<< HEAD
     private XGHttp xgHttp = XGHttp.getInstance();
     private ProgressDialog dialog = null;
     private Gson gson = new Gson();
     private ImageLoader imageLoader;
     private DisplayImageOptions options;
 
-=======
->>>>>>> origin/book_list
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +96,6 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         if (!XGFile.createPath(FOLDER)) {
             mToast(R.string.tip_err_create_folder);
         }
-<<<<<<< HEAD
 
         dialog = new ProgressDialog(this);
         dialog.setMessage(getResources().getString(R.string.msg_loading));
@@ -146,10 +126,6 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         }
         return true;
     }
-=======
-    }
-
->>>>>>> origin/book_list
 
     @Override
     public void onClick(View v) {
@@ -205,10 +181,10 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                 long row = DBDao.addBook(et_bookname.getText().toString(), Integer.valueOf(et_pages.getText().toString()), finish_time.getTime(), "", imageUri.toString());
                 if (row > 0) {
                     mToast(R.string.tip_add_book_succeed);
-                     AddBookActivity.this.finish();
-                 } else {
+                    AddBookActivity.this.finish();
+                } else {
                     mToast(R.string.tip_add_book_fail);
-                 }
+                }
                 break;
             default:
                 break;
@@ -234,7 +210,6 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
             dialog.dismiss();
             setIndex(which);
 
-<<<<<<< HEAD
             String fileName = generateFileName();
             File outputImage = new File(Environment.getExternalStorageDirectory(), fileName);
             try {
@@ -291,7 +266,6 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
                     }
                 }
                 break;
-<<<<<<< HEAD
 
             case GET_ISBN:
                 mLog("get isbn");
@@ -333,11 +307,6 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         });
     }
 
-=======
-        }
-    }
-
->>>>>>> origin/book_list
     private void mLog(String str) {
         Log.i("AddBookActivity", str);
     }
@@ -345,13 +314,10 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     private void mToast(int str) {
         Toast.makeText(AddBookActivity.this, getResources().getString(str), Toast.LENGTH_LONG).show();
     }
-<<<<<<< HEAD
 
     private String generateFileName() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
         Date now = new Date();
         return FOLDER + formatter.format(now) + ".jpg";
     }
-=======
->>>>>>> origin/book_list
 }
