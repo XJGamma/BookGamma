@@ -23,7 +23,7 @@ public class DBDao {
         values.put("image", image);
         values.put("isbn", isbn);
         values.put("pages", pages);
-        values.put("current_page", 0);
+        values.put("current_page", 1);
         values.put("finish_time", dateFormat.format(finish_time));
         values.put("total_reading_time", 0);
         Log.i("DBDao", "insert...");

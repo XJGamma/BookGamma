@@ -1,10 +1,13 @@
 package cn.edu.xjtu.se.bookgamma;
 
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,19 +15,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import cn.edu.xjtu.se.dao.DBHelper;
 
-import cn.edu.xjtu.se.dao.DBDao;
 
 public class MainActivity extends AppCompatActivity {
 
+
     private  List<Book> bookList = new ArrayList<Book>();
-    private  MyDatabaseHelper dbHelper;
+    //private  MyDatabaseHelper dbHelper;
+    private cn.edu.xjtu.se.dao.DBHelper dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,19 +49,29 @@ public class MainActivity extends AppCompatActivity {
         BookAdapter adapter = new BookAdapter(MainActivity.this, R.layout.book_item, bookList);
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Book book = bookList.get(position);
-                Toast.makeText(MainActivity.this, book.getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
+
+
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Book book = bookList.get(position);
+//                Toast.makeText(MainActivity.this, book.getName(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
 
+//    private void initViews() {
+//
+//        mCircleBar = (CircleProgressView) findViewById(R.id.circleProgressbar);
+//
+//        mCircleBar.setProgress(50);
+//
+//    }
+
     private void initBook() {
 
-        dbHelper = new MyDatabaseHelper(this, "bookgamma.db", null, 1);
+        dbHelper = new DBHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.query("Books", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
@@ -68,9 +82,9 @@ public class MainActivity extends AppCompatActivity {
                 int current_page = cursor.getInt(cursor. getColumnIndex("current_page"));
                 Log.d("MainActivity", "book name is " + name);
                 Log.d("MainActivity", "book image is " + image);
-                Log.d("MainActivity", "pages is " + pages);
+                Log.d("MainActivity", "total_pages is " + pages);
                 Log.d("MainActivity", "current_page is " + current_page);
-                Book book_element = new Book(name,image,pages);
+                Book book_element = new Book(name,image,pages,current_page);
                 bookList.add(book_element);
             }while (cursor.moveToNext());
 
@@ -105,11 +119,31 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Book book = bookList.get(position);
-                Toast.makeText(MainActivity.this, book.getName(), Toast.LENGTH_SHORT).show();
+                final Book book = bookList.get(position);
+                final EditText editText = new EditText(MainActivity.this);
+                AlertDialog builder  =  new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("请输入当前页数")
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .setView(editText)
+                        .setPositiveButton("确定",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dbHelper = new DBHelper(MainActivity.this);
+                                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                                ContentValues values = new ContentValues();
+                                values.put("current_page",editText.getText().toString());
+                                db.update("Books", values ,"name = ?", new String[]{book.getName()});
+                                onStart();
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .show();
+                //Toast.makeText(MainActivity.this, book.getName(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

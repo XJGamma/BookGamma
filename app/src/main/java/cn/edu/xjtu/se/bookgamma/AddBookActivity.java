@@ -167,6 +167,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
             Date now = new Date();
             String fileName = FOLDER + formatter.format(now) + ".jpg";
+            System.out.println(fileName);
             File outputImage = new File(Environment.getExternalStorageDirectory(), fileName);
             try {
                 outputImage.createNewFile();
