@@ -3,8 +3,10 @@ package cn.edu.xjtu.se.bookgamma;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,6 +19,8 @@ public class AddCommentActivity extends AppCompatActivity {
     private EditText et_add_comment;
     private int commentId;
 
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,16 +28,27 @@ public class AddCommentActivity extends AppCompatActivity {
         bookId = getIntent.getIntExtra("book_id", 0);
         commentId = getIntent.getIntExtra("comment_id", 0);
         setContentView(R.layout.activity_add_comment);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         et_add_comment = (EditText) findViewById(R.id.et_add_comment);
         if (commentId > 0) {
             Comment comment = DBDao.getComment(commentId);
             et_add_comment.setText(comment.getContent());
+            getSupportActionBar().setTitle(R.string.upd_comment);
             return;
         }
+        getSupportActionBar().setTitle(R.string.add_comment);
         if (bookId == 0) {
             mToast(R.string.tip_err_comment);
             AddCommentActivity.this.finish();
         }
+
     }
 
     @Override

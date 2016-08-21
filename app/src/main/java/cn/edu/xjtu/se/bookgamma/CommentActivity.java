@@ -37,7 +37,12 @@ public class CommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
         tv_msg_comment = (TextView) findViewById(R.id.tv_msg_comment);
@@ -52,7 +57,7 @@ public class CommentActivity extends AppCompatActivity {
             CommentActivity.this.finish();
         }
         Book book = DBDao.getBook(book_id);
-        getSupportActionBar().setTitle(book.getName());
+        toolbar.setTitle(book.getName());
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.action_add_comment);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
