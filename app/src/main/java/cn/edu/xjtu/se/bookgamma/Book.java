@@ -29,7 +29,7 @@ public class Book {
         return pages;
     }
 
-    public int getcurrent_page(){
+    public int getCurrent_page(){
         return current_page;
     }
 }

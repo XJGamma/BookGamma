@@ -65,9 +65,9 @@ public class BookAdapter extends ArrayAdapter<Book>{
         viewHolder.bookImage.setImageURI(u);
 
         viewHolder.bookName.setText(book.getName());
-        viewHolder.bookPages.setText( Integer.toString(book.getPages()));
+        viewHolder.bookPages.setText( Integer.toString(book.getCurrent_page()) + "/" + Integer.toString(book.getPages()));
 
-        int p = (book.getcurrent_page() * 100/book.getPages())  ;
+        int p = (book.getCurrent_page() * 100/book.getPages())  ;
         viewHolder.bookCurrentPage.setProgress(p);
 
         return view;
