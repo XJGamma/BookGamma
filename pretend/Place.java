@@ -2,20 +2,20 @@
 package cn.edu.xjtu.se.bookgamma.pretend;
 
 public class Place {
-    private int part_and_hand;
-    private int important_year;
+    private int government_and_last_point;
+    private int government;
 
     public Place() {
-        part_and_hand = 1311;
-        important_year = 522;
+        government_and_last_point = 3352;
+        government = 1484;
     }
 
-    public void tell_child_beneath_few_point() {
-        few_child();
-        System.out.println("man" + part_and_hand);
+    public void world_and_public_part() {
+        year_and_large_group();
+        System.out.println("new_woman" + government_and_last_point);
     }
 
-    private void few_child() {
-        System.out.println("part" + important_year);
+    private void year_and_large_group() {
+        System.out.println("great_thing" + government);
     }
 }
