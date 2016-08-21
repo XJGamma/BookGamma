@@ -1,68 +1,61 @@
 package cn.edu.xjtu.se.bean;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 
 /**
- * Created by DUAN Yufei on 16-6-27.
+ * Created by DUAN Yufei on 16-6-29.
  */
 public class Book implements Serializable {
-    private RatingEntity rating;//评分
-    private String subtitle;
-    private String pubdate;//出版日期
-    private String origin_title;
-    private String image;//图片的url
-    private String binding;
-    private String catalog;
-    private String pages;
-    private String id;//书本id
-    private String publisher;//出版社
-    private String isbn10;
-    private String isbn13;
-    private String title;//标题
-    private String url;
-    private String alt_title;//副标题
-    private String price;//价格
-    private List<String> author;
 
-    public String getAlt_title() {
-        return alt_title;
+    private int id;
+    private String name;
+    private String image;
+    private String isbn;
+    private int pages;
+    private int current_page;
+    private Date finish_time;
+    private int total_reading_time;
+
+    public Book(int current_page, Date finish_time, int id, String image, String isbn, String name, int pages, int total_reading_time) {
+        this.current_page = current_page;
+        this.finish_time = finish_time;
+        this.id = id;
+        this.image = image;
+        this.isbn = isbn;
+        this.name = name;
+        this.pages = pages;
+        this.total_reading_time = total_reading_time;
     }
 
-    public void setAlt_title(String alt_title) {
-        this.alt_title = alt_title;
+    public Book(Date finish_time, String image, String isbn, String name, int pages) {
+        this.finish_time = finish_time;
+        this.image = image;
+        this.isbn = isbn;
+        this.name = name;
+        this.pages = pages;
+        this.current_page = 0;
+        this.total_reading_time = 0;
     }
 
-    public List<String> getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(List<String> author) {
-        this.author = author;
-    }
-
-    public String getBinding() {
-        return binding;
-    }
-
-    public void setBinding(String binding) {
-        this.binding = binding;
-    }
-
-    public String getCatalog() {
-        return catalog;
-    }
-
-    public void setCatalog(String catalog) {
-        this.catalog = catalog;
-    }
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public int getCurrent_page() {
+        return current_page;
+    }
+
+    public void setCurrent_page(int current_page) {
+        this.current_page = current_page;
+    }
+
+    public Date getFinish_time() {
+        return finish_time;
+    }
+
+    public void setFinish_time(Date finish_time) {
+        this.finish_time = finish_time;
     }
 
     public String getImage() {
@@ -73,163 +66,35 @@ public class Book implements Serializable {
         this.image = image;
     }
 
-    public String getIsbn10() {
-        return isbn10;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setIsbn10(String isbn10) {
-        this.isbn10 = isbn10;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
-    public String getIsbn13() {
-        return isbn13;
+    public String getName() {
+        return name;
     }
 
-    public void setIsbn13(String isbn13) {
-        this.isbn13 = isbn13;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getOrigin_title() {
-        return origin_title;
-    }
-
-    public void setOrigin_title(String origin_title) {
-        this.origin_title = origin_title;
-    }
-
-    public String getPages() {
+    public int getPages() {
         return pages;
     }
 
-    public void setPages(String pages) {
+    public void setPages(int pages) {
         this.pages = pages;
     }
 
-    public String getPrice() {
-        return price;
+    public int getTotal_reading_time() {
+        return total_reading_time;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getPubdate() {
-        return pubdate;
-    }
-
-    public void setPubdate(String pubdate) {
-        this.pubdate = pubdate;
-    }
-
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public RatingEntity getRating() {
-        return rating;
-    }
-
-    public void setRating(RatingEntity rating) {
-        this.rating = rating;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public static class RatingEntity implements Serializable {
-        private int max;
-        private int numRaters;
-        private String average;
-        private int min;
-
-        public String getAverage() {
-            return average;
-        }
-
-        public void setAverage(String average) {
-            this.average = average;
-        }
-
-        public int getMax() {
-            return max;
-        }
-
-        public void setMax(int max) {
-            this.max = max;
-        }
-
-        public int getMin() {
-            return min;
-        }
-
-        public void setMin(int min) {
-            this.min = min;
-        }
-
-        public int getNumRaters() {
-            return numRaters;
-        }
-
-        public void setNumRaters(int numRaters) {
-            this.numRaters = numRaters;
-        }
-
-        @Override
-        public String toString() {
-            return "RatingEntity{" +
-                    "average='" + average + '\'' +
-                    ", max=" + max +
-                    ", numRaters=" + numRaters +
-                    ", min=" + min +
-                    '}';
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "alt_title='" + alt_title + '\'' +
-                ", rating=" + rating +
-                ", subtitle='" + subtitle + '\'' +
-                ", pubdate='" + pubdate + '\'' +
-                ", origin_title='" + origin_title + '\'' +
-                ", image='" + image + '\'' +
-                ", binding='" + binding + '\'' +
-                ", catalog='" + catalog + '\'' +
-                ", pages='" + pages + '\'' +
-                ", id='" + id + '\'' +
-                ", publisher='" + publisher + '\'' +
-                ", isbn10='" + isbn10 + '\'' +
-                ", isbn13='" + isbn13 + '\'' +
-                ", title='" + title + '\'' +
-                ", url='" + url + '\'' +
-                ", price='" + price + '\'' +
-                ", author=" + author +
-                '}';
+    public void setTotal_reading_time(int total_reading_time) {
+        this.total_reading_time = total_reading_time;
     }
 }

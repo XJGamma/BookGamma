@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="cn.edu.xjtu.se.bookgamma.AddCommentActivity">
+    <item
+        android:id="@+id/btn_finish_comment"
+        android:orderInCategory="0"
+        app:showAsAction="always"
+        android:icon="@mipmap/ic_done"
+        android:title="@string/btn_finish"/>
+</menu>

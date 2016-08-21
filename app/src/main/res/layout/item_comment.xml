@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/it_comment_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textSize="15sp"/>
+    <TextView
+        android:id="@+id/it_comment_content"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="left"
+        android:layout_below="@id/it_comment_time"
+        android:textSize="20sp" />
+
+</RelativeLayout>

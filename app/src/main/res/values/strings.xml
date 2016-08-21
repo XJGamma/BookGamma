@@ -7,6 +7,7 @@
     <string name="update_already_updated">恭喜！无需更新～</string>
     <string name="update_dialog_title">发现新版本</string>
     <string name="update_dialog_message">前往下载？</string>
+    <string name="action_comment">读书笔记</string>
     <string name="tx_bookname">书名</string>
     <string name="tx_pages">总页数</string>
     <string name="tx_images">图片</string>
@@ -40,4 +41,19 @@
     <string name="msg_no_book">很抱歉，没有这本书的资料</string>
     <string name="msg_internet_error">网络连接出错</string>
     <string name="title_activity_book_list">BookListActivity</string>
+    <string name="label_add_book">添加书籍</string>
+    <string name="label_scanner">扫一扫</string>
+    <string name="label_book_list">书籍列表</string>
+    <string name="title_activity_comment">CommentActivity</string>
+    <string name="msg_no_comment">还没有读书笔记，快去添加一条吧~</string>
+    <string name="tip_err_comment">获取读书笔记失败</string>
+    <string name="btn_finish">完成</string>
+    <string name="tip_add_comment_succeed">添加笔记成功</string>
+    <string name="tip_add_comment_fail">添加笔记失败</string>
+    <string name="tip_upd_comment_succeed">修改笔记成功</string>
+    <string name="tip_upd_comment_fail">修改笔记失败</string>
+    <string name="tip_del_comment_succeed">删除笔记成功</string>
+    <string name="tip_del_comment_fail">删除笔记失败</string>
+    <string name="add_comment">添加一条笔记</string>
+    <string name="upd_comment">修改笔记</string>
 </resources>
