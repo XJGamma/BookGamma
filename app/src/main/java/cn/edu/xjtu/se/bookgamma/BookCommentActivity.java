@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -24,6 +25,8 @@ public class BookCommentActivity extends AppCompatActivity {
     private StaggeredGridLayoutManager layoutManager;
     private BookAdapter bookAdapter;
 
+    private Toolbar toolbar;
+
 
     private List<Book> books;
     private int book_id;
@@ -32,6 +35,15 @@ public class BookCommentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_comment);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         rv_book = (RecyclerView) findViewById(R.id.rv_book);
         layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         rv_book.setLayoutManager(layoutManager);
