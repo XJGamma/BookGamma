@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.bean.Comment;
 import cn.edu.xjtu.se.bookgamma.adapter.CommentAdapter;
 import cn.edu.xjtu.se.dao.DBDao;
@@ -38,6 +39,7 @@ public class CommentActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         tv_msg_comment = (TextView) findViewById(R.id.tv_msg_comment);
         rv_comment = (RecyclerView) findViewById(R.id.rv_comment);
         layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
@@ -49,7 +51,8 @@ public class CommentActivity extends AppCompatActivity {
             mToast(R.string.tip_err_comment);
             CommentActivity.this.finish();
         }
-
+        Book book = DBDao.getBook(book_id);
+        getSupportActionBar().setTitle(book.getName());
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.action_add_comment);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

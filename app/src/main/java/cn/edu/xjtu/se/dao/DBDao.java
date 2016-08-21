@@ -114,6 +114,19 @@ public class DBDao {
         return ret;
     }
 
+    public static Book getBook(int id){
+        DBHelper dbHelper = new DBHelper(XGApplication.getContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from Books where id = ?",
+                new String[]{String.valueOf(id)});
+        cursor.moveToNext();
+        Book book = Cursor2Book(cursor);
+        cursor.close();
+        db.close();
+        dbHelper.close();
+        return book;
+    }
+
     private static Book Cursor2Book(Cursor cursor) {
         int id = cursor.getInt(cursor.getColumnIndex("id"));
         String name = cursor.getString(cursor.getColumnIndex("name"));
