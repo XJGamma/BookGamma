@@ -35,10 +35,6 @@
         <activity
             android:name=".AddBookActivity"
             android:launchMode="singleTop" />
-        <activity
-            android:name=".BookListActivity"
-            android:label="@string/title_activity_book_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name="cn.edu.xjtu.se.scanner.CaptureActivity" />
     </application>
 

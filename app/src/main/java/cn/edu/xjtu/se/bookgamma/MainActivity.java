@@ -53,25 +53,7 @@ public class MainActivity extends AppCompatActivity {
         BookAdapter adapter = new BookAdapter(MainActivity.this, R.layout.book_item, bookList);
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
-
-
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Book book = bookList.get(position);
-//                Toast.makeText(MainActivity.this, book.getName(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
-
-
-//    private void initViews() {
-//
-//        mCircleBar = (CircleProgressView) findViewById(R.id.circleProgressbar);
-//
-//        mCircleBar.setProgress(50);
-//
-//    }
 
     private void initBook() {
 
@@ -93,22 +75,6 @@ public class MainActivity extends AppCompatActivity {
             }while (cursor.moveToNext());
 
         }
-
-
-//        Book santi = new Book("三体", R.drawable.santi, "100");
-//        bookList.add(santi);
-//
-//        Book xianjian = new Book("仙剑奇侠传",R.drawable.xianjian, "191");
-//        bookList.add(xianjian);
-//
-//        Book bingyuhuo = new Book("冰与火之歌",R.drawable.ice_and_fire, "192");
-//        bookList.add(bingyuhuo);
-//
-//        Book douluo = new Book("斗罗大陆",R.drawable.douluo, "193");
-//        bookList.add(douluo);
-//
-//        Book aQ = new Book("阿Q正传",R.drawable.aq, "194");
-//        bookList.add(aQ);
 
     }
 
@@ -142,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("取消", null)
                         .show();
-                //Toast.makeText(MainActivity.this, book.getName(), Toast.LENGTH_SHORT).show();
             }
         });
     }
