@@ -1,7 +1,7 @@
 package cn.edu.xjtu.se.bookgamma;
 
 /**
- * Created by asus on 2016/8/19.
+ * Created by qh on 2016/8/19.
  */
 
 import android.content.Context;

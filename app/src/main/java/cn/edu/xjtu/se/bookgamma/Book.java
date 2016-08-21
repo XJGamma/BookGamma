@@ -5,16 +5,22 @@ package cn.edu.xjtu.se.bookgamma;
  */
 public class Book {
 
+    private String id;
     private String name;
     private String image;
     private int pages;
     private int current_page;
 
-    public Book(String name, String image, int pages, int current_page) {
+    public Book(String id, String name, String image, int pages, int current_page) {
+        this.id = id;
         this.name = name;
         this.image = image;
         this.pages = pages;
         this.current_page = current_page;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {
