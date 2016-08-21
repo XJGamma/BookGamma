@@ -15,7 +15,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".WelcomeActivity"
             android:label="@string/app_name"
@@ -30,12 +30,22 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".AddBookActivity"
+            android:label="@string/label_add_book"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AddBookActivity"
-            android:launchMode="singleTop" />
-        <activity android:name="cn.edu.xjtu.se.scanner.CaptureActivity" />
+            android:name="cn.edu.xjtu.se.scanner.CaptureActivity"
+            android:label="@string/label_scanner" />
+        <activity
+            android:name=".BookCommentActivity"
+            android:label="@string/label_book_list" />
+        <activity
+            android:name=".CommentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".AddCommentActivity"></activity>
     </application>
 
 </manifest>

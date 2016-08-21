@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import cn.edu.xjtu.se.bean.Book;
+import cn.edu.xjtu.se.bean.DoubanBook;
 import cn.edu.xjtu.se.dao.DBDao;
 import cn.edu.xjtu.se.scanner.CaptureActivity;
 import cn.edu.xjtu.se.util.XGFile;
@@ -60,11 +61,12 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
 
     private EditText et_bookname;
     private EditText et_pages;
+    private EditText et_finish_time;
     private ImageView iv_bookimage;
     private ListView lv_select_pic;
-    private Button btn_finish_time;
     private Button btn_save;
     private TextView tv_finish_time;
+    private Toolbar toolbar;
 
     private XGHttp xgHttp = XGHttp.getInstance();
     private ProgressDialog dialog = null;
@@ -77,19 +79,27 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         et_bookname = (EditText) findViewById(R.id.et_bookname);
         et_pages = (EditText) findViewById(R.id.et_pages);
         iv_bookimage = (ImageView) findViewById(R.id.iv_bookimage);
-        btn_finish_time = (Button) findViewById(R.id.btn_finish_time);
+        et_finish_time = (EditText) findViewById(R.id.et_finish_time);
+        et_finish_time.setOnClickListener(this);
         btn_save = (Button) findViewById(R.id.btn_addbook);
-        tv_finish_time = (TextView) findViewById(R.id.tv_finish_time);
         finish_time = Calendar.getInstance();
         String str_finish_time = finish_time.get(Calendar.YEAR) + "年"
-                + finish_time.get(Calendar.MONTH) + "月"
+                + (finish_time.get(Calendar.MONTH)+1) + "月"
                 + finish_time.get(Calendar.DAY_OF_MONTH) + "日";
-        tv_finish_time.setText(str_finish_time);
+        et_finish_time.setText(str_finish_time);
 
-        btn_finish_time.setOnClickListener(this);
         btn_save.setOnClickListener(this);
         iv_bookimage.setOnClickListener(this);
 
@@ -131,13 +141,13 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     public void onClick(View v) {
         mLog(v.toString());
         switch (v.getId()) {
-            case R.id.btn_finish_time:
+            case R.id.et_finish_time:
                 Calendar c = Calendar.getInstance();
                 new DatePickerDialog(AddBookActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                tv_finish_time.setText(year + "年" + monthOfYear + "月" + dayOfMonth + "日");
+                                et_finish_time.setText(year + "年" + (monthOfYear+1) + "月" + dayOfMonth + "日");
                                 finish_time.set(year, monthOfYear, dayOfMonth);
                             }
                         }
@@ -191,51 +201,6 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         }
     }
 
-    class RadioOnClick implements DialogInterface.OnClickListener {
-        private int index;
-
-        public RadioOnClick() {
-            this.index = 0;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setIndex(int index) {
-            this.index = index;
-        }
-
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-            setIndex(which);
-
-            String fileName = generateFileName();
-            File outputImage = new File(Environment.getExternalStorageDirectory(), fileName);
-            try {
-                outputImage.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            imageUri = Uri.fromFile(outputImage);
-
-            switch (index) {
-                case (TAKE_PHOTO):
-                    //拍照
-                    Intent intentPhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intentPhoto.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(intentPhoto, TAKE_PHOTO);
-                    break;
-                case (CHOOSE_ALBUM):
-                    //Choose from Album Image Selector
-                    Intent intentAlbum = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intentAlbum.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                    startActivityForResult(intentAlbum, CHOOSE_ALBUM);
-                    break;
-            }
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -286,7 +251,7 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         xgHttp.get("https://api.douban.com/v2/book/isbn/" + isbn.trim(), new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
-                Book book = gson.fromJson(str, Book.class);
+                DoubanBook book = gson.fromJson(str, DoubanBook.class);
                 if (book.getId() != null) {
                     et_bookname.setText(book.getTitle());
                     et_pages.setText(book.getPages());
@@ -312,12 +277,57 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     }
 
     private void mToast(int str) {
-        Toast.makeText(AddBookActivity.this, getResources().getString(str), Toast.LENGTH_LONG).show();
+        Toast.makeText(AddBookActivity.this, str, Toast.LENGTH_LONG).show();
     }
 
     private String generateFileName() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
         Date now = new Date();
         return FOLDER + formatter.format(now) + ".jpg";
+    }
+
+    class RadioOnClick implements DialogInterface.OnClickListener {
+        private int index;
+
+        public RadioOnClick() {
+            this.index = 0;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
+
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+            setIndex(which);
+
+            String fileName = generateFileName();
+            File outputImage = new File(Environment.getExternalStorageDirectory(), fileName);
+            try {
+                outputImage.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            imageUri = Uri.fromFile(outputImage);
+
+            switch (index) {
+                case (TAKE_PHOTO):
+                    //拍照
+                    Intent intentPhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intentPhoto.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(intentPhoto, TAKE_PHOTO);
+                    break;
+                case (CHOOSE_ALBUM):
+                    //Choose from Album Image Selector
+                    Intent intentAlbum = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intentAlbum.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(intentAlbum, CHOOSE_ALBUM);
+                    break;
+            }
+        }
     }
 }
