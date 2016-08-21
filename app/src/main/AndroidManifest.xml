@@ -40,7 +40,8 @@
         <activity
             android:name=".AddBookActivity"
             android:label="@string/label_add_book"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="cn.edu.xjtu.se.scanner.CaptureActivity"
             android:label="@string/label_scanner" />

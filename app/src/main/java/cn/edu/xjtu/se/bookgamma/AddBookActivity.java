@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,11 +61,12 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
 
     private EditText et_bookname;
     private EditText et_pages;
+    private EditText et_finish_time;
     private ImageView iv_bookimage;
     private ListView lv_select_pic;
-    private Button btn_finish_time;
     private Button btn_save;
     private TextView tv_finish_time;
+    private Toolbar toolbar;
 
     private XGHttp xgHttp = XGHttp.getInstance();
     private ProgressDialog dialog = null;
@@ -77,19 +79,27 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         et_bookname = (EditText) findViewById(R.id.et_bookname);
         et_pages = (EditText) findViewById(R.id.et_pages);
         iv_bookimage = (ImageView) findViewById(R.id.iv_bookimage);
-        btn_finish_time = (Button) findViewById(R.id.btn_finish_time);
+        et_finish_time = (EditText) findViewById(R.id.et_finish_time);
+        et_finish_time.setOnClickListener(this);
         btn_save = (Button) findViewById(R.id.btn_addbook);
-        tv_finish_time = (TextView) findViewById(R.id.tv_finish_time);
         finish_time = Calendar.getInstance();
         String str_finish_time = finish_time.get(Calendar.YEAR) + "年"
-                + finish_time.get(Calendar.MONTH) + "月"
+                + (finish_time.get(Calendar.MONTH)+1) + "月"
                 + finish_time.get(Calendar.DAY_OF_MONTH) + "日";
-        tv_finish_time.setText(str_finish_time);
+        et_finish_time.setText(str_finish_time);
 
-        btn_finish_time.setOnClickListener(this);
         btn_save.setOnClickListener(this);
         iv_bookimage.setOnClickListener(this);
 
@@ -131,13 +141,13 @@ public class AddBookActivity extends AppCompatActivity implements OnClickListene
     public void onClick(View v) {
         mLog(v.toString());
         switch (v.getId()) {
-            case R.id.btn_finish_time:
+            case R.id.et_finish_time:
                 Calendar c = Calendar.getInstance();
                 new DatePickerDialog(AddBookActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                tv_finish_time.setText(year + "年" + monthOfYear + "月" + dayOfMonth + "日");
+                                et_finish_time.setText(year + "年" + (monthOfYear+1) + "月" + dayOfMonth + "日");
                                 finish_time.set(year, monthOfYear, dayOfMonth);
                             }
                         }
