@@ -3,6 +3,7 @@
     <string name="action_settings">设置</string>
     <string name="action_addbook">添加书籍</string>
     <string name="action_update">检查更新</string>
+    <string name="action_reading">阅读提醒</string>
     <string name="update_checking">正在检查更新...</string>
     <string name="update_already_updated">恭喜！无需更新～</string>
     <string name="update_dialog_title">发现新版本</string>
@@ -55,5 +56,6 @@
     <string name="tip_del_comment_succeed">删除笔记成功</string>
     <string name="tip_del_comment_fail">删除笔记失败</string>
     <string name="add_comment">添加一条笔记</string>
+    <string name="add_remind">添加提醒</string>
     <string name="upd_comment">修改笔记</string>
 </resources>

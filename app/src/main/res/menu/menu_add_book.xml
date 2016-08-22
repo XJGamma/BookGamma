@@ -4,7 +4,6 @@
     tools:context="cn.edu.xjtu.se.bookgamma.AddBookActivity">
     <item
         android:id="@+id/action_scan"
-        android:orderInCategory="0"
         app:showAsAction="always"
         android:icon="@mipmap/scan"
         android:title="@string/action_scan"/>

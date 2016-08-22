@@ -45,6 +45,13 @@
             android:name=".CommentActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AddCommentActivity"></activity>
+        <activity
+            android:name=".ReadingRemindActivity"
+            android:label="@string/action_reading" />
+        <activity
+            android:name=".AddRemindActivity"
+            android:label="@string/add_remind"/>
+
     </application>
 
 </manifest>

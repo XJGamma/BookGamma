@@ -180,6 +180,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(commentIntent);
             case (R.id.action_settings):
                 break;
+            case (R.id.action_reading):
+                Intent readingIntent = new Intent(MainActivity.this, ReadingRemindActivity.class);
+                startActivity(readingIntent);
             case (R.id.action_update):
                 new UpdateTask(MainActivity.this).update();
         }

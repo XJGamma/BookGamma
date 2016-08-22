@@ -5,7 +5,7 @@
 
     <ImageView
         android:id="@+id/book_image"
-        android:layout_width="40dp"
+        android:layout_width="74dp"
         android:layout_height="fill_parent" />
 
     <LinearLayout
