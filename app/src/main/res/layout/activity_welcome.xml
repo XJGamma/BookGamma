@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="cn.edu.xjtu.se.bookgamma.WelcomeActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -53,5 +56,16 @@
         android:background="@color/colorPrimary"
         android:text="@string/btn_login"
         android:textColor="@android:color/white"
-        android:textSize="24sp" />
+        android:textSize="18sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="30dp"/>
+    </RelativeLayout>
 </LinearLayout>
