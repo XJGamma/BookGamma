@@ -51,7 +51,9 @@
         <activity
             android:name=".AddRemindActivity"
             android:label="@string/add_remind"/>
-
+        <activity android:name="cn.edu.xjtu.se.alarm.AlarmActivity"></activity>
+        <!-- android:process=":remote": 新开一个进程 -->
+        <receiver android:name="cn.edu.xjtu.se.alarm.AlarmReceiver" android:process=":remote"/>
     </application>
 
 </manifest>

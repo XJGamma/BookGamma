@@ -34,7 +34,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + "remind_id integer, "
             + "book_name text, "
             + "remind_time timestamp, "
-            + "status boolean";
+            + "status integer)";
 
     private Context mContext;
 
