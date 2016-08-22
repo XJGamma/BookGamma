@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private  List<Book> bookList = new ArrayList<Book>();
-    //private  MyDatabaseHelper dbHelper;
     private cn.edu.xjtu.se.dao.DBHelper dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Book book = bookList.get(position);
                 final EditText editText = new EditText(MainActivity.this);
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
                 AlertDialog builder  =  new AlertDialog.Builder(MainActivity.this)
                         .setTitle("请输入当前页数")
                         .setIcon(android.R.drawable.ic_dialog_info)
@@ -101,12 +102,35 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("确定",new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                dbHelper = new DBHelper(MainActivity.this);
-                                SQLiteDatabase db = dbHelper.getWritableDatabase();
-                                ContentValues values = new ContentValues();
-                                values.put("current_page",editText.getText().toString());
-                                db.update("Books", values ,"id = ?", new String[]{book.getId()});
-                                onStart();
+
+                                if ( Integer.parseInt(editText.getText().toString()) >  book.getPages()){
+                                    new AlertDialog.Builder(MainActivity.this).setTitle("系统提示")//设置对话框标题
+                                            .setMessage("当前页数不能超过总页数！ ")//设置显示的内容
+                                            .setPositiveButton("确定",new DialogInterface.OnClickListener() {//添加确定按钮
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
+                                                    // TODO Auto-generated method stub
+                                                }
+                                            }).show();//在按键响应事件中显示此对话框
+                                }
+                                else if (0 > Integer.parseInt(editText.getText().toString())){
+                                    new AlertDialog.Builder(MainActivity.this).setTitle("系统提示")//设置对话框标题
+                                            .setMessage("当前页数不能小于零！ ")//设置显示的内容
+                                            .setPositiveButton("确定",new DialogInterface.OnClickListener() {//添加确定按钮
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
+                                                    // TODO Auto-generated method stub
+                                                }
+                                            }).show();//在按键响应事件中显示此对话框
+                                }
+                                else {
+                                    dbHelper = new DBHelper(MainActivity.this);
+                                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                                    ContentValues values = new ContentValues();
+                                    values.put("current_page",editText.getText().toString());
+                                    db.update("Books", values ,"id = ?", new String[]{book.getId()});
+                                    onStart();
+                                }
                             }
                         })
                         .setNegativeButton("取消", null)
@@ -183,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
             case (R.id.action_reading):
                 Intent readingIntent = new Intent(MainActivity.this, ReadingRemindActivity.class);
                 startActivity(readingIntent);
+                break;
             case (R.id.action_update):
                 new UpdateTask(MainActivity.this).update();
         }

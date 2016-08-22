@@ -29,6 +29,13 @@ public class DBHelper extends SQLiteOpenHelper {
             + "created_time timestamp, "
             + "foreign key(book_id) references Book(id))";
 
+    public static final String CREATE_READINGREMIND = "create table ReadingRemind( "
+            + "id integer primary key autoincrement, "
+            + "remind_id integer, "
+            + "book_name text, "
+            + "remind_time timestamp, "
+            + "status boolean";
+
     private Context mContext;
 
     public DBHelper(Context context) {
@@ -40,6 +47,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_BOOK);
         db.execSQL(CREATE_BOOKCOMMENT);
+        db.execSQL(CREATE_READINGREMIND);
     }
 
     @Override
