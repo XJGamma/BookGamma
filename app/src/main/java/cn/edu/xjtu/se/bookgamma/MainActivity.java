@@ -172,9 +172,12 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case (R.id.action_addbook):
-                Intent intent = new Intent(MainActivity.this, AddBookActivity.class);
-                startActivity(intent);
+                Intent addBookIntent = new Intent(MainActivity.this, AddBookActivity.class);
+                startActivity(addBookIntent);
                 break;
+            case (R.id.action_comment):
+                Intent commentIntent = new Intent(MainActivity.this, BookCommentActivity.class);
+                startActivity(commentIntent);
             case (R.id.action_settings):
                 break;
             case (R.id.action_update):

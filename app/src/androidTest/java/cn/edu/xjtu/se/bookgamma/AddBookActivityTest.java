@@ -59,7 +59,7 @@ public class AddBookActivityTest extends ActivityInstrumentationTestCase2<AddBoo
                 .perform(typeText("Espresso book"), closeSoftKeyboard());
         onView(withId(R.id.et_pages))
                 .perform(typeText("600"), closeSoftKeyboard());
-        onView(withId(R.id.btn_finish_time)).perform(click());
+//        onView(withId(R.id.btn_finish_time)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))
                 .perform(PickerActions.setDate(2016, 7, 26));
         try {
