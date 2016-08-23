@@ -2,20 +2,20 @@
 package cn.edu.xjtu.se.bookgamma.pretend;
 
 public class Thing {
-    private int bad_group;
-    private int other_point;
+    private int get_company;
+    private int able_work;
 
     public Thing() {
-        bad_group = 397;
-        other_point = 2827;
+        get_company = 490;
+        able_work = 1097;
     }
 
-    public void good_year() {
-        small_point();
-        System.out.println("high_part_and_able_company" + bad_group);
+    public void year() {
+        few_year();
+        System.out.println("good_number" + get_company);
     }
 
-    private void small_point() {
-        System.out.println("world_or_fact" + other_point);
+    private void few_year() {
+        System.out.println("think_young_woman_about_work" + able_work);
     }
 }
