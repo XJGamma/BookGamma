@@ -55,6 +55,17 @@ public class DBDao {
         return rowID;
     }
 
+    static public int updateReadingRemindTime(int id,String remindTime) {
+        DBHelper dbHelper = new DBHelper(XGApplication.getContext());
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("remind_time",remindTime);
+        int ret = db.update("ReadingRemind", values, "id = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return ret;
+    }
+
     public static List<Book> findBooksAll() {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
