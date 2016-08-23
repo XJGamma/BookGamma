@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="cn.edu.xjtu.se.bookgamma.AddBookActivity">
     <item
-        android:id="@+id/action_scan"
+        android:id="@+id/action_add_reading_remind"
         app:showAsAction="always"
-        android:icon="@mipmap/scan"
-        android:title="@string/action_scan"/>
+        android:icon="@mipmap/ic_add"
+        android:title="@string/add_remind"/>
 </menu>

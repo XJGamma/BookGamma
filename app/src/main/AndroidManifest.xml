@@ -45,6 +45,15 @@
             android:name=".CommentActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AddCommentActivity"></activity>
+        <activity
+            android:name="cn.edu.xjtu.se.remind.ReadingRemindActivity"
+            android:label="@string/action_reading" />
+        <activity
+            android:name="cn.edu.xjtu.se.remind.AddRemindActivity"
+            android:label="@string/add_remind"/>
+        <activity android:name="cn.edu.xjtu.se.remind.alarm.AlarmActivity"></activity>
+        <!-- android:process=":remote": 新开一个进程 -->
+        <receiver android:name="cn.edu.xjtu.se.remind.alarm.AlarmReceiver" android:process=":remote"/>
     </application>
 
 </manifest>
