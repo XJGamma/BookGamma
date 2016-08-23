@@ -1,17 +1,18 @@
-package cn.edu.xjtu.se.bookgamma;
+package cn.edu.xjtu.se.booklistview;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import java.io.File;
+
 import java.util.List;
+
+import cn.edu.xjtu.se.remind.alarm.CircleProgressView;
+import cn.edu.xjtu.se.bookgamma.R;
 
 /**
  * Created by qh on 2016/6/21.
@@ -27,7 +28,7 @@ public class BookAdapter extends ArrayAdapter<Book>{
         ImageView bookImage;
         TextView bookName;
         TextView bookPages;
-        cn.edu.xjtu.se.bookgamma.CircleProgressView bookCurrentPage;
+        CircleProgressView bookCurrentPage;
         //Button deleteBook;
     }
     public BookAdapter(Context context, int textViewResourceId, List<Book> objects) {
@@ -50,7 +51,7 @@ public class BookAdapter extends ArrayAdapter<Book>{
             viewHolder.bookImage = (ImageView) view.findViewById(R.id.book_image);
             viewHolder.bookName = (TextView) view.findViewById(R.id.book_name);
             viewHolder.bookPages = (TextView) view.findViewById(R.id.book_page);
-            viewHolder.bookCurrentPage = (cn.edu.xjtu.se.bookgamma.CircleProgressView) view.findViewById(R.id.circleProgressbar);
+            viewHolder.bookCurrentPage = (CircleProgressView) view.findViewById(R.id.circleProgressbar);
             //viewHolder.deleteBook = (Button) view.findViewById(R.id.delete_data);
             view.setTag(viewHolder);
 

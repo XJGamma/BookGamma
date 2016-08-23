@@ -39,6 +39,22 @@ public class DBDao {
         return rowID;
     }
 
+    static public long addReadingRemind(int bookId, String bookName, String image, String remindTime, int status) {
+        DBHelper dbHelper = new DBHelper(XGApplication.getContext());
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("book_id", bookId);
+        values.put("book_name", bookName);
+        values.put("image", image);
+        values.put("remind_time",remindTime);
+        values.put("status",status);
+        long rowID = db.insert("ReadingRemind", null, values);
+        db.close();
+        dbHelper.close();
+        return rowID;
+    }
+
     public static List<Book> findBooksAll() {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();

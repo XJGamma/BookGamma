@@ -1,4 +1,4 @@
-package cn.edu.xjtu.se.bookgamma;
+package cn.edu.xjtu.se.remind.alarm;
 
 /**
  * Created by qh on 2016/8/19.

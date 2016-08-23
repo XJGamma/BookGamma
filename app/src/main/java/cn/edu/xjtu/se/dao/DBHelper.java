@@ -31,10 +31,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_READINGREMIND = "create table ReadingRemind( "
             + "id integer primary key autoincrement, "
-            + "remind_id integer, "
+            + "book_id integer, "
             + "book_name text, "
-            + "remind_time timestamp, "
-            + "status integer)";
+            + "image text, "
+            + "remind_time text, "
+            + "status integer)"; //1代表开启，0代表不开启
 
     private Context mContext;
 
