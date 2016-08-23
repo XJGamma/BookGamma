@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                                     ContentValues values = new ContentValues();
                                     values.put("current_page",editText.getText().toString());
                                     db.update("Books", values ,"id = ?", new String[]{book.getId()});
+                                    db.close();
                                     onStart();
                                 }
                             }
@@ -153,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                                 dbHelper = new DBHelper(MainActivity.this);
                                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                                 db.delete("Books", "id = ?",new String[]{book.getId()});
+                                db.close();
                                 // TODO Auto-generated method stub
 
                                 //finish();

@@ -16,4 +16,5 @@
         android:layout_toRightOf="@id/iv_book_image"
         android:gravity="center"
         android:textSize="16sp" />
+
 </RelativeLayout>
