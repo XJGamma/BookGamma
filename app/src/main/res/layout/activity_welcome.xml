@@ -25,6 +25,7 @@
         <EditText
             android:id="@+id/et_user"
             android:layout_width="match_parent"
+            android:focusableInTouchMode="false"
             android:layout_height="wrap_content"
             android:hint="@string/tx_username"
             android:textSize="16sp" />

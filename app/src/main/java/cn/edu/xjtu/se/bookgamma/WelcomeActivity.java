@@ -33,11 +33,14 @@ public class WelcomeActivity extends Activity {
         etPassword = (EditText) findViewById(R.id.et_password);
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnReg = (Button) findViewById(R.id.btn_register);
+        final SharedPreferences userInfo = getSharedPreferences("userInfo", 0);
+        final String user = userInfo.getString("user", "");
+        if (!user.isEmpty()) {
+            etUser.setText(user);
+        }
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences userInfo = getSharedPreferences("userInfo", 0);
-                String user = userInfo.getString("user", "");
                 String pwd = userInfo.getString("pwd", "");
                 if (etUser.getText().toString().equals(user)) {
                     String pwdE = "";
