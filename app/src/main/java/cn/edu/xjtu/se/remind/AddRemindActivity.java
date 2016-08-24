@@ -126,6 +126,9 @@ public class AddRemindActivity extends AppCompatActivity {
                                 //Toast.makeText(AddRemindActivity.this, CurrentItemName + "的闹钟设置成功", Toast.LENGTH_LONG).show();//提示用户
                                 //long row = DBDao.addBook(et_bookname.getText().toString(), Integer.valueOf(et_pages.getText().toString()), finish_time.getTime(), "", imageUri.toString());
 
+//                                if(c.getTimeInMillis() < System.currentTimeMillis()){
+//                                    c.set(Calendar.DAY_OF_YEAR, c.get(Calendar.DAY_OF_YEAR) + 1);
+//                                }
                                 long row = DBDao.addReadingRemind(Integer.parseInt(CurrentItemId), CurrentItemName ,CurrentItemImage,Long.toString(c.getTimeInMillis()), 1) ;
                                 //Log.d(TAG, "row =  : "  + Long.toString(row));
                                 if (row > 0) {

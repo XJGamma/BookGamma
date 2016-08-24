@@ -109,6 +109,18 @@ public class ReadingRemindActivity extends AppCompatActivity{
                         c.set(Calendar.SECOND, 0);
                         c.set(Calendar.MILLISECOND, 0);
 
+                        if (readRemind.getStatus() == 1){
+                            closeAlarmClock(readRemind.getId());
+                            startAlarmClock(readRemind.getId(),Long.toString(c.getTimeInMillis()));
+                        }
+
+                        Log.d(TAG, "当前时间 : " + new  java.util.Date(System.currentTimeMillis()));
+                        Log.d(TAG, "闹钟时间 : " + new  java.util.Date(c.getTimeInMillis()));
+
+//                        if(c.getTimeInMillis() < System.currentTimeMillis()){
+//                            c.set(Calendar.DAY_OF_YEAR, c.get(Calendar.DAY_OF_YEAR) + 1);
+//                        }
+
                         long row = DBDao.updateReadingRemindTime(remindList.get(position).getId(),Long.toString(c.getTimeInMillis()));
                         if (row > 0) {
                             Toast.makeText(ReadingRemindActivity.this, remindList.get(position).getBookName() + "的闹钟修改成功", Toast.LENGTH_LONG).show();//提示用户
@@ -116,10 +128,11 @@ public class ReadingRemindActivity extends AppCompatActivity{
                         } else {
                             Toast.makeText(ReadingRemindActivity.this, remindList.get(position).getBookName() + "的闹钟修改失败", Toast.LENGTH_LONG).show();//提示用户
                         }
+
                         onStart();
                     }
 
-                }, hour, minute, true).show();
+                }, hour, minute, false).show();
 
             }
 
@@ -237,11 +250,13 @@ public class ReadingRemindActivity extends AppCompatActivity{
             }
         }
 
-        if (flag == 0){
+        if(Long.parseLong(remindTime) >= System.currentTimeMillis() && flag == 0){
             Intent intent = new Intent(ReadingRemindActivity.this, AlarmReceiver.class);    //创建Intent对象
-            PendingIntent sender = PendingIntent.getBroadcast(ReadingRemindActivity.this, 0, intent, 0);    //创建PendingIntent
+            PendingIntent sender = PendingIntent.getBroadcast(ReadingRemindActivity.this, remindId, intent, 0);    //创建PendingIntent
             AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+
             am.set(AlarmManager.RTC_WAKEUP, Long.parseLong(remindTime), sender);        //设置闹钟，到指定时间唤醒
+            Log.d(TAG, "当前时间 : " + new  java.util.Date(System.currentTimeMillis()));
             Log.d(TAG, "以下时间的闹钟已开启 : " + new  java.util.Date(Long.parseLong(remindTime)));
             clockItem.id = remindId;
             clockItem.sender = sender;
