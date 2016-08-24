@@ -1,6 +1,5 @@
 package cn.edu.xjtu.se.bookgamma;
 
-import android.content.Intent;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,25 +14,24 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import cn.edu.xjtu.se.util.UpdateTask;
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import cn.edu.xjtu.se.dao.DBHelper;
+import cn.edu.xjtu.se.util.UpdateTask;
 
 
 public class MainActivity extends AppCompatActivity {
 
 
-    private  List<Book> bookList = new ArrayList<Book>();
+    private List<Book> bookList = new ArrayList<Book>();
     //private  MyDatabaseHelper dbHelper;
     private cn.edu.xjtu.se.dao.DBHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,20 +60,20 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.query("Books", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
-            do{
-                String id = cursor.getString(cursor. getColumnIndex("id"));
-                String name = cursor.getString(cursor. getColumnIndex("name"));
-                String image = cursor.getString(cursor. getColumnIndex("image"));
-                int pages = cursor.getInt(cursor. getColumnIndex("pages"));
-                int current_page = cursor.getInt(cursor. getColumnIndex("current_page"));
+            do {
+                String id = cursor.getString(cursor.getColumnIndex("id"));
+                String name = cursor.getString(cursor.getColumnIndex("name"));
+                String image = cursor.getString(cursor.getColumnIndex("image"));
+                int pages = cursor.getInt(cursor.getColumnIndex("pages"));
+                int current_page = cursor.getInt(cursor.getColumnIndex("current_page"));
                 Log.d("MainActivity", "book id is " + id);
                 Log.d("MainActivity", "book name is " + name);
                 Log.d("MainActivity", "book image is " + image);
                 Log.d("MainActivity", "total_pages is " + pages);
                 Log.d("MainActivity", "current_page is " + current_page);
-                Book book_element = new Book(id,name,image,pages,current_page);
+                Book book_element = new Book(id, name, image, pages, current_page);
                 bookList.add(book_element);
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
 
         }
 
@@ -94,18 +92,18 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Book book = bookList.get(position);
                 final EditText editText = new EditText(MainActivity.this);
-                AlertDialog builder  =  new AlertDialog.Builder(MainActivity.this)
+                AlertDialog builder = new AlertDialog.Builder(MainActivity.this)
                         .setTitle("请输入当前页数")
                         .setIcon(android.R.drawable.ic_dialog_info)
                         .setView(editText)
-                        .setPositiveButton("确定",new DialogInterface.OnClickListener() {
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dbHelper = new DBHelper(MainActivity.this);
                                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                                 ContentValues values = new ContentValues();
-                                values.put("current_page",editText.getText().toString());
-                                db.update("Books", values ,"id = ?", new String[]{book.getId()});
+                                values.put("current_page", editText.getText().toString());
+                                db.update("Books", values, "id = ?", new String[]{book.getId()});
                                 onStart();
                             }
                         })
@@ -114,20 +112,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final Book book = bookList.get(position);
                 new AlertDialog.Builder(MainActivity.this).setTitle("系统提示")//设置对话框标题
 
                         .setMessage("您确定要删除这本 " + book.getName() + " 吗?")//设置显示的内容
 
-                        .setPositiveButton("确定",new DialogInterface.OnClickListener() {//添加确定按钮
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加确定按钮
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
                                 dbHelper = new DBHelper(MainActivity.this);
                                 SQLiteDatabase db = dbHelper.getWritableDatabase();
-                                db.delete("Books", "id = ?",new String[]{book.getId()});
+                                db.delete("Books", "id = ?", new String[]{book.getId()});
                                 // TODO Auto-generated method stub
 
                                 //finish();
@@ -135,15 +133,15 @@ public class MainActivity extends AppCompatActivity {
 
                             }
 
-                        }).setNegativeButton("取消",new DialogInterface.OnClickListener() {//添加返回按钮
+                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {//添加返回按钮
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
 
-                             // TODO Auto-generated method stub
+                        // TODO Auto-generated method stub
 
 
-                         }
+                    }
 
                 }).show();//在按键响应事件中显示此对话框
 
@@ -153,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
 
 
     @Override
@@ -182,6 +179,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case (R.id.action_update):
                 new UpdateTask(MainActivity.this).update();
+                break;
+            case (R.id.action_logout):
+                Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

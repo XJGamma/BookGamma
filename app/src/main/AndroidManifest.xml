@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.edu.xjtu.se.bookgamma">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
@@ -18,7 +18,7 @@
         <activity
             android:name=".WelcomeActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,7 +43,8 @@
         <activity
             android:name=".CommentActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AddCommentActivity"></activity>
+        <activity android:name=".AddCommentActivity" />
+        <activity android:name=".RegActivity" />
     </application>
 
 </manifest>
