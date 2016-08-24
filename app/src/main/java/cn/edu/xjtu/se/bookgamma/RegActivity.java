@@ -43,18 +43,18 @@ public class RegActivity extends AppCompatActivity {
                     Toast.makeText(RegActivity.this, "两次密码不一致", Toast.LENGTH_SHORT).show();
                 } else {
                     String pwdE;
-                    try{
+                    try {
                         byte[] bPwd = etPasswd.getText().toString().getBytes("UTF-8");
                         MessageDigest md = MessageDigest.getInstance("MD5");
                         pwdE = new String(md.digest(bPwd));
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                         Toast.makeText(RegActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     SharedPreferences userInfo = getSharedPreferences("userInfo", 0);
                     SharedPreferences.Editor editor = userInfo.edit();
-                    editor.putString("user",etUser.getText().toString());
+                    editor.putString("user", etUser.getText().toString());
                     editor.putString("pwd", pwdE);
                     editor.commit();
                     Toast.makeText(RegActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
