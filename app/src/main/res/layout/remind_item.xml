@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/remind_book_image"
         android:layout_width="74dp"
-        android:layout_height="fill_parent" />
+        android:layout_height="match_parent" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,7 +28,7 @@
         <Switch
             android:id="@+id/remind_switch"
             android:focusable="false"
-            android:layout_gravity="left"
+            android:layout_gravity="right"
             android:layout_width="100dp"
             android:layout_height="74dp" />
 

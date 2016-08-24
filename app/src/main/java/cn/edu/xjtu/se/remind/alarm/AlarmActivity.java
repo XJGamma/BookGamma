@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import cn.edu.xjtu.se.bookgamma.MainActivity;
@@ -27,10 +28,6 @@ public class AlarmActivity extends Activity {
                 AlarmActivity.this.finish();//关闭Activity
             }
         }).create().show();
-
-
-
-
 
     }
 

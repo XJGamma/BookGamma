@@ -11,7 +11,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +23,7 @@ import cn.edu.xjtu.se.booklistview.BookAdapter;
 import cn.edu.xjtu.se.remind.ReadingRemindActivity;
 import cn.edu.xjtu.se.util.UpdateTask;
 
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -90,21 +93,41 @@ public class MainActivity extends AppCompatActivity {
         BookAdapter adapter = new BookAdapter(MainActivity.this, R.layout.book_item, bookList);
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
+        //LayoutInflater inflater = LayoutInflater.from(this);
+        //final View textEntryView = inflater.inflate(R.layout.updatedialog, null);
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Book book = bookList.get(position);
-                final EditText editText = new EditText(MainActivity.this);
-                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                final EditText currentPage = new EditText(MainActivity.this);
+
+  //              final EditText currentPage = (EditText) textEntryView.findViewById(R.id.current_book_page);
+ //               final EditText currentReadTime = (EditText) textEntryView.findViewById(R.id.current_read_time);
+
+
                 AlertDialog builder  =  new AlertDialog.Builder(MainActivity.this)
                         .setTitle("请输入当前页数")
                         .setIcon(android.R.drawable.ic_dialog_info)
-                        .setView(editText)
+                        //.setView(R.layout.updatedialog)
+
+                        .setView(currentPage)
                         .setPositiveButton("确定",new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                if ( Integer.parseInt(editText.getText().toString()) >  book.getPages()){
+                                if (TextUtils.isEmpty(currentPage.getText())){
+                                    new AlertDialog.Builder(MainActivity.this).setTitle("系统提示")//设置对话框标题
+                                            .setMessage("当前页数不能为空！ ")//设置显示的内容
+                                            .setPositiveButton("确定",new DialogInterface.OnClickListener() {//添加确定按钮
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
+                                                    // TODO Auto-generated method stub
+                                                }
+                                            }).show();//在按键响应事件中显示此对话框
+                                }
+                                else if ( Integer.parseInt(currentPage.getText().toString()) >  book.getPages()){
                                     new AlertDialog.Builder(MainActivity.this).setTitle("系统提示")//设置对话框标题
                                             .setMessage("当前页数不能超过总页数！ ")//设置显示的内容
                                             .setPositiveButton("确定",new DialogInterface.OnClickListener() {//添加确定按钮
@@ -114,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                                                 }
                                             }).show();//在按键响应事件中显示此对话框
                                 }
-                                else if (0 > Integer.parseInt(editText.getText().toString())){
+                                else if (0 > Integer.parseInt(currentPage.getText().toString())){
                                     new AlertDialog.Builder(MainActivity.this).setTitle("系统提示")//设置对话框标题
                                             .setMessage("当前页数不能小于零！ ")//设置显示的内容
                                             .setPositiveButton("确定",new DialogInterface.OnClickListener() {//添加确定按钮
@@ -128,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                                     dbHelper = new DBHelper(MainActivity.this);
                                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                                     ContentValues values = new ContentValues();
-                                    values.put("current_page",editText.getText().toString());
+                                    values.put("current_page",currentPage.getText().toString());
                                     db.update("Books", values ,"id = ?", new String[]{book.getId()});
                                     db.close();
                                     onStart();
@@ -137,6 +160,12 @@ public class MainActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("取消", null)
                         .show();
+
+                WindowManager.LayoutParams params = builder.getWindow().getAttributes();
+                params.width = 1000;
+                params.height = 600 ;
+
+                builder.getWindow().setAttributes(params);
             }
         });
 

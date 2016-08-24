@@ -137,39 +137,7 @@ public class ReadingRemindActivity extends AppCompatActivity{
             }
 
         });
-/*
-                new TimePickerDialog(
-                    ReadingRemindActivity.this,
 
-                    new TimePickerDialog.OnTimeSetListener(){
-                        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-                            Calendar c=Calendar.getInstance();//获取日期对象
-                            c.setTimeInMillis(System.currentTimeMillis());        //设置Calendar对象
-                            c.set(Calendar.HOUR, hourOfDay);        //设置闹钟小时数
-                            c.set(Calendar.MINUTE, minute);            //设置闹钟的分钟数
-                            c.set(Calendar.SECOND, 0);                //设置闹钟的秒数
-                            c.set(Calendar.MILLISECOND, 0);            //设置闹钟的毫秒数
-                            long row = DBDao.updateReadingRemindTime(remindList.get(position).getId(),Long.toString(c.getTimeInMillis()));
-
-
-
-                            if (row > 0) {
-                                Toast.makeText(ReadingRemindActivity.this, remindList.get(position).getBookName() + "的闹钟设置成功", Toast.LENGTH_LONG).show();//提示用户
-
-                            } else {
-                                Toast.makeText(ReadingRemindActivity.this, remindList.get(position).getBookName() + "的闹钟设置失败", Toast.LENGTH_LONG).show();//提示用户
-                            }
-                            onStart();
-
-                        }
-                    },
-                    cal.get(Calendar.HOUR_OF_DAY),
-                    cal.get(Calendar.MINUTE),
-                    false);
-
-            }
-        });
-*/
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final ReadingRemind readRemind = remindList.get(position);

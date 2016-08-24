@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import cn.edu.xjtu.se.remind.alarm.AlarmActivity;
 import cn.edu.xjtu.se.remind.alarm.AlarmReceiver;
 import cn.edu.xjtu.se.remind.alarm.WheelView;
 import cn.edu.xjtu.se.booklistview.Book;
@@ -137,7 +138,8 @@ public class AddRemindActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(AddRemindActivity.this, CurrentItemName + "的闹钟设置失败", Toast.LENGTH_LONG).show();//提示用户
                                 }
-
+                                Intent readingIntent = new Intent(AddRemindActivity.this, ReadingRemindActivity.class);
+                                startActivity(readingIntent);
 
                             }
                         },
