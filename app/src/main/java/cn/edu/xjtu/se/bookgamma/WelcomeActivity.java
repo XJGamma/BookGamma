@@ -1,9 +1,15 @@
 package cn.edu.xjtu.se.bookgamma;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.security.MessageDigest;
 
 /**
  * Created by DUAN Yufei on 2016/6/16.
@@ -23,8 +29,47 @@ public class WelcomeActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         setContentView(R.layout.activity_welcome);
+        etUser = (EditText) findViewById(R.id.et_user);
+        etPassword = (EditText) findViewById(R.id.et_password);
+        btnLogin = (Button) findViewById(R.id.btn_login);
+        btnReg = (Button) findViewById(R.id.btn_register);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences userInfo = getSharedPreferences("userInfo", 0);
+                String user = userInfo.getString("user", "");
+                String pwd = userInfo.getString("pwd", "");
+                if (etUser.getText().toString().equals(user)) {
+                    String pwdE = "";
+                    try {
+                        byte[] bPwd = etPassword.getText().toString().getBytes("UTF-8");
+                        MessageDigest md = MessageDigest.getInstance("MD5");
+                        pwdE = new String(md.digest(bPwd));
 
-/*        new Handler().postDelayed(new Runnable() {
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (pwdE.equals(pwd)) {
+                        Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(WelcomeActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(WelcomeActivity.this, "用户未注册", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
+        btnReg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WelcomeActivity.this, RegActivity.class);
+                startActivity(intent);
+            }
+        });
+        /*        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
