@@ -190,12 +190,12 @@ public class ReadingRemindActivity extends AppCompatActivity{
                 String image = cursor.getString(cursor. getColumnIndex("image"));
                 String remindTime = cursor.getString(cursor. getColumnIndex("remind_time"));
                 int status = cursor.getInt(cursor. getColumnIndex("status"));
-                Log.d(TAG, "remind_id is " + id);
-                Log.d(TAG, "book_id is " + bookId);
-                Log.d(TAG, "book name is " + bookName);
-                Log.d(TAG, "book image is " + image);
-                Log.d(TAG, "remind_time is " + remindTime);
-                Log.d(TAG, "status is " + status);
+//                Log.d(TAG, "remind_id is " + id);
+//                Log.d(TAG, "book_id is " + bookId);
+//                Log.d(TAG, "book name is " + bookName);
+//                Log.d(TAG, "book image is " + image);
+//                Log.d(TAG, "remind_time is " + remindTime);
+//                Log.d(TAG, "status is " + status);
                 ReadingRemind remind_element = new ReadingRemind(id, bookId, bookName, image, remindTime, status);
                 remindList.add(remind_element);
                 if (status == 1){

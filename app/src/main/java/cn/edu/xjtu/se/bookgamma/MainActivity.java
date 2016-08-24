@@ -72,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
                 String image = cursor.getString(cursor. getColumnIndex("image"));
                 int pages = cursor.getInt(cursor. getColumnIndex("pages"));
                 int current_page = cursor.getInt(cursor. getColumnIndex("current_page"));
-                Log.d("MainActivity", "book id is " + id);
-                Log.d("MainActivity", "book name is " + name);
-                Log.d("MainActivity", "book image is " + image);
-                Log.d("MainActivity", "total_pages is " + pages);
-                Log.d("MainActivity", "current_page is " + current_page);
+//                Log.d("MainActivity", "book id is " + id);
+//                Log.d("MainActivity", "book name is " + name);
+//                Log.d("MainActivity", "book image is " + image);
+//                Log.d("MainActivity", "total_pages is " + pages);
+//                Log.d("MainActivity", "current_page is " + current_page);
                 Book book_element = new Book(id,name,image,pages,current_page);
                 bookList.add(book_element);
             }while (cursor.moveToNext());
