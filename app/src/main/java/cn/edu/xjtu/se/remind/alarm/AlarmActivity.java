@@ -10,12 +10,18 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import cn.edu.xjtu.se.bookgamma.MainActivity;
+import cn.edu.xjtu.se.bookgamma.R;
 import cn.edu.xjtu.se.remind.ReadingRemindActivity;
 
 public class AlarmActivity extends Activity {
+    private MediaPlayer mp;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mp = MediaPlayer.create(AlarmActivity.this, R.raw.music);
+        if (mp != null) {
+            mp.start();//开始播放
+        }
 
         //显示对话框
         new AlertDialog.Builder(AlarmActivity.this).
@@ -32,5 +38,19 @@ public class AlarmActivity extends Activity {
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mp.stop();//停止播放
+        mp.release();//释放资源
+    }
 
 }
