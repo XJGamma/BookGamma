@@ -93,9 +93,6 @@ public class MainActivity extends AppCompatActivity {
         BookAdapter adapter = new BookAdapter(MainActivity.this, R.layout.book_item, bookList);
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
-        //LayoutInflater inflater = LayoutInflater.from(this);
-        //final View textEntryView = inflater.inflate(R.layout.updatedialog, null);
-
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -106,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
   //              final EditText currentPage = (EditText) textEntryView.findViewById(R.id.current_book_page);
  //               final EditText currentReadTime = (EditText) textEntryView.findViewById(R.id.current_read_time);
 
-
+                currentPage.setInputType(InputType.TYPE_CLASS_NUMBER);
                 AlertDialog builder  =  new AlertDialog.Builder(MainActivity.this)
                         .setTitle("请输入当前页数")
                         .setIcon(android.R.drawable.ic_dialog_info)
@@ -160,12 +157,6 @@ public class MainActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("取消", null)
                         .show();
-
-                WindowManager.LayoutParams params = builder.getWindow().getAttributes();
-                params.width = 1000;
-                params.height = 600 ;
-
-                builder.getWindow().setAttributes(params);
             }
         });
 

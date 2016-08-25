@@ -138,8 +138,9 @@ public class AddRemindActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(AddRemindActivity.this, CurrentItemName + "的闹钟设置失败", Toast.LENGTH_LONG).show();//提示用户
                                 }
-                                Intent readingIntent = new Intent(AddRemindActivity.this, ReadingRemindActivity.class);
-                                startActivity(readingIntent);
+                                AddRemindActivity.this.finish();
+//                                Intent readingIntent = new Intent(AddRemindActivity.this, ReadingRemindActivity.class);
+//                                startActivity(readingIntent);
 
                             }
                         },
