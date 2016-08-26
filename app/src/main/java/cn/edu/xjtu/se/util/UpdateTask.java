@@ -62,6 +62,11 @@ public class UpdateTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
+        if (result == null || result.length() == 0) {
+            Toast.makeText(context, R.string.update_error, Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "No Result from Http Request!");
+            return;
+        }
         try {
             JSONObject verJSON = new JSONObject(result);
             String latestVersion = verJSON.getString("tag_name");
