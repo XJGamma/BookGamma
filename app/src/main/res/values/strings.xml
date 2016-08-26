@@ -7,6 +7,7 @@
     <string name="update_already_updated">恭喜！无需更新～</string>
     <string name="update_dialog_title">发现新版本</string>
     <string name="update_dialog_message">前往下载？</string>
+    <string name="update_error">检查更新时发生错误</string>
     <string name="action_comment">读书笔记</string>
     <string name="tx_bookname">书名</string>
     <string name="tx_pages">总页数</string>
