@@ -77,6 +77,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         comments.remove(pos);
     }
 
+    public void setData(List<Comment> comments){
+        this.comments = comments;
+        notifyDataSetChanged();
+    }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView commentTime;
         public TextView commentContent;

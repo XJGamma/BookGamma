@@ -66,6 +66,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> im
         }
     }
 
+    public void setData(List<Book> books){
+        this.books = books;
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView bookName;
         public ImageView bookImage;
