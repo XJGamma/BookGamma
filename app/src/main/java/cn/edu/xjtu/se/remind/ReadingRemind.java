@@ -10,6 +10,7 @@ public class ReadingRemind {
     private String image;
     private String remindTime;
     private int status;
+    private boolean checked;
 
     public ReadingRemind(int id, int bookId, String bookName, String image, String remindTime, int status) {
         this.id = id;
@@ -42,5 +43,17 @@ public class ReadingRemind {
 
     public int getStatus(){
         return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+        if (status == 1 )
+            checked = true;
+        else
+            checked = false;
+    }
+
+    public boolean getchecked(){
+        return  checked;
     }
 }
