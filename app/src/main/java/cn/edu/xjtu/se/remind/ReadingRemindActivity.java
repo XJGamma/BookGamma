@@ -190,7 +190,7 @@ public class ReadingRemindActivity extends AppCompatActivity{
                 String image = cursor.getString(cursor. getColumnIndex("image"));
                 String remindTime = cursor.getString(cursor. getColumnIndex("remind_time"));
                 int status = cursor.getInt(cursor. getColumnIndex("status"));
-//                Log.d(TAG, "remind_id is " + id);
+                Log.d(TAG, "remind_id is " + id);
 //                Log.d(TAG, "book_id is " + bookId);
 //                Log.d(TAG, "book name is " + bookName);
 //                Log.d(TAG, "book image is " + image);
@@ -220,6 +220,7 @@ public class ReadingRemindActivity extends AppCompatActivity{
 
         if(Long.parseLong(remindTime) >= System.currentTimeMillis() && flag == 0){
             Intent intent = new Intent(ReadingRemindActivity.this, AlarmReceiver.class);    //创建Intent对象
+            intent.putExtra("remindId", remindId);
             PendingIntent sender = PendingIntent.getBroadcast(ReadingRemindActivity.this, remindId, intent, 0);    //创建PendingIntent
             AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 

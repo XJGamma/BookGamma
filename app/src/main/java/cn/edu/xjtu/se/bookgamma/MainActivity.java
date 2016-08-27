@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
  //               final EditText currentReadTime = (EditText) textEntryView.findViewById(R.id.current_read_time);
 
                 currentPage.setInputType(InputType.TYPE_CLASS_NUMBER);
+                currentPage.setFilters(new InputFilter[]{new InputFilter.LengthFilter(8)});
                 AlertDialog builder  =  new AlertDialog.Builder(MainActivity.this)
                         .setTitle("请输入当前页数")
                         .setIcon(android.R.drawable.ic_dialog_info)
@@ -174,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                                 dbHelper = new DBHelper(MainActivity.this);
                                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                                 db.delete("Books", "id = ?",new String[]{book.getId()});
+                                db.delete("ReadingRemind", "book_id = ?", new String[]{book.getId()});
                                 db.close();
                                 // TODO Auto-generated method stub
 
