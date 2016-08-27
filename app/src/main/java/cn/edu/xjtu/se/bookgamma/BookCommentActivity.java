@@ -70,5 +70,4 @@ public class BookCommentActivity extends AppCompatActivity {
     private void mToast(int str) {
         Toast.makeText(BookCommentActivity.this, str, Toast.LENGTH_LONG).show();
     }
-
 }

@@ -1,11 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context="cn.edu.xjtu.se.bookgamma.AddBookActivity">
     <item
         android:id="@+id/action_scan"
-        android:orderInCategory="0"
-        app:showAsAction="always"
         android:icon="@mipmap/scan"
-        android:title="@string/action_scan"/>
+        android:orderInCategory="0"
+        android:title="@string/action_scan"
+        app:showAsAction="always" />
 </menu>
