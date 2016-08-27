@@ -21,12 +21,10 @@
         android:id="@+id/action_update"
         android:orderInCategory="102"
         android:title="@string/action_update"
-        app:showAsAction="never"
-        />
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_logout"
         android:orderInCategory="103"
-        android:title="@string/action_logout"
-        app:showAsAction="never"
-        />
+        android:title="@string/action_login"
+        app:showAsAction="never" />
 </menu>

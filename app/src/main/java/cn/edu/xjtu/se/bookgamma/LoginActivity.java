@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import java.security.MessageDigest;
 
+import cn.edu.xjtu.se.util.XGUserInfo;
+
 /**
  * Created by DUAN Yufei on 2016/6/16.
  */
@@ -37,6 +39,11 @@ public class LoginActivity extends Activity {
         final String user = userInfo.getString("user", "");
         if (!user.isEmpty()) {
             etUser.setText(user);
+            etUser.setFocusable(false);
+            etPassword.setFocusable(true);
+        } else {
+            etUser.setFocusable(true);
+            etPassword.setFocusable(false);
         }
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +61,7 @@ public class LoginActivity extends Activity {
                     }
                     if (pwdE.equals(pwd)) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        XGUserInfo.setStatus();
                         startActivity(intent);
                     } else {
                         Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
@@ -72,14 +80,6 @@ public class LoginActivity extends Activity {
                 startActivity(intent);
             }
         });
-        /*        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                LoginActivity.this.finish();
-            }
-        }, 700);*/
     }
 
 }

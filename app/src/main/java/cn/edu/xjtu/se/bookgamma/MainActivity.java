@@ -23,6 +23,7 @@ import java.util.List;
 
 import cn.edu.xjtu.se.dao.DBHelper;
 import cn.edu.xjtu.se.util.UpdateTask;
+import cn.edu.xjtu.se.util.XGUserInfo;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -152,6 +153,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_logout);
+        switch (XGUserInfo.getStatus()) {
+            case 0:
+                menuItem.setTitle(R.string.action_login);
+                break;
+            case 1:
+                menuItem.setTitle(R.string.action_logout);
+                break;
+        }
+        return true;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -181,11 +197,20 @@ public class MainActivity extends AppCompatActivity {
                 new UpdateTask(MainActivity.this).update();
                 break;
             case (R.id.action_logout):
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                switch (XGUserInfo.getStatus()) {
+                    case 0:
+                    case -1:
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        XGUserInfo.setStatus();
+                        break;
+                }
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 }
