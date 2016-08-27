@@ -5,8 +5,8 @@
 
     <ImageView
         android:id="@+id/book_image"
-        android:layout_width="40dp"
-        android:layout_height="fill_parent" />
+        android:layout_width="74dp"
+        android:layout_height="74dp" />
 
     <LinearLayout
         android:layout_weight="1"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <cn.edu.xjtu.se.bookgamma.CircleProgressView
+        <cn.edu.xjtu.se.remind.alarm.CircleProgressView
             android:id="@+id/circleProgressbar"
             android:layout_width="74dp"
             android:layout_height="74dp"
