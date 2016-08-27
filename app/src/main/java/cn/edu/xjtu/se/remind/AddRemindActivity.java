@@ -41,7 +41,7 @@ public class AddRemindActivity extends AppCompatActivity {
     private static final List<String> BOOK_NAME = new ArrayList<String>();
     private cn.edu.xjtu.se.dao.DBHelper dbHelper;
     private static String CurrentItemName = "";
-    private static String CurrentItemId = "";
+    private static int CurrentItemId = 0;
     private static String CurrentItemImage = "";
 
     @Override
@@ -73,7 +73,7 @@ public class AddRemindActivity extends AppCompatActivity {
         Cursor cursor = db.query("Books", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                String id = cursor.getString(cursor. getColumnIndex("id"));
+                int id = cursor.getInt(cursor. getColumnIndex("id"));
                 String name = cursor.getString(cursor. getColumnIndex("name"));
                 String image = cursor.getString(cursor. getColumnIndex("image"));
                 int pages = cursor.getInt(cursor. getColumnIndex("pages"));
@@ -130,7 +130,7 @@ public class AddRemindActivity extends AppCompatActivity {
 //                                if(c.getTimeInMillis() < System.currentTimeMillis()){
 //                                    c.set(Calendar.DAY_OF_YEAR, c.get(Calendar.DAY_OF_YEAR) + 1);
 //                                }
-                                long row = DBDao.addReadingRemind(Integer.parseInt(CurrentItemId), CurrentItemName ,CurrentItemImage,Long.toString(c.getTimeInMillis()), 1) ;
+                                long row = DBDao.addReadingRemind(CurrentItemId, CurrentItemName ,CurrentItemImage,Long.toString(c.getTimeInMillis()), 1) ;
                                 //Log.d(TAG, "row =  : "  + Long.toString(row));
                                 if (row > 0) {
                                     Toast.makeText(AddRemindActivity.this, CurrentItemName + "的闹钟设置成功", Toast.LENGTH_LONG).show();//提示用户

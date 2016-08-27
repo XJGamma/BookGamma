@@ -5,13 +5,13 @@ package cn.edu.xjtu.se.booklistview;
  */
 public class Book {
 
-    private String id;
+    private int id;
     private String name;
     private String image;
     private int pages;
     private int current_page;
 
-    public Book(String id, String name, String image, int pages, int current_page) {
+    public Book(int id, String name, String image, int pages, int current_page) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -19,7 +19,7 @@ public class Book {
         this.current_page = current_page;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

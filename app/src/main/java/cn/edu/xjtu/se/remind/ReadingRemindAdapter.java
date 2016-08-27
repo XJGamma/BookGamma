@@ -133,73 +133,7 @@ public class ReadingRemindAdapter extends ArrayAdapter<ReadingRemind> {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String startTime = sdf.format( new java.util.Date(Long.parseLong(readingRemind.getRemindTime())));
         viewHolder.remindTime.setText(startTime);
-        //viewHolder.switcher.setChecked(readingRemind.getchecked());
-
         return convertView;
-
-
-//        if (convertView == null) {
-//            view = LayoutInflater.from(getContext()).inflate(resourceId, null);
-//            viewHolder = new ViewHolder();
-//            viewHolder.bookImage = (ImageView) view.findViewById(R.id.remind_book_image);
-//            viewHolder.bookName = (TextView) view.findViewById(R.id.remind_book_name);
-//            viewHolder.remindTime = (TextView) view.findViewById(R.id.remind_time);
-//            viewHolder.switcher = (Switch) view.findViewById(R.id.remind_switch);
-//            view.setTag(viewHolder);
-//            view.setTag(viewHolder);
-//            viewHolder.switcher.setTag(readingRemind);
-//
-//        } else {
-//            view = convertView;
-//            viewHolder = (ViewHolder) view.getTag();
-//            viewHolder.switcher.setTag(readingRemind);
-//        }
-//
-//        Uri u = Uri.parse(readingRemind.getImage().toString());
-//        viewHolder.bookImage.setImageURI(u);
-//        viewHolder.bookName.setText(readingRemind.getBookName());
-//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-//        String startTime = sdf.format( new java.util.Date(Long.parseLong(readingRemind.getRemindTime())));
-//        viewHolder.remindTime.setText(startTime);
-//        if (readingRemind.getStatus() == 1) {
-//            viewHolder.switcher.setChecked(true);
-//        }
-//        else {
-//            viewHolder.switcher.setChecked(false);
-//        }
-//
-//        viewHolder.switcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if(isChecked) {
-//                    dbHelper = new DBHelper(context);
-//                    SQLiteDatabase db = dbHelper.getWritableDatabase();
-//                    ContentValues values = new ContentValues();
-//                    values.put("status",1);
-//                    db.update("ReadingRemind", values ,"id = ?", new String[]{String.valueOf(readingRemind.getId())});
-//                    db.close();
-//
-//                    final ReadingRemindActivity activity = weak.get();
-//                    activity.startAlarmClock(readingRemind.getId(), readingRemind.getRemindTime());
-//
-//                    Toast.makeText(context, readingRemind.getBookName() + "的提醒已开启", Toast.LENGTH_SHORT).show();
-//                }
-//                else {
-//                    dbHelper = new DBHelper(context);
-//                    SQLiteDatabase db = dbHelper.getWritableDatabase();
-//                    ContentValues values = new ContentValues();
-//                    values.put("status",0);
-//                    db.update("ReadingRemind", values ,"id = ?", new String[]{String.valueOf(readingRemind.getId())});
-//                    db.close();
-//
-//                    final ReadingRemindActivity activity = weak.get();
-//                    activity.closeAlarmClock(readingRemind.getId());
-//                    Toast.makeText(context, readingRemind.getBookName() + "的提醒已关闭", Toast.LENGTH_SHORT).show();
-//
-//                }
-//            }
-//        });
-//        return view;
     }
 
 

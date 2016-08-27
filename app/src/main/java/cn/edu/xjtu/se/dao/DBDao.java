@@ -39,6 +39,15 @@ public class DBDao {
         return rowID;
     }
 
+    public static int delBook(int id){
+        DBHelper dbHelper = new DBHelper(XGApplication.getContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int ret = db.delete("Books", "id = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return ret;
+    }
+
+
     static public long addReadingRemind(int bookId, String bookName, String image, String remindTime, int status) {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -55,13 +64,31 @@ public class DBDao {
         return rowID;
     }
 
+    public static int delReadingRemindByBook(int bookId){
+        DBHelper dbHelper = new DBHelper(XGApplication.getContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int ret = db.delete("ReadingRemind", "book_id = ?", new String[]{String.valueOf(bookId)});
+        db.close();
+        return ret;
+    }
+
+
     static public int updateReadingRemindTime(int id,String remindTime) {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("remind_time",remindTime);
         int ret = db.update("ReadingRemind", values, "id = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return ret;
+    }
+
+    static public int updateCurrentPage(int id, String CurrentPage) {
+        DBHelper dbHelper = new DBHelper(XGApplication.getContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("current_page",CurrentPage);
+        int ret = db.update("Books", values, "id = ?", new String[]{String.valueOf(id)});
         db.close();
         return ret;
     }

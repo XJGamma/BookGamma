@@ -21,6 +21,7 @@ import android.view.View;
 
 import cn.edu.xjtu.se.booklistview.Book;
 import cn.edu.xjtu.se.booklistview.BookAdapter;
+import cn.edu.xjtu.se.dao.DBDao;
 import cn.edu.xjtu.se.remind.ReadingRemindActivity;
 import cn.edu.xjtu.se.util.UpdateTask;
 
@@ -72,16 +73,16 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = db.query("Books", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do{
-                String id = cursor.getString(cursor. getColumnIndex("id"));
+                int id = cursor.getInt(cursor. getColumnIndex("id"));
                 String name = cursor.getString(cursor. getColumnIndex("name"));
                 String image = cursor.getString(cursor. getColumnIndex("image"));
                 int pages = cursor.getInt(cursor. getColumnIndex("pages"));
                 int current_page = cursor.getInt(cursor. getColumnIndex("current_page"));
-                Log.d("MainActivity", "book id is " + id);
-                Log.d("MainActivity", "book name is " + name);
-                Log.d("MainActivity", "book image is " + image);
-                Log.d("MainActivity", "total_pages is " + pages);
-                Log.d("MainActivity", "current_page is " + current_page);
+//                Log.d("MainActivity", "book id is " + id);
+//                Log.d("MainActivity", "book name is " + name);
+//                Log.d("MainActivity", "book image is " + image);
+//                Log.d("MainActivity", "total_pages is " + pages);
+//                Log.d("MainActivity", "current_page is " + current_page);
                 Book book_element = new Book(id,name,image,pages,current_page);
                 bookList.add(book_element);
             }while (cursor.moveToNext());
@@ -144,12 +145,13 @@ public class MainActivity extends AppCompatActivity {
                                             }).show();//在按键响应事件中显示此对话框
                                 }
                                 else {
-                                    dbHelper = new DBHelper(MainActivity.this);
-                                    SQLiteDatabase db = dbHelper.getWritableDatabase();
-                                    ContentValues values = new ContentValues();
-                                    values.put("current_page",currentPage.getText().toString());
-                                    db.update("Books", values ,"id = ?", new String[]{book.getId()});
-                                    db.close();
+                                    DBDao.updateCurrentPage(book.getId(),currentPage.getText().toString());
+//                                    dbHelper = new DBHelper(MainActivity.this);
+//                                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+//                                    ContentValues values = new ContentValues();
+//                                    values.put("current_page",currentPage.getText().toString());
+//                                    db.update("Books", values ,"id = ?", new String[]{book.getId()});
+//                                    db.close();
                                     onStart();
                                 }
                             }
@@ -170,14 +172,19 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
-                                dbHelper = new DBHelper(MainActivity.this);
-                                SQLiteDatabase db = dbHelper.getWritableDatabase();
-                                db.delete("Books", "id = ?",new String[]{book.getId()});
-                                db.delete("ReadingRemind", "book_id = ?", new String[]{book.getId()});
-                                db.close();
+                                int ret = DBDao.delBook(book.getId());
+                                if (ret > 0) {
+                                    mToast(R.string.tip_del_book_succeed);
+                                } else {
+                                    mToast(R.string.tip_del_book_failed);
+                                }
+                                int ret2 = DBDao.delReadingRemindByBook(book.getId());
+                                if (ret2 > 0) {
+                                    mToast(R.string.tip_del_remind_succeed);
+                                } else {
+                                    mToast(R.string.tip_del_remind_failed);
+                                }
                                 // TODO Auto-generated method stub
-
-                                //finish();
                                 onStart();
 
                             }
@@ -263,5 +270,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void mToast(int str) {
+        Toast.makeText(MainActivity.this, str, Toast.LENGTH_LONG).show();
     }
 }
