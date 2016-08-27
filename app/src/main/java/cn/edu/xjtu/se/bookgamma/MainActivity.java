@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 new UpdateTask(MainActivity.this).update();
                 break;
             case (R.id.action_logout):
-                Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
         }
