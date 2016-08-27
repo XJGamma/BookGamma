@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import cn.edu.xjtu.se.bean.Comment;
@@ -18,6 +19,8 @@ import cn.edu.xjtu.se.bookgamma.R;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHolder> {
     public List<Comment> comments = null;
     private LayoutInflater mInflater;
+
+    private static SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     public interface onItemClickListener {
         void onItemClick(View view, int id);
@@ -46,7 +49,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.commentTime.setText(comments.get(position).getCreated_time().toString());
+        holder.commentTime.setText(dt.format(comments.get(position).getCreated_time()));
         holder.commentContent.setText(comments.get(position).getContent());
         holder.itemView.setTag(comments.get(position).getId());
 
