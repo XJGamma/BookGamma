@@ -8,6 +8,7 @@
     <string name="update_already_updated">恭喜！无需更新～</string>
     <string name="update_dialog_title">发现新版本</string>
     <string name="update_dialog_message">前往下载？</string>
+    <string name="update_error">检查更新时发生错误</string>
     <string name="action_comment">读书笔记</string>
     <string name="tx_bookname">书名</string>
     <string name="tx_pages">总页数</string>
@@ -58,4 +59,13 @@
     <string name="add_comment">添加一条笔记</string>
     <string name="add_remind">添加提醒</string>
     <string name="upd_comment">修改笔记</string>
+    <string name="tx_username">用户名</string>
+    <string name="tx_password">密码</string>
+    <string name="tx_password_a">密码确认</string>
+    <string name="btn_login">登 录</string>
+    <string name="btn_register">注 册</string>
+    <string name="action_logout">注销</string>
+    <string name="action_login">登录</string>
+    <string name="tip_login_succeed">登录成功</string>
+    <string name="tip_logout_succeed">注销成功</string>
 </resources>
