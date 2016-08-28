@@ -2,33 +2,26 @@ package cn.edu.xjtu.se.remind;
 
 import android.app.AlarmManager;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import cn.edu.xjtu.se.remind.alarm.AlarmActivity;
-import cn.edu.xjtu.se.remind.alarm.AlarmReceiver;
-import cn.edu.xjtu.se.remind.alarm.WheelView;
-import cn.edu.xjtu.se.booklistview.Book;
+import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.bookgamma.MainActivity;
 import cn.edu.xjtu.se.bookgamma.R;
 import cn.edu.xjtu.se.dao.DBDao;
-import cn.edu.xjtu.se.dao.DBHelper;
+import cn.edu.xjtu.se.remind.alarm.WheelView;
 
 public class AddRemindActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -37,9 +30,8 @@ public class AddRemindActivity extends AppCompatActivity {
     Calendar cal = Calendar.getInstance();
     final int DIALOG_TIME = 0;    //设置对话框id
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final List<Book> BOOK_LIST = new ArrayList<Book>();
-    private static final List<String> BOOK_NAME = new ArrayList<String>();
-    private cn.edu.xjtu.se.dao.DBHelper dbHelper;
+    private static final List<Book> BOOK_LIST = new ArrayList<>();
+    private static final List<String> BOOK_NAME = new ArrayList<>();
     private static String CurrentItemName = "";
     private static int CurrentItemId = 0;
     private static String CurrentItemImage = "";
@@ -68,20 +60,12 @@ public class AddRemindActivity extends AppCompatActivity {
 
         BOOK_LIST.clear();
         BOOK_NAME.clear();
-        dbHelper = new DBHelper(this);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.query("Books", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                int id = cursor.getInt(cursor. getColumnIndex("id"));
-                String name = cursor.getString(cursor. getColumnIndex("name"));
-                String image = cursor.getString(cursor. getColumnIndex("image"));
-                int pages = cursor.getInt(cursor. getColumnIndex("pages"));
-                int current_page = cursor.getInt(cursor. getColumnIndex("current_page"));
-                Book book_element = new Book(id,name,image,pages,current_page);
-                BOOK_LIST.add(book_element);
-                BOOK_NAME.add(name);
-            } while (cursor.moveToNext());
+        List<Book> list = DBDao.findBooksAll();
+        if (list.size() > 0) {
+            for (Book book : list) {
+                BOOK_LIST.add(book);
+                BOOK_NAME.add(book.getName());
+            }
 
             WheelView wva = (WheelView) findViewById(R.id.main_wv);
             wva.setOffset(1);
@@ -94,23 +78,24 @@ public class AddRemindActivity extends AppCompatActivity {
                 public void onSelected(int selectedIndex, String item) {
                     Log.d(TAG, "selectedIndex: " + selectedIndex + ", item: " + item);
                     CurrentItemName = item;
-                    CurrentItemId = BOOK_LIST.get(selectedIndex-1).getId();
-                    CurrentItemImage = BOOK_LIST.get(selectedIndex-1).getImage();
+                    CurrentItemId = BOOK_LIST.get(selectedIndex - 1).getId();
+                    CurrentItemImage = BOOK_LIST.get(selectedIndex - 1).getImage();
                 }
             });
 
         }
     }
+
     @Override
     protected Dialog onCreateDialog(int id) {
-        Dialog dialog=null;
+        Dialog dialog = null;
         switch (id) {
             case DIALOG_TIME:
-                dialog=new TimePickerDialog(
+                dialog = new TimePickerDialog(
                         this,
-                        new TimePickerDialog.OnTimeSetListener(){
+                        new TimePickerDialog.OnTimeSetListener() {
                             public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-                                Calendar c=Calendar.getInstance();//获取日期对象
+                                Calendar c = Calendar.getInstance();//获取日期对象
                                 c.setTimeInMillis(System.currentTimeMillis());        //设置Calendar对象
                                 c.set(Calendar.HOUR, hourOfDay);        //设置闹钟小时数
                                 c.set(Calendar.MINUTE, minute);            //设置闹钟的分钟数
@@ -130,7 +115,7 @@ public class AddRemindActivity extends AppCompatActivity {
 //                                if(c.getTimeInMillis() < System.currentTimeMillis()){
 //                                    c.set(Calendar.DAY_OF_YEAR, c.get(Calendar.DAY_OF_YEAR) + 1);
 //                                }
-                                long row = DBDao.addReadingRemind(CurrentItemId, CurrentItemName ,CurrentItemImage,Long.toString(c.getTimeInMillis()), 1) ;
+                                long row = DBDao.addReadingRemind(CurrentItemId, CurrentItemName, CurrentItemImage, Long.toString(c.getTimeInMillis()), 1);
                                 //Log.d(TAG, "row =  : "  + Long.toString(row));
                                 if (row > 0) {
                                     Toast.makeText(AddRemindActivity.this, CurrentItemName + "的闹钟设置成功", Toast.LENGTH_LONG).show();//提示用户

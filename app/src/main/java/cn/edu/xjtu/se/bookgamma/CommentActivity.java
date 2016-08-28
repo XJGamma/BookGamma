@@ -1,5 +1,6 @@
 package cn.edu.xjtu.se.bookgamma;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +19,7 @@ import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.bean.Comment;
 import cn.edu.xjtu.se.bookgamma.adapter.CommentAdapter;
 import cn.edu.xjtu.se.dao.DBDao;
+import cn.edu.xjtu.se.util.DoActionListener;
 import cn.edu.xjtu.se.util.UtilAction;
 
 public class CommentActivity extends AppCompatActivity {
@@ -81,7 +83,13 @@ public class CommentActivity extends AppCompatActivity {
 
             @Override
             public void onItemLongClick(View view, int pos, int id) {
-                UtilAction.bookCommentDelete(CommentActivity.this, id);
+                UtilAction.bookComment.delete(CommentActivity.this, id, new DoActionListener() {
+                    @Override
+                    public void doAction(Context context) {
+                        // TODO: 此处应为局部更新
+                        onResume();
+                    }
+                });
             }
         });
     }

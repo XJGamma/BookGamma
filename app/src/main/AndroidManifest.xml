@@ -60,7 +60,10 @@
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".ViewCommentActivity"
-            android:label="@string/book_comment"/>
+            android:label="@string/book_comment" />
+        <activity
+            android:name=".ViewBookActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
