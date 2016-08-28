@@ -1,5 +1,6 @@
 package cn.edu.xjtu.se.bookgamma;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import java.text.SimpleDateFormat;
 import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.bean.Comment;
 import cn.edu.xjtu.se.dao.DBDao;
+import cn.edu.xjtu.se.util.DoActionListener;
 import cn.edu.xjtu.se.util.UtilAction;
 
 public class ViewCommentActivity extends AppCompatActivity {
@@ -77,7 +79,12 @@ public class ViewCommentActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         } else if (id == R.id.action_del_comment) {
-            UtilAction.bookCommentDelete(this, commentId);
+            UtilAction.bookComment.delete(this, commentId, new DoActionListener() {
+                @Override
+                public void doAction(Context context) {
+                    finish();
+                }
+            });
         }
 
         return super.onOptionsItemSelected(item);

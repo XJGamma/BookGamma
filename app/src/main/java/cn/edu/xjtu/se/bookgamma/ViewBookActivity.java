@@ -1,11 +1,14 @@
 package cn.edu.xjtu.se.bookgamma;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +17,7 @@ import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.dao.DBDao;
 import cn.edu.xjtu.se.remind.alarm.CircleProgressView;
 import cn.edu.xjtu.se.remind.alarm.WheelView;
+import cn.edu.xjtu.se.util.DoActionListener;
 import cn.edu.xjtu.se.util.UtilAction;
 
 public class ViewBookActivity extends AppCompatActivity {
@@ -34,6 +38,13 @@ public class ViewBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_book);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -77,5 +88,28 @@ public class ViewBookActivity extends AppCompatActivity {
         pageWheel.setItems(UtilAction.srange(1, book.getPages()));
         pageWheel.setSeletion(book.getCurrent_page()-1);
         readingPercent.setProgress(UtilAction.percent(book.getCurrent_page(), book.getPages()));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_view_book, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_del_book) {
+            UtilAction.book.delete(this, bookId, new DoActionListener() {
+                @Override
+                public void doAction(Context context) {
+                    finish();
+                }
+            });
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

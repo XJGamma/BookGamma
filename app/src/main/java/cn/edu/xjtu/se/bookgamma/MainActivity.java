@@ -1,5 +1,6 @@
 package cn.edu.xjtu.se.bookgamma;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +21,9 @@ import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.booklistview.BookAdapter;
 import cn.edu.xjtu.se.dao.DBDao;
 import cn.edu.xjtu.se.remind.ReadingRemindActivity;
+import cn.edu.xjtu.se.util.DoActionListener;
 import cn.edu.xjtu.se.util.UpdateTask;
+import cn.edu.xjtu.se.util.UtilAction;
 import cn.edu.xjtu.se.util.XGUserInfo;
 
 
@@ -66,36 +69,14 @@ public class MainActivity extends AppCompatActivity {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final Book book = bookList.get(position);
-                new AlertDialog.Builder(MainActivity.this).setTitle("系统提示")//设置对话框标题
-                        .setMessage("您确定要删除这本 " + book.getName() + " 吗?")//设置显示的内容
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加确定按钮
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
-                                int ret = DBDao.delBook(book.getId());
-                                if (ret > 0) {
-                                    mToast(R.string.tip_del_book_succeed);
-                                } else {
-                                    mToast(R.string.tip_del_book_failed);
-                                }
-                                int ret2 = DBDao.delReadingRemindByBook(book.getId());
-                                if (ret2 > 0) {
-                                    mToast(R.string.tip_del_remind_succeed);
-                                } else {
-                                    mToast(R.string.tip_del_remind_failed);
-                                }
-                                // TODO: 局部更新操作
-                                onResume();
-                            }
-
-                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {//添加返回按钮
-
+                Book book = bookList.get(position);
+                UtilAction.book.delete(MainActivity.this, book.getId(), new DoActionListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
+                    public void doAction(Context context) {
+                        // TODO: 此处应为局部更新
+                        onResume();
                     }
-
-                }).show();//在按键响应事件中显示此对话框
+                });
                 return true;
             }
         });
@@ -163,9 +144,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void mToast(int str) {
-        Toast.makeText(MainActivity.this, str, Toast.LENGTH_LONG).show();
     }
 }
