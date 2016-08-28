@@ -1,14 +1,22 @@
 package cn.edu.xjtu.se.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.bookgamma.R;
@@ -80,6 +88,31 @@ public class UtilAction {
                     })
                     .show();
         }
+    }
+
+    public static void share(Activity activity, String msg) {
+        View view = activity.getWindow().getDecorView();
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+        Bitmap bmp = view.getDrawingCache();
+        Uri uri = getBitmapUri(activity, bmp);
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.putExtra(Intent.EXTRA_TEXT, msg);
+        // 为了支持微信，然而并不行
+        intent.putExtra("Kdescription", msg);
+
+        activity.startActivity(Intent.createChooser(intent, activity.getResources().getText(R.string.txt_share)));
+    }
+
+    public static Uri getBitmapUri(Context context, Bitmap bmp) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bmp, "BookGammaShare_" + UUID.randomUUID(), null);
+        return Uri.parse(path);
     }
 
     public static class fmt {

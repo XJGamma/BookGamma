@@ -80,4 +80,5 @@
     <string name="book_comment_del_confirm">"确认删除这条读书笔记？"</string>
     <string name="created_at">创建于</string>
     <string name="completed_at">预定完成日期</string>
+    <string name="txt_share">分享</string>
 </resources>

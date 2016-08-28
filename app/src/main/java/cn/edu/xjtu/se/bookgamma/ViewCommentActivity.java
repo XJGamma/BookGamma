@@ -3,6 +3,7 @@ package cn.edu.xjtu.se.bookgamma;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -44,6 +45,19 @@ public class ViewCommentActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         commentId = intent.getIntExtra("comment_id", 0);
+
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fab.setVisibility(FloatingActionButton.INVISIBLE);
+                Comment comment = DBDao.getComment(commentId);
+                Book book = DBDao.getBook(comment.getBook_id());
+                UtilAction.share(ViewCommentActivity.this, "#BookGamma# 我正在阅读《" + book.getName() + "》，有所感想～");
+                fab.setVisibility(FloatingActionButton.VISIBLE);
+            }
+        });
+
 
         bookCover = (ImageView) findViewById(R.id.view_book_cover);
         bookName = (TextView) findViewById(R.id.view_book_name);
