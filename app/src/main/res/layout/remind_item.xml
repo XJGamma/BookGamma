@@ -28,7 +28,7 @@
         <Switch
             android:id="@+id/remind_switch"
             android:focusable="false"
-            android:gravity="center"
+            android:gravity="right"
             android:layout_width="wrap_content"
             android:layout_height="74dp" />
 
