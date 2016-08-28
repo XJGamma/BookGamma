@@ -1,5 +1,6 @@
 package cn.edu.xjtu.se.bookgamma;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.security.MessageDigest;
+
+import cn.edu.xjtu.se.util.XGUserInfo;
 
 public class RegActivity extends AppCompatActivity {
 
@@ -57,9 +60,11 @@ public class RegActivity extends AppCompatActivity {
                     editor.putString("user", etUser.getText().toString());
                     editor.putString("pwd", pwdE);
                     editor.commit();
-                    Toast.makeText(RegActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(RegActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                    XGUserInfo.setStatus();
+                    Intent intent = new Intent(RegActivity.this, MainActivity.class);
+                    startActivity(intent);
                     finish();
-
                 }
             }
         });
