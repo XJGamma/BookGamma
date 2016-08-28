@@ -78,4 +78,6 @@
     <string name="book_comment_author_default">一个爱读书的人</string>
     <string name="txt_delete">删除</string>
     <string name="book_comment_del_confirm">"确认删除这条读书笔记？"</string>
+    <string name="created_at">创建于</string>
+    <string name="completed_at">预定完成日期</string>
 </resources>

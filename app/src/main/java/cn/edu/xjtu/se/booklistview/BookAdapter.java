@@ -45,8 +45,8 @@ public class BookAdapter extends ArrayAdapter<Book> {
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
             viewHolder = new ViewHolder();
             viewHolder.bookImage = (ImageView) view.findViewById(R.id.book_image);
-            viewHolder.bookName = (TextView) view.findViewById(R.id.book_name);
-            viewHolder.bookPages = (TextView) view.findViewById(R.id.book_page);
+            viewHolder.bookName = (TextView) view.findViewById(R.id.view_book_name);
+            viewHolder.bookPages = (TextView) view.findViewById(R.id.view_book_page);
             viewHolder.bookCurrentPage = (CircleProgressView) view.findViewById(R.id.circleProgressbar);
             //viewHolder.deleteBook = (Button) view.findViewById(R.id.delete_data);
             view.setTag(viewHolder);

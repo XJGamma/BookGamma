@@ -7,18 +7,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.xjtu.se.bean.Book;
@@ -33,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private List<Book> bookList;
+    private BookAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,59 +51,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         bookList = DBDao.findBooksAll();
-        BookAdapter adapter = new BookAdapter(MainActivity.this, R.layout.book_item, bookList);
+        adapter = new BookAdapter(MainActivity.this, R.layout.book_item, bookList);
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Book book = bookList.get(position);
-                final EditText currentPage = new EditText(MainActivity.this);
-                currentPage.setInputType(InputType.TYPE_CLASS_NUMBER);
-                currentPage.setFilters(new InputFilter[]{new InputFilter.LengthFilter(8)});
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("请输入当前页数")
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .setView(currentPage)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                                if (TextUtils.isEmpty(currentPage.getText())) {
-                                    new AlertDialog.Builder(MainActivity.this).setTitle("系统提示")//设置对话框标题
-                                            .setMessage("当前页数不能为空！ ")//设置显示的内容
-                                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加确定按钮
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
-                                                    // TODO Auto-generated method stub
-                                                }
-                                            }).show();//在按键响应事件中显示此对话框
-                                } else if (Integer.parseInt(currentPage.getText().toString()) > book.getPages()) {
-                                    new AlertDialog.Builder(MainActivity.this).setTitle("系统提示")//设置对话框标题
-                                            .setMessage("当前页数不能超过总页数！ ")//设置显示的内容
-                                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加确定按钮
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
-                                                    // TODO Auto-generated method stub
-                                                }
-                                            }).show();//在按键响应事件中显示此对话框
-                                } else if (0 > Integer.parseInt(currentPage.getText().toString())) {
-                                    new AlertDialog.Builder(MainActivity.this).setTitle("系统提示")//设置对话框标题
-                                            .setMessage("当前页数不能小于零！ ")//设置显示的内容
-                                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加确定按钮
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
-                                                    // TODO Auto-generated method stub
-                                                }
-                                            }).show();//在按键响应事件中显示此对话框
-                                } else {
-                                    DBDao.updateCurrentPage(book.getId(), currentPage.getText().toString());
-                                    onStart();
-                                }
-                            }
-                        })
-                        .setNegativeButton("取消", null)
-                        .show();
+                Book book = bookList.get(position);
+                Intent intent = new Intent(MainActivity.this, ViewBookActivity.class);
+                intent.putExtra("book_id", book.getId());
+                startActivity(intent);
             }
         });
 
@@ -115,9 +68,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final Book book = bookList.get(position);
                 new AlertDialog.Builder(MainActivity.this).setTitle("系统提示")//设置对话框标题
-
                         .setMessage("您确定要删除这本 " + book.getName() + " 吗?")//设置显示的内容
-
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加确定按钮
 
                             @Override
@@ -134,28 +85,20 @@ public class MainActivity extends AppCompatActivity {
                                 } else {
                                     mToast(R.string.tip_del_remind_failed);
                                 }
-                                // TODO Auto-generated method stub
-                                onStart();
-
+                                // TODO: 局部更新操作
+                                onResume();
                             }
 
                         }).setNegativeButton("取消", new DialogInterface.OnClickListener() {//添加返回按钮
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
-
-                        // TODO Auto-generated method stub
-
-
                     }
 
                 }).show();//在按键响应事件中显示此对话框
-
                 return true;
             }
         });
-
-
     }
 
     @Override

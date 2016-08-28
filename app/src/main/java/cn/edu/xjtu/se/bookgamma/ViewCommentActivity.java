@@ -1,9 +1,7 @@
 package cn.edu.xjtu.se.bookgamma;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 
@@ -46,8 +43,8 @@ public class ViewCommentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         commentId = intent.getIntExtra("comment_id", 0);
 
-        bookCover = (ImageView) findViewById(R.id.book_cover);
-        bookName = (TextView) findViewById(R.id.book_name);
+        bookCover = (ImageView) findViewById(R.id.view_book_cover);
+        bookName = (TextView) findViewById(R.id.view_book_name);
         commentContent = (TextView) findViewById(R.id.comment_content);
         commentTime = (TextView) findViewById(R.id.comment_time);
     }

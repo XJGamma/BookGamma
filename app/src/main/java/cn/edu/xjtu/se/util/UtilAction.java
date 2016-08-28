@@ -5,6 +5,11 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import cn.edu.xjtu.se.bookgamma.R;
 import cn.edu.xjtu.se.dao.DBDao;
 
@@ -21,9 +26,9 @@ public class UtilAction {
                     public void onClick(DialogInterface dialog, int which) {
                         int ret = DBDao.delComment(commentId);
                         if (ret > 0) {
-                            ToastMsg.s(context, R.string.tip_del_comment_succeed);
+                            toast.s(context, R.string.tip_del_comment_succeed);
                         } else {
-                            ToastMsg.s(context, R.string.tip_del_comment_fail);
+                            toast.s(context, R.string.tip_del_comment_fail);
                         }
                         dialog.dismiss();
                     }
@@ -37,7 +42,31 @@ public class UtilAction {
                 .show();
     }
 
-    public static class ToastMsg {
+    public static class fmt {
+        private static SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        public static String date(Date date) {
+            return fmt.format(date);
+        }
+    }
+
+    public static List<Integer> range(int min, int max) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = min; i <= max; i ++) {
+            list.add(i);
+        }
+        return list;
+    }
+
+    public static List<String> srange(int min, int max) {
+        List<String> list = new ArrayList<>();
+        for (int i = min; i <= max; i ++) {
+            list.add(String.valueOf(i));
+        }
+        return list;
+    }
+
+    public static class toast {
         public static void s(Context context, int rid) {
             Toast.makeText(context, rid, Toast.LENGTH_SHORT).show();
         }
@@ -53,5 +82,17 @@ public class UtilAction {
         public static void l(Context context, String msg) {
             Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
         }
+    }
+
+    public static int percent(int part, int total) {
+        if (part <= 0) {
+            return 0;
+        }
+
+        if (part > total || total == 0) {
+            return 100;
+        }
+
+        return part * 100 / total;
     }
 }
