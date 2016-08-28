@@ -39,11 +39,9 @@ public class LoginActivity extends Activity {
         final String user = userInfo.getString("user", "");
         if (!user.isEmpty()) {
             etUser.setText(user);
-            etUser.setFocusable(false);
-            etPassword.setFocusable(true);
+            etUser.setFocusableInTouchMode(false);
         } else {
-            etUser.setFocusable(true);
-            etPassword.setFocusable(false);
+            etUser.setFocusableInTouchMode(true);
         }
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
