@@ -11,6 +11,10 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -88,6 +92,18 @@ public class UtilAction {
                     })
                     .show();
         }
+    }
+
+    private static DisplayImageOptions options = null;
+    public static DisplayImageOptions getDisplayImageOptions() {
+        if (options == null) {
+            options = new DisplayImageOptions.Builder()
+                    .showImageOnLoading(R.mipmap.loading)
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .build();
+        }
+        return options;
     }
 
     public static void share(Activity activity, String msg) {

@@ -26,8 +26,6 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
     private int resourceId;
     private ImageLoader imageLoader;
-    private DisplayImageOptions options;
-
     class ViewHolder {
 
         ImageView bookImage;
@@ -41,11 +39,6 @@ public class BookAdapter extends ArrayAdapter<Book> {
         resourceId = textViewResourceId;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-        options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.mipmap.loading)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .build();
     }
 
     @Override
@@ -69,17 +62,12 @@ public class BookAdapter extends ArrayAdapter<Book> {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-//        Uri u = Uri.parse(book.getImage().toString());
-//        viewHolder.bookImage.setImageURI(u);
-        imageLoader.displayImage(book.getImage(), viewHolder.bookImage, options);
+        imageLoader.displayImage(book.getImage(), viewHolder.bookImage, UtilAction.getDisplayImageOptions());
 
         viewHolder.bookName.setText(book.getName());
         viewHolder.bookPages.setText(Integer.toString(book.getCurrent_page()) + "/" + Integer.toString(book.getPages()));
 
-        //int p = (book.getCurrent_page() * 100 / book.getPages());
-        int p = UtilAction.percent(book.getCurrent_page() * 100,book.getPages());
-
-        viewHolder.bookCurrentPage.setProgress(p);
+        viewHolder.bookCurrentPage.setProgress(UtilAction.percent(book.getCurrent_page(), book.getPages()));
 
         return view;
     }
