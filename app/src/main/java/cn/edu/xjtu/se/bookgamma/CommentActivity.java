@@ -18,6 +18,7 @@ import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.bean.Comment;
 import cn.edu.xjtu.se.bookgamma.adapter.CommentAdapter;
 import cn.edu.xjtu.se.dao.DBDao;
+import cn.edu.xjtu.se.util.UtilAction;
 
 public class CommentActivity extends AppCompatActivity {
 
@@ -73,22 +74,14 @@ public class CommentActivity extends AppCompatActivity {
         commentAdapter.setOnItemClickListener(new CommentAdapter.onItemClickListener() {
             @Override
             public void onItemClick(View view, int id) {
-                Intent intent = new Intent(CommentActivity.this, AddCommentActivity.class);
+                Intent intent = new Intent(CommentActivity.this, ViewCommentActivity.class);
                 intent.putExtra("comment_id", id);
                 startActivity(intent);
             }
 
             @Override
             public void onItemLongClick(View view, int pos, int id) {
-                int ret = DBDao.delComment((int) id);
-                if (ret > 0) {
-                    mToast(R.string.tip_del_comment_succeed);
-                    commentAdapter.removeItem(pos);
-                    commentAdapter.notifyDataSetChanged();
-
-                } else {
-                    mToast(R.string.tip_del_comment_fail);
-                }
+                UtilAction.bookCommentDelete(CommentActivity.this, id);
             }
         });
     }
