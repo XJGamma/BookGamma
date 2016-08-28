@@ -9,11 +9,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import java.util.List;
 
 import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.bookgamma.R;
-import cn.edu.xjtu.se.remind.alarm.CircleProgressView;
+import cn.edu.xjtu.se.util.UtilAction;
 
 /**
  * Created by qh on 2016/6/21.
@@ -21,6 +25,8 @@ import cn.edu.xjtu.se.remind.alarm.CircleProgressView;
 public class BookAdapter extends ArrayAdapter<Book> {
 
     private int resourceId;
+    private ImageLoader imageLoader;
+    private DisplayImageOptions options;
 
     class ViewHolder {
 
@@ -33,6 +39,13 @@ public class BookAdapter extends ArrayAdapter<Book> {
     public BookAdapter(Context context, int textViewResourceId, List<Book> objects) {
         super(context, textViewResourceId, objects);
         resourceId = textViewResourceId;
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.mipmap.loading)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .build();
     }
 
     @Override
@@ -56,13 +69,16 @@ public class BookAdapter extends ArrayAdapter<Book> {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        Uri u = Uri.parse(book.getImage().toString());
-        viewHolder.bookImage.setImageURI(u);
+//        Uri u = Uri.parse(book.getImage().toString());
+//        viewHolder.bookImage.setImageURI(u);
+        imageLoader.displayImage(book.getImage(), viewHolder.bookImage, options);
 
         viewHolder.bookName.setText(book.getName());
         viewHolder.bookPages.setText(Integer.toString(book.getCurrent_page()) + "/" + Integer.toString(book.getPages()));
 
-        int p = (book.getCurrent_page() * 100 / book.getPages());
+        //int p = (book.getCurrent_page() * 100 / book.getPages());
+        int p = UtilAction.percent(book.getCurrent_page() * 100,book.getPages());
+
         viewHolder.bookCurrentPage.setProgress(p);
 
         return view;

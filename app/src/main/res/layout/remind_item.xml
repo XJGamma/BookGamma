@@ -15,21 +15,21 @@
 
         <TextView
             android:id="@+id/remind_book_name"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="74dp"
             android:gravity="center" />
 
         <TextView
             android:id="@+id/remind_time"
-            android:layout_width="120dp"
+            android:layout_width="110dp"
             android:layout_height="74dp"
             android:gravity="center" />
 
         <Switch
             android:id="@+id/remind_switch"
             android:focusable="false"
-            android:gravity="center"
-            android:layout_width="74dp"
+            android:gravity="right"
+            android:layout_width="wrap_content"
             android:layout_height="74dp" />
 
     </LinearLayout>

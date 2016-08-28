@@ -1,4 +1,4 @@
-package cn.edu.xjtu.se.remind.alarm;
+package cn.edu.xjtu.se.booklistview;
 
 /**
  * Created by qh on 2016/8/19.

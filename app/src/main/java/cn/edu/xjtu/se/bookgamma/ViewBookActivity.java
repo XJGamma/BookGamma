@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.dao.DBDao;
-import cn.edu.xjtu.se.remind.alarm.CircleProgressView;
+import cn.edu.xjtu.se.booklistview.CircleProgressView;
 import cn.edu.xjtu.se.remind.alarm.WheelView;
 import cn.edu.xjtu.se.util.DoActionListener;
 import cn.edu.xjtu.se.util.UtilAction;
