@@ -19,6 +19,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -26,17 +29,20 @@ import java.util.List;
 import cn.edu.xjtu.se.bookgamma.R;
 import cn.edu.xjtu.se.dao.DBHelper;
 import cn.edu.xjtu.se.remind.alarm.AlarmReceiver;
+import cn.edu.xjtu.se.util.UtilAction;
 
 
 /**
  * Created by asus on 2016/8/23.
  */
 public class ReadingRemindAdapter extends ArrayAdapter<ReadingRemind> {
-    private  int resourceId;
+    private int resourceId;
     private List<ReadingRemind> ReadingRemindList;
     static private cn.edu.xjtu.se.dao.DBHelper dbHelper;
     private Context context;
     WeakReference<ReadingRemindActivity> weak;
+
+    private ImageLoader imageLoader;
 
     class ViewHolder {
 
@@ -46,12 +52,16 @@ public class ReadingRemindAdapter extends ArrayAdapter<ReadingRemind> {
         Switch switcher;
 
     }
+
     public ReadingRemindAdapter(Context context, int textViewResourceId, List<ReadingRemind> objects) {
         super(context, textViewResourceId, objects);
         this.context = context;
         resourceId = textViewResourceId;
         this.ReadingRemindList = objects;
-        this.weak = new WeakReference<ReadingRemindActivity>((ReadingRemindActivity)context);
+        this.weak = new WeakReference<ReadingRemindActivity>((ReadingRemindActivity) context);
+
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(context));
     }
 
     @Override
@@ -75,8 +85,7 @@ public class ReadingRemindAdapter extends ArrayAdapter<ReadingRemind> {
 
             if (readingRemind.getStatus() == 1) {
                 viewHolder.switcher.setChecked(true);
-            }
-            else {
+            } else {
                 viewHolder.switcher.setChecked(false);
             }
 
@@ -84,7 +93,7 @@ public class ReadingRemindAdapter extends ArrayAdapter<ReadingRemind> {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                    if(isChecked) {
+                    if (isChecked) {
 
                         ReadingRemind info = (ReadingRemind) finalViewHolder.switcher.getTag();
                         info.setStatus(1);
@@ -92,23 +101,22 @@ public class ReadingRemindAdapter extends ArrayAdapter<ReadingRemind> {
                         dbHelper = new DBHelper(context);
                         SQLiteDatabase db = dbHelper.getWritableDatabase();
                         ContentValues values = new ContentValues();
-                        values.put("status",1);
-                        db.update("ReadingRemind", values ,"id = ?", new String[]{String.valueOf(readingRemind.getId())});
+                        values.put("status", 1);
+                        db.update("ReadingRemind", values, "id = ?", new String[]{String.valueOf(readingRemind.getId())});
                         db.close();
 
                         final ReadingRemindActivity activity = weak.get();
                         activity.startAlarmClock(readingRemind.getId(), readingRemind.getRemindTime());
                         Toast.makeText(context, readingRemind.getBookName() + "的提醒已开启", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         ReadingRemind info = (ReadingRemind) finalViewHolder.switcher.getTag();
                         info.setStatus(0);
 
                         dbHelper = new DBHelper(context);
                         SQLiteDatabase db = dbHelper.getWritableDatabase();
                         ContentValues values = new ContentValues();
-                        values.put("status",0);
-                        db.update("ReadingRemind", values ,"id = ?", new String[]{String.valueOf(readingRemind.getId())});
+                        values.put("status", 0);
+                        db.update("ReadingRemind", values, "id = ?", new String[]{String.valueOf(readingRemind.getId())});
                         db.close();
 
                         final ReadingRemindActivity activity = weak.get();
@@ -127,11 +135,10 @@ public class ReadingRemindAdapter extends ArrayAdapter<ReadingRemind> {
             viewHolder.switcher.setTag(readingRemind);
         }
 
-        Uri u = Uri.parse(readingRemind.getImage().toString());
-        viewHolder.bookImage.setImageURI(u);
+        imageLoader.displayImage(readingRemind.getImage(), viewHolder.bookImage, UtilAction.getDisplayImageOptions());
         viewHolder.bookName.setText(readingRemind.getBookName());
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String startTime = sdf.format( new java.util.Date(Long.parseLong(readingRemind.getRemindTime())));
+        String startTime = sdf.format(new java.util.Date(Long.parseLong(readingRemind.getRemindTime())));
         viewHolder.remindTime.setText(startTime);
         return convertView;
     }
