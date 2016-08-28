@@ -112,7 +112,7 @@
                 android:layout_width="160dp"
                 android:layout_height="160dp" />
 
-            <cn.edu.xjtu.se.remind.alarm.CircleProgressView
+            <cn.edu.xjtu.se.booklistview.CircleProgressView
                 android:id="@+id/reading_percent"
                 android:layout_width="160dp"
                 android:layout_height="160dp" />
