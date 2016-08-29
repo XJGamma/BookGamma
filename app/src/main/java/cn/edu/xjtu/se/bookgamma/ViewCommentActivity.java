@@ -13,6 +13,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import java.text.SimpleDateFormat;
 
 import cn.edu.xjtu.se.bean.Book;
@@ -28,6 +31,8 @@ public class ViewCommentActivity extends AppCompatActivity {
     private TextView bookName;
     private TextView commentContent;
     private TextView commentTime;
+
+    private ImageLoader imageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,9 @@ public class ViewCommentActivity extends AppCompatActivity {
         bookName = (TextView) findViewById(R.id.view_book_name);
         commentContent = (TextView) findViewById(R.id.comment_content);
         commentTime = (TextView) findViewById(R.id.comment_time);
+
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(this));
     }
 
     @Override
@@ -70,7 +78,7 @@ public class ViewCommentActivity extends AppCompatActivity {
         super.onResume();
         Comment comment = DBDao.getComment(commentId);
         Book book = DBDao.getBook(comment.getBook_id());
-        bookCover.setImageURI(Uri.parse(book.getImage()));
+        imageLoader.displayImage(book.getImage(), bookCover, UtilAction.getDisplayImageOptions());
         bookName.setText(book.getName());
         commentContent.setText(comment.getContent());
         commentTime.setText(new SimpleDateFormat("yyyy年M月d日 HH:mm").format(comment.getCreated_time()));

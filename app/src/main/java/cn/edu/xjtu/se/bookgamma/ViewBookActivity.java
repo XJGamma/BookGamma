@@ -12,6 +12,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.dao.DBDao;
 import cn.edu.xjtu.se.booklistview.CircleProgressView;
@@ -30,6 +33,8 @@ public class ViewBookActivity extends AppCompatActivity {
     private CircleProgressView readingPercent;
     private int bookId;
     private Book book;
+
+    private ImageLoader imageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,9 @@ public class ViewBookActivity extends AppCompatActivity {
             }
         });
         readingPercent = (CircleProgressView) findViewById(R.id.reading_percent);
+
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(this));
     }
 
     @Override
@@ -84,7 +92,7 @@ public class ViewBookActivity extends AppCompatActivity {
         bookName.setText(book.getName());
         bookPage.setText(String.valueOf(book.getPages()));
         bookCreatedAt.setText(UtilAction.fmt.date(book.getFinish_time()));
-        bookCover.setImageURI(Uri.parse(book.getImage()));
+        imageLoader.displayImage(book.getImage(), bookCover, UtilAction.getDisplayImageOptions());
         bookCompletedAt.setText(UtilAction.fmt.date(book.getFinish_time()));
         pageWheel.setItems(UtilAction.srange(1, book.getPages()));
         pageWheel.setSeletion(book.getCurrent_page()-1);
