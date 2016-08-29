@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import cn.edu.xjtu.se.bookgamma.R;
+import cn.edu.xjtu.se.dao.DBDao;
 import cn.edu.xjtu.se.dao.DBHelper;
 
 /**
@@ -31,11 +32,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         ContentValues values = new ContentValues();
         values.put("status",0);
         db.update("ReadingRemind", values ,"id = ?", new String[]{String.valueOf(remindId)});
+        String bookName = DBDao.findBookNameByRemindId(remindId);
         db.close();
 
-
-        Intent i=new Intent(context, AlarmActivity.class);
+        Intent i = new Intent(context, AlarmActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.putExtra("bookName",bookName);
         context.startActivity(i);
 
     }

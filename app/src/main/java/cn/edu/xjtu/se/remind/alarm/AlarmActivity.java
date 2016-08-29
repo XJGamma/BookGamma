@@ -23,11 +23,13 @@ public class AlarmActivity extends Activity {
             mp.start();//开始播放
         }
 
+        Intent intent = getIntent();
+        String bookName = intent.getStringExtra("bookName");
         //显示对话框
         new AlertDialog.Builder(AlarmActivity.this).
                 setTitle("读书提醒").//设置标题
-                setMessage("来看书吧！总有一天你能像我一样谈笑风生！").//设置内容
-                setPositiveButton("好的长者", new DialogInterface.OnClickListener(){//设置按钮
+                setMessage("是时候阅读 " + bookName + " 了！").//设置内容
+                setPositiveButton("好的", new DialogInterface.OnClickListener(){//设置按钮
             public void onClick(DialogInterface dialog, int which) {
                 Intent readingIntent = new Intent(AlarmActivity.this, ReadingRemindActivity.class);
                 startActivity(readingIntent);
@@ -41,7 +43,6 @@ public class AlarmActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-
         finish();
     }
 
