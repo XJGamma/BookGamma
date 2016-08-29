@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by DUAN Yufei on 16-6-29.
  */
 public class Book implements Serializable {
-
+    // TODO: 命名
     private int id;
     private String name;
     private String image;
@@ -16,26 +16,48 @@ public class Book implements Serializable {
     private int current_page;
     private Date finish_time;
     private int total_reading_time;
+    private Date created_at;
+    private Date updated_at;
 
-    public Book(int current_page, Date finish_time, int id, String image, String isbn, String name, int pages, int total_reading_time) {
+    public Book(int id, String name, String image, String isbn, int pages, int current_page, Date finish_time, int total_reading_time, Date created_at, Date updated_at) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+        this.isbn = isbn;
+        this.pages = pages;
         this.current_page = current_page;
         this.finish_time = finish_time;
-        this.id = id;
-        this.image = image;
-        this.isbn = isbn;
-        this.name = name;
-        this.pages = pages;
         this.total_reading_time = total_reading_time;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
-    public Book(Date finish_time, String image, String isbn, String name, int pages) {
-        this.finish_time = finish_time;
+    public Book(String name, String image, String isbn, int pages, int current_page, Date finish_time, int total_reading_time, Date created_at, Date updated_at) {
+        this.name = name;
         this.image = image;
         this.isbn = isbn;
-        this.name = name;
         this.pages = pages;
-        this.current_page = 0;
-        this.total_reading_time = 0;
+        this.current_page = current_page;
+        this.finish_time = finish_time;
+        this.total_reading_time = total_reading_time;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
+
+    public Date getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
+    }
+
+    public Date getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
     }
 
     public int getId() {

@@ -11,19 +11,30 @@ public class Comment implements Serializable {
     private int id;
     private int book_id;
     private String content;
-    private Date created_time;
+    private Date created_at;
+    private Date updated_at;
 
-    public Comment(int id, int book_id, Date created_time, String content) {
-        this.book_id = book_id;
+    public Comment(int id, int book_id, String content, Date created_at, Date updated_at) {
         this.id = id;
-        this.created_time = created_time;
+        this.book_id = book_id;
         this.content = content;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
-    public Comment(int book_id, String content, Date created_time) {
+    public Comment(int book_id, String content, Date created_at, Date updated_at) {
         this.book_id = book_id;
         this.content = content;
-        this.created_time = created_time;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
+
+    public Date getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
     }
 
     public int getId() {
@@ -46,11 +57,11 @@ public class Comment implements Serializable {
         this.content = content;
     }
 
-    public Date getCreated_time() {
-        return created_time;
+    public Date getCreated_at() {
+        return created_at;
     }
 
-    public void setCreated_time(Date created_time) {
-        this.created_time = created_time;
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
     }
 }

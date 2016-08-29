@@ -1,6 +1,7 @@
 package cn.edu.xjtu.se.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -8,13 +9,19 @@ import com.google.gson.annotations.SerializedName;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.HttpUrl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import cn.edu.xjtu.se.bean.Book;
+import cn.edu.xjtu.se.bean.Comment;
+import cn.edu.xjtu.se.dao.DBDao;
 
 /**
  * Created by Jingkai Tang on 8/29/16.
  */
-public class XGAPIAction {
+public class XGAPI {
+    public static final String TAG = XGAPI.class.getName();
 
     public static XGHttp xgHttp = XGHttp.getInstance();
     public static Gson gson = new Gson();
@@ -47,10 +54,15 @@ public class XGAPIAction {
         }
     }
 
-    public static JsonElement processResult(Context context, String str) {
-        Result result = gson.fromJson(str, Result.class);
+    public static JsonElement processResult(Context context, String json) {
+        Result result = gson.fromJson(json, Result.class);
         // TODO: a lot
         return result.getRet();
+    }
+
+    public static <T> T getReturn(Context context, String json, Class<T> classOfT) {
+        JsonElement ret = processResult(context, json);
+        return gson.fromJson(ret, classOfT);
     }
 
     public static String SIGNUP_URL = BASE_URL + "/accounts/signup";
@@ -59,7 +71,7 @@ public class XGAPIAction {
         private String name;
         private String password;
 
-        public SignupParameter(String password, String name) {
+        public SignupParameter(String name, String password) {
             this.password = password;
             this.name = name;
         }
@@ -115,23 +127,6 @@ public class XGAPIAction {
         public void setToken(String token) {
             this.token = token;
         }
-    }
-
-    public static void signup(final Context context, String name, String password) {
-        FormEncodingBuilder feb = new FormEncodingBuilder();
-        feb.add("name", name);
-        feb.add("password", password);
-        xgHttp.post(SIGNUP_URL, feb, new XGHttp.MOkCallBack() {
-            @Override
-            public void onSuccess(String str) {
-                JsonElement ret = processResult(context, str);
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
     }
 
     public static String LOGIN_URL = BASE_URL + "/accounts/login";
@@ -198,23 +193,6 @@ public class XGAPIAction {
         }
     }
 
-    public static void login(Context context, String name, String password) {
-        FormEncodingBuilder feb = new FormEncodingBuilder();
-        feb.add("name", name);
-        feb.add("password", password);
-        xgHttp.post(LOGIN_URL, feb, new XGHttp.MOkCallBack() {
-            @Override
-            public void onSuccess(String str) {
-
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
-    }
-
     public static String LOGOUT_URL = BASE_URL + "/accounts/logout";
 
     public static class LogoutParameter {
@@ -267,23 +245,6 @@ public class XGAPIAction {
         public void setMsg(String msg) {
             this.msg = msg;
         }
-    }
-
-    public static void logout(Context context, String name, String token) {
-        FormEncodingBuilder feb = new FormEncodingBuilder();
-        feb.add("name", name);
-        feb.add("token", token);
-        xgHttp.post(LOGOUT_URL, feb, new XGHttp.MOkCallBack() {
-            @Override
-            public void onSuccess(String str) {
-
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
     }
 
     public static String PASSWORD_CHANGE_URL = BASE_URL + "/accounts/password/change";
@@ -362,16 +323,16 @@ public class XGAPIAction {
         }
     }
 
-    public static void passwordChange(Context context, String name, String token, String oldPassword, String newPassword) {
-        FormEncodingBuilder feb = new FormEncodingBuilder();
-        feb.add("name", name);
-        feb.add("token", token);
-        feb.add("old_password", oldPassword);
-        feb.add("new_password", newPassword);
-        xgHttp.post(PASSWORD_CHANGE_URL, feb, new XGHttp.MOkCallBack() {
+    // TODO: 改密码
+    private void passwordChange(String oldPassword, String newPassword) {
+        String name = XGUserInfo.getName();
+        String token = XGUserInfo.getToken();
+        PasswordChangeParameter pcp = new PasswordChangeParameter(name, token, oldPassword, newPassword);
+        String json = gson.toJson(pcp);
+        xgHttp.post(PASSWORD_CHANGE_URL, json, new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
-
+                // PasswordChangeReturn pcr = getReturn(null, str, PasswordChangeReturn.class);
             }
 
             @Override
@@ -445,12 +406,10 @@ public class XGAPIAction {
         }
     }
 
-    public static void avatarChange(Context context, String name, String token, String avatar) {
-        FormEncodingBuilder feb = new FormEncodingBuilder();
-        feb.add("name", name);
-        feb.add("token", token);
-        feb.add("avatar", avatar);
-        xgHttp.post(AVATAR_CHANGE_URL, feb, new XGHttp.MOkCallBack() {
+    // TODO: avatar change
+    public static void avatarChange(String avatar) {
+        String json = null;
+        xgHttp.post(AVATAR_CHANGE_URL, json, new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
 
@@ -464,7 +423,13 @@ public class XGAPIAction {
     }
 
     public static String AVATAR_GET_URL = BASE_URL + "/accounts/avatar";
-    public static void avatarGet(String name) {
+    public static void avatarGet() {
+        if (!XGUserInfo.getStatus()) {
+            Log.e(TAG, "未登录");
+            return;
+        }
+
+        String name = XGUserInfo.getName();
         HttpUrl url = HttpUrl
                 .parse(AVATAR_GET_URL)
                 .newBuilder()
@@ -473,7 +438,7 @@ public class XGAPIAction {
         xgHttp.get(url.toString(), new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
-
+                XGUserInfo.setAvatar(str);
             }
 
             @Override
@@ -523,6 +488,21 @@ public class XGAPIAction {
             this.name = name;
             this.token = token;
             this.checkList = checkList;
+        }
+
+        public static DataCheckParameter getDataCheckParameter() {
+            String name = XGUserInfo.getName();
+            String token = XGUserInfo.getToken();
+            List<CheckCell> checkList = new ArrayList<>();
+            List<Book> books = DBDao.findBooksAll();
+            List<Comment> comments = DBDao.findCommentsAll();
+            for (Book book: books) {
+                checkList.add(new CheckCell(book.getCreated_at(), book.getUpdated_at()));
+            }
+            for (Comment comment: comments) {
+                checkList.add(new CheckCell(comment.getCreated_at(), comment.getUpdated_at()));
+            }
+            return new DataCheckParameter(name, token, checkList);
         }
 
         public String getName() {
@@ -578,11 +558,13 @@ public class XGAPIAction {
         }
     }
 
-    public static void dataCheck() {
-        FormEncodingBuilder feb = new FormEncodingBuilder();
-        xgHttp.post(DATA_CHECK_URL, feb, new XGHttp.MOkCallBack() {
+    public static void dataCheck(final Context context) {
+        DataCheckParameter dcp = DataCheckParameter.getDataCheckParameter();
+        String json = gson.toJson(dcp);
+        xgHttp.post(DATA_CHECK_URL, json, new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
+                DataCheckReturn dcr = getReturn(context, str, DataCheckReturn.class);
 
             }
 
@@ -686,8 +668,7 @@ public class XGAPIAction {
     }
 
     public static void dataPush() {
-        FormEncodingBuilder feb = new FormEncodingBuilder();
-        xgHttp.post(DATA_PUSH_URL, feb, new XGHttp.MOkCallBack() {
+        xgHttp.post(DATA_PUSH_URL, new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
 
@@ -755,8 +736,7 @@ public class XGAPIAction {
     }
 
     public static void dataPull() {
-        FormEncodingBuilder feb = new FormEncodingBuilder();
-        xgHttp.post(DATA_PULL_URL, feb, new XGHttp.MOkCallBack() {
+        xgHttp.post(DATA_PULL_URL, new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
 
@@ -837,13 +817,12 @@ public class XGAPIAction {
     }
 
     public static void dataSync() {
-        FormEncodingBuilder feb = new FormEncodingBuilder();
-        xgHttp.post(DATA_SYNC_URL, feb, new XGHttp.MOkCallBack() {
+        xgHttp.post(DATA_SYNC_URL, new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
 
             }
-            
+
             @Override
             public void onError() {
 

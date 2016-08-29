@@ -2,7 +2,6 @@ package cn.edu.xjtu.se.bookgamma;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -81,7 +80,7 @@ public class ViewCommentActivity extends AppCompatActivity {
         imageLoader.displayImage(book.getImage(), bookCover, UtilAction.getDisplayImageOptions());
         bookName.setText(book.getName());
         commentContent.setText(comment.getContent());
-        commentTime.setText(new SimpleDateFormat("yyyy年M月d日 HH:mm").format(comment.getCreated_time()));
+        commentTime.setText(new SimpleDateFormat("yyyy年M月d日 HH:mm").format(comment.getCreated_at()));
     }
 
     @Override
