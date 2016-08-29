@@ -206,6 +206,7 @@ public class ReadingRemindActivity extends AppCompatActivity{
         if(Long.parseLong(remindTime) >= System.currentTimeMillis() && flag == 0){
             Intent intent = new Intent(ReadingRemindActivity.this, AlarmReceiver.class);    //创建Intent对象
             intent.putExtra("remindId", remindId);
+
             PendingIntent sender = PendingIntent.getBroadcast(ReadingRemindActivity.this, remindId, intent, 0);    //创建PendingIntent
             AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 

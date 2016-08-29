@@ -72,6 +72,22 @@ public class DBDao {
         return ret;
     }
 
+    public static String findBookNameByRemindId(int remindId){
+        DBHelper dbHelper = new DBHelper(XGApplication.getContext());
+        String bookName = "";
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from ReadingRemind where id = ?",
+                new String[]{String.valueOf(remindId)});
+        while (cursor.moveToNext()){
+            bookName = cursor.getString( cursor.getColumnIndex("book_name") );
+
+        }
+        cursor.close();
+        db.close();
+        dbHelper.close();
+        return bookName;
+    }
+
 
     static public int updateReadingRemindTime(int id,String remindTime) {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
