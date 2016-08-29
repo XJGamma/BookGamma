@@ -113,6 +113,10 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (item.getItemId()) {
+            case (R.id.action_account):
+                Intent accountIntent = new Intent(MainActivity.this, AccountActivity.class);
+                startActivity(accountIntent);
+                break;
             case (R.id.action_addbook):
                 Intent addBookIntent = new Intent(MainActivity.this, AddBookActivity.class);
                 startActivity(addBookIntent);
@@ -120,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
             case (R.id.action_comment):
                 Intent commentIntent = new Intent(MainActivity.this, BookCommentActivity.class);
                 startActivity(commentIntent);
-            case (R.id.action_settings):
                 break;
             case (R.id.action_reading):
                 Intent readingIntent = new Intent(MainActivity.this, ReadingRemindActivity.class);
