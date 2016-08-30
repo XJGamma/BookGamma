@@ -97,7 +97,7 @@ public class AddRemindActivity extends AppCompatActivity {
                             public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
                                 Calendar c = Calendar.getInstance();//获取日期对象
                                 c.setTimeInMillis(System.currentTimeMillis());        //设置Calendar对象
-                                c.set(Calendar.HOUR, hourOfDay);        //设置闹钟小时数
+                                c.set(Calendar.HOUR_OF_DAY, hourOfDay);        //设置闹钟小时数
                                 c.set(Calendar.MINUTE, minute);            //设置闹钟的分钟数
                                 c.set(Calendar.SECOND, 0);                //设置闹钟的秒数
                                 c.set(Calendar.MILLISECOND, 0);            //设置闹钟的毫秒数
