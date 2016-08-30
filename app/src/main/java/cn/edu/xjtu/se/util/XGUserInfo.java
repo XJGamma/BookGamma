@@ -67,7 +67,7 @@ public class XGUserInfo {
     public static void login(String name, String token) {
         XGApplication.getContext().getSharedPreferences("userInfo", 0)
                 .edit()
-                .putBoolean("status", status)
+                .putBoolean("status", true)
                 .putString("name", name)
                 .putString("token", token)
                 .commit();

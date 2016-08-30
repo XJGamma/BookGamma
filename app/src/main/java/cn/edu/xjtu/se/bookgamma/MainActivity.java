@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     XGUserInfo.setStatus();
                 } else {
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
                 break;

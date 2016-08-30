@@ -1,6 +1,7 @@
 package cn.edu.xjtu.se.bookgamma;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -21,7 +23,8 @@ import cn.edu.xjtu.se.util.XGUserInfo;
 public class AccountActivity extends AppCompatActivity {
     private static String Tag = AccountActivity.class.getName();
 
-    private TextView tvAbout;
+    private TextView tvName;
+    private Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +33,32 @@ public class AccountActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        tvAbout = (TextView) findViewById(R.id.tv_about);
-        tvAbout.setOnClickListener(new View.OnClickListener() {
+        tvName = (TextView) findViewById(R.id.account_name);
+        btnLogout = (Button) findViewById(R.id.account_logout);
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                logout();
             }
         });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!XGUserInfo.getStatus()) {
+            UtilAction.toast.s(this, "请登录！");
+
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+
+        tvName.setText(XGUserInfo.getName());
+
     }
 
     private void logout() {
@@ -66,5 +88,6 @@ public class AccountActivity extends AppCompatActivity {
 
         XGUserInfo.logout();
         UtilAction.toast.s(this, "注销成功！");
+        finish();
     }
 }

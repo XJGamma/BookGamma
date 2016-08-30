@@ -4,10 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.HttpUrl;
 
 import java.util.ArrayList;
@@ -19,7 +17,6 @@ import java.util.Map;
 import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.bean.Comment;
 import cn.edu.xjtu.se.dao.DBDao;
-import cn.edu.xjtu.se.scanner.Intents;
 
 /**
  * Created by Jingkai Tang on 8/29/16.
@@ -30,13 +27,13 @@ public class XGAPI {
     public static XGHttp xgHttp = XGHttp.getInstance();
     public static Gson gson = new Gson();
 
-    public static String BASE_URL = "";
+    public static String BASE_URL = "https://139.129.24.222:3000";
 
     public static class Result {
         private int code;
-        private JsonElement ret;
+        private JsonObject ret;
 
-        public Result(int code, JsonElement ret) {
+        public Result(int code, JsonObject ret) {
             this.code = code;
             this.ret = ret;
         }
@@ -49,23 +46,24 @@ public class XGAPI {
             this.code = code;
         }
 
-        public JsonElement getRet() {
+        public JsonObject getRet() {
             return ret;
         }
 
-        public void setRet(JsonElement ret) {
+        public void setRet(JsonObject ret) {
             this.ret = ret;
         }
     }
 
-    public static JsonElement processResult(Context context, String json) {
+    public static JsonObject processResult(Context context, String json) {
+        Log.e(TAG, json);
         Result result = gson.fromJson(json, Result.class);
         // TODO: a lot
         return result.getRet();
     }
 
     public static <T> T getReturn(Context context, String json, Class<T> classOfT) {
-        JsonElement ret = processResult(context, json);
+        JsonObject ret = processResult(context, json);
         return gson.fromJson(ret, classOfT);
     }
 
