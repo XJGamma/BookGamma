@@ -75,6 +75,7 @@ public class XGHttp {
     public void get(String url, final MOkCallBack mCallBack) {
         final Request request = new Request.Builder()
                 .url(url)
+                .addHeader("Accept", "*/*")
                 .build();
         Call call = mOkHttpClient.newCall(request);
         call.enqueue(new Callback() {

@@ -1,18 +1,16 @@
 package cn.edu.xjtu.se.bookgamma;
 
-import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.HttpUrl;
 
 import cn.edu.xjtu.se.util.UtilAction;
@@ -21,10 +19,12 @@ import cn.edu.xjtu.se.util.XGHttp;
 import cn.edu.xjtu.se.util.XGUserInfo;
 
 public class AccountActivity extends AppCompatActivity {
-    private static String Tag = AccountActivity.class.getName();
+    private static String TAG = AccountActivity.class.getName();
 
+    private ImageView ivImage;
     private TextView tvName;
     private Button btnLogout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,7 @@ public class AccountActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ivImage = (ImageView) findViewById(R.id.account_image);
         tvName = (TextView) findViewById(R.id.account_name);
         btnLogout = (Button) findViewById(R.id.account_logout);
 
@@ -58,7 +59,12 @@ public class AccountActivity extends AppCompatActivity {
         }
 
         tvName.setText(XGUserInfo.getName());
-
+        String image = XGUserInfo.getAvatar();
+        if (image != null) {
+            ivImage.setImageURI(Uri.parse(image));
+        } else {
+            getAvatar();
+        }
     }
 
     private void logout() {
@@ -89,5 +95,31 @@ public class AccountActivity extends AppCompatActivity {
         XGUserInfo.logout();
         UtilAction.toast.s(this, "注销成功！");
         finish();
+    }
+
+    public void getAvatar() {
+        if (!XGUserInfo.getStatus()) {
+            Log.e(TAG, "未登录");
+            return;
+        }
+
+        String name = XGUserInfo.getName();
+        HttpUrl url = HttpUrl
+                .parse(XGAPI.AVATAR_GET_URL)
+                .newBuilder()
+                .addQueryParameter("name", name)
+                .build();
+        XGAPI.xgHttp.get(url.toString(), new XGHttp.MOkCallBack() {
+            @Override
+            public void onSuccess(String str) {
+                XGAPI.AvatarReturn ar = XGAPI.getReturn(AccountActivity.this, str, XGAPI.AvatarReturn.class);
+                XGUserInfo.setAvatar(ar.getAvatar());
+                ivImage.setImageURI(Uri.parse(XGUserInfo.getAvatar()));
+            }
+
+            @Override
+            public void onError() {
+            }
+        });
     }
 }

@@ -425,30 +425,44 @@ public class XGAPI {
     }
 
     public static String AVATAR_GET_URL = BASE_URL + "/accounts/avatar";
-    public static void avatarGet() {
-        if (!XGUserInfo.getStatus()) {
-            Log.e(TAG, "未登录");
-            return;
+
+    public static class AvatarReturn {
+        private int code;
+        private String msg;
+        private String avatar;
+
+        public AvatarReturn(int code, String msg, String avatar) {
+            this.code = code;
+            this.msg = msg;
+            this.avatar = avatar;
         }
 
-        String name = XGUserInfo.getName();
-        HttpUrl url = HttpUrl
-                .parse(AVATAR_GET_URL)
-                .newBuilder()
-                .addQueryParameter("name", name)
-                .build();
-        xgHttp.get(url.toString(), new XGHttp.MOkCallBack() {
-            @Override
-            public void onSuccess(String str) {
-                XGUserInfo.setAvatar(str);
-            }
+        public int getCode() {
+            return code;
+        }
 
-            @Override
-            public void onError() {
+        public void setCode(int code) {
+            this.code = code;
+        }
 
-            }
-        });
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
     }
+
+
 
     public static class CheckCell {
         @SerializedName("created_at")

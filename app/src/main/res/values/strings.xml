@@ -82,4 +82,5 @@
     <string name="completed_at">预定完成日期</string>
     <string name="txt_share">分享</string>
     <string name="action_account">账户</string>
+    <string name="txt_sync">同步</string>
 </resources>

@@ -98,7 +98,8 @@ public class XGUserInfo {
         }
         context.getSharedPreferences("userInfo", 0)
                 .edit()
-                .putString("avatar", context.getFilesDir() + File.separator + AVATAR_NAME);
+                .putString("avatar", context.getFilesDir() + File.separator + AVATAR_NAME)
+                .commit();
         initialize();
     }
 }
