@@ -20,13 +20,16 @@ public class DBHelper extends SQLiteOpenHelper {
             + "pages integer, "
             + "current_page integer, "
             + "finish_time date, "
-            + "total_reading_time integer)";
+            + "total_reading_time integer, "
+            + "updated_at date, "
+            + "created_at date)";
 
     public static final String CREATE_BOOKCOMMENT = "create table BookComments( "
             + "id integer primary key autoincrement, "
             + "book_id integer, "
             + "content text, "
-            + "created_time timestamp, "
+            + "created_at date, "
+            + "updated_at date, "
             + "foreign key(book_id) references Book(id))";
 
     public static final String CREATE_READINGREMIND = "create table ReadingRemind( "

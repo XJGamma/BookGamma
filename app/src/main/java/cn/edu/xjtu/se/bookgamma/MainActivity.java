@@ -87,13 +87,10 @@ public class MainActivity extends AppCompatActivity {
         super.onPrepareOptionsMenu(menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_logout);
-        switch (XGUserInfo.getStatus()) {
-            case 0:
-                menuItem.setTitle(R.string.action_login);
-                break;
-            case 1:
-                menuItem.setTitle(R.string.action_logout);
-                break;
+        if (XGUserInfo.getStatus()) {
+            menuItem.setTitle(R.string.action_logout);
+        } else {
+            menuItem.setTitle(R.string.action_login);
         }
         return true;
     }
@@ -113,6 +110,10 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (item.getItemId()) {
+            case (R.id.action_account):
+                Intent accountIntent = new Intent(MainActivity.this, AccountActivity.class);
+                startActivity(accountIntent);
+                break;
             case (R.id.action_addbook):
                 Intent addBookIntent = new Intent(MainActivity.this, AddBookActivity.class);
                 startActivity(addBookIntent);
@@ -120,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
             case (R.id.action_comment):
                 Intent commentIntent = new Intent(MainActivity.this, BookCommentActivity.class);
                 startActivity(commentIntent);
-            case (R.id.action_settings):
                 break;
             case (R.id.action_reading):
                 Intent readingIntent = new Intent(MainActivity.this, ReadingRemindActivity.class);
@@ -130,17 +130,14 @@ public class MainActivity extends AppCompatActivity {
                 new UpdateTask(MainActivity.this).update();
                 break;
             case (R.id.action_logout):
-                switch (XGUserInfo.getStatus()) {
-                    case 0:
-                    case -1:
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        break;
-                    case 1:
-                        XGUserInfo.setStatus();
-                        break;
+                if (XGUserInfo.getStatus()) {
+                    XGUserInfo.setStatus();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 }
+                break;
         }
 
         return super.onOptionsItemSelected(item);

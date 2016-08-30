@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,9 +22,17 @@ public class DBDao {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    static public long addBook(Book book) {
+        return addBook(book.getName(), book.getPages(), book.getFinish_time(), book.getIsbn(), book.getImage(), book.getCreated_at(), book.getUpdated_at());
+    }
+
     static public long addBook(String bookName, int pages, Date finish_time, String isbn, String image) {
+        Date now = new Date();
+        return addBook(bookName, pages, finish_time, isbn, image, now, now);
+    }
+
+    static public long addBook(String bookName, int pages, Date finish_time, String isbn, String image, Date created_at, Date updated_at) {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", bookName);
@@ -33,6 +42,8 @@ public class DBDao {
         values.put("current_page", 1);
         values.put("finish_time", dateFormat.format(finish_time));
         values.put("total_reading_time", 0);
+        values.put("created_at", dateFormat.format(created_at));
+        values.put("updated_at", dateFormat.format(updated_at));
         long rowID = db.insert("Books", null, values);
         db.close();
         dbHelper.close();
@@ -113,7 +124,7 @@ public class DBDao {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.query("Books", null, null, null, null, null, null);
-        List<Book> list = new ArrayList<Book>();
+        List<Book> list = new ArrayList<>();
         while (cursor.moveToNext()) {
             if (Cursor2Book(cursor) != null) {
                 list.add(Cursor2Book(cursor));
@@ -125,13 +136,39 @@ public class DBDao {
         return list;
     }
 
+    public static List<Comment> findCommentsAll() {
+        DBHelper dbHelper = new DBHelper(XGApplication.getContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.query("BookComments", null, null, null, null, null, null);
+        List<Comment> list = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            if (Cursor2Comment(cursor) != null) {
+                list.add(Cursor2Comment(cursor));
+            }
+        }
+        cursor.close();
+        db.close();
+        dbHelper.close();
+        return list;
+    }
+
+    public static long addComment(Comment comment) {
+        return addComment(comment.getBook_id(), comment.getContent(), comment.getCreated_at(), comment.getUpdated_at());
+    }
+
     public static long addComment(int book_id, String content) {
+        Date now = new Date();
+        return addComment(book_id, content, now, now);
+    }
+
+    public static long addComment(int book_id, String content, Date created_at, Date updated_at) {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("book_id", book_id);
         values.put("content", content);
-        values.put("created_time", dateFormat.format(Calendar.getInstance().getTime()));
+        values.put("created_at", dateFormat.format(created_at));
+        values.put("updated_at", dateFormat.format(updated_at));
         long rowID = db.insert("BookComments", null, values);
         db.close();
         dbHelper.close();
@@ -141,7 +178,7 @@ public class DBDao {
     public static List<Comment> getCommentByBook(int book_id) {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from BookComments where book_id = ? order by created_time",
+        Cursor cursor = db.rawQuery("select * from BookComments where book_id = ? order by created_at",
                 new String[]{String.valueOf(book_id)});
         List<Comment> list = new ArrayList<Comment>();
         while (cursor.moveToNext()) {
@@ -204,26 +241,34 @@ public class DBDao {
         String isbn = cursor.getString(cursor.getColumnIndex("isbn"));
         int pages = cursor.getInt(cursor.getColumnIndex("pages"));
         int current_page = cursor.getInt(cursor.getColumnIndex("current_page"));
-        String finish_time = cursor.getString(cursor.getColumnIndex("finish_time"));
         int total_reading_time = cursor.getInt(cursor.getColumnIndex("total_reading_time"));
+        Date finish_time = null;
+        Date created_at = null;
+        Date updated_at = null;
         try {
-            return new Book(current_page, dateFormat.parse(finish_time), id, image, isbn, name, pages, total_reading_time);
-        } catch (Exception e) {
+            finish_time = dateFormat.parse(cursor.getString(cursor.getColumnIndex("finish_time")));
+            created_at = dateFormat.parse(cursor.getString(cursor.getColumnIndex("created_at")));
+            updated_at = dateFormat.parse(cursor.getString(cursor.getColumnIndex("updated_at")));
+        } catch (ParseException e) {
+            e.printStackTrace();
             return null;
         }
+        return new Book(id, name, image, isbn, pages, current_page, finish_time, total_reading_time, created_at, updated_at);
     }
 
     private static Comment Cursor2Comment(Cursor cursor) {
         int id = cursor.getInt(cursor.getColumnIndex("id"));
         int book_id = cursor.getInt(cursor.getColumnIndex("book_id"));
         String content = cursor.getString(cursor.getColumnIndex("content"));
-        String created_time = cursor.getString(cursor.getColumnIndex("created_time"));
-
+        Date created_at = null;
+        Date updated_at = null;
         try {
-            return new Comment(id, book_id, dateFormat.parse(created_time), content);
-        } catch (Exception e) {
+            created_at = dateFormat.parse(cursor.getString(cursor.getColumnIndex("created_at")));
+            updated_at = dateFormat.parse(cursor.getString(cursor.getColumnIndex("updated_at")));
+        } catch (ParseException e) {
+            e.printStackTrace();
             return null;
         }
-
+        return new Comment(id, book_id, content, created_at, updated_at);
     }
 }
