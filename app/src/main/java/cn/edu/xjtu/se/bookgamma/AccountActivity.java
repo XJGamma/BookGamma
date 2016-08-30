@@ -124,7 +124,7 @@ public class AccountActivity extends AppCompatActivity {
                 .newBuilder()
                 .addQueryParameter("name", name)
                 .build();
-        XGAPI.xgHttp.get(url.toString(), new XGHttp.MOkCallBack() {
+        XGAPI.xgHttp.getC(url.toString(), new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
                 XGAPI.AvatarReturn ar = XGAPI.getReturn(AccountActivity.this, str, XGAPI.AvatarReturn.class);

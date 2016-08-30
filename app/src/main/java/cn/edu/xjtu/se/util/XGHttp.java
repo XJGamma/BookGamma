@@ -31,6 +31,7 @@ public class XGHttp {
     public static final String TAG = XGHttp.class.getName();
 
     private OkHttpClient mOkHttpClient = new OkHttpClient();
+    private OkHttpClient mohcNormal = new OkHttpClient();
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static XGHttp mInstance = null;
     //获取UI线程
@@ -66,18 +67,23 @@ public class XGHttp {
         return mInstance;
     }
 
-    /**
-     * get方式进行网络访问
-     *
-     * @param url       地址
-     * @param mCallBack 回调
-     */
     public void get(String url, final MOkCallBack mCallBack) {
+        get(mohcNormal, url, mCallBack);
+    }
+
+    public void getC(String url,final MOkCallBack mCallBack) {
+        get(mOkHttpClient, url, mCallBack);
+    }
+
+    public void get(OkHttpClient ohc, String url, final MOkCallBack mCallBack) {
+        Log.i(TAG, "GET: " + url);
+
         final Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Accept", "*/*")
                 .build();
-        Call call = mOkHttpClient.newCall(request);
+        Log.i(TAG, "Request: " + request.toString());
+        Call call = ohc.newCall(request);
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {

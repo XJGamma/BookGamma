@@ -83,19 +83,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        MenuItem menuItem = menu.findItem(R.id.action_logout);
-        if (XGUserInfo.getStatus()) {
-            menuItem.setTitle(R.string.action_logout);
-        } else {
-            menuItem.setTitle(R.string.action_login);
-        }
-        return true;
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -128,15 +115,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case (R.id.action_update):
                 new UpdateTask(MainActivity.this).update();
-                break;
-            case (R.id.action_logout):
-                if (XGUserInfo.getStatus()) {
-                    XGUserInfo.setStatus();
-                } else {
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
                 break;
         }
 
