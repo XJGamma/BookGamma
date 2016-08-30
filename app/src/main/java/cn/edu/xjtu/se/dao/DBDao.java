@@ -178,7 +178,7 @@ public class DBDao {
     public static List<Comment> getCommentByBook(int book_id) {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from BookComments where book_id = ? order by created_time",
+        Cursor cursor = db.rawQuery("select * from BookComments where book_id = ? order by created_at",
                 new String[]{String.valueOf(book_id)});
         List<Comment> list = new ArrayList<Comment>();
         while (cursor.moveToNext()) {

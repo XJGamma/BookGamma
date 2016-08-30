@@ -411,7 +411,7 @@ public class XGAPI {
     }
 
     // TODO: avatar change
-    public static void avatarChange(String avatar) {
+    public static void avatarChange(Context context, String avatar) {
         String json = null;
         xgHttp.post(AVATAR_CHANGE_URL, json, new XGHttp.MOkCallBack() {
             @Override
