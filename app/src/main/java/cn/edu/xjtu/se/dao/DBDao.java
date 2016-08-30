@@ -232,8 +232,8 @@ public class DBDao {
         Date updated_at = null;
         try {
             finish_time = dateFormat.parse(cursor.getString(cursor.getColumnIndex("finish_time")));
-            created_at = dateFormat.parse(cursor.getString(cursor.getColumnIndex("created_time")));
-            updated_at = dateFormat.parse(cursor.getString(cursor.getColumnIndex("updated_time")));
+            created_at = dateFormat.parse(cursor.getString(cursor.getColumnIndex("created_at")));
+            updated_at = dateFormat.parse(cursor.getString(cursor.getColumnIndex("updated_at")));
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
@@ -248,8 +248,8 @@ public class DBDao {
         Date created_at = null;
         Date updated_at = null;
         try {
-            created_at = dateFormat.parse(cursor.getString(cursor.getColumnIndex("created_time")));
-            updated_at = dateFormat.parse(cursor.getString(cursor.getColumnIndex("updated_time")));
+            created_at = dateFormat.parse(cursor.getString(cursor.getColumnIndex("created_at")));
+            updated_at = dateFormat.parse(cursor.getString(cursor.getColumnIndex("updated_at")));
         } catch (ParseException e) {
             e.printStackTrace();
             return null;

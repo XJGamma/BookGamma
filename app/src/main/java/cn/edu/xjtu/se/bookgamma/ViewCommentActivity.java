@@ -80,7 +80,7 @@ public class ViewCommentActivity extends AppCompatActivity {
         imageLoader.displayImage(book.getImage(), bookCover, UtilAction.getDisplayImageOptions());
         bookName.setText(book.getName());
         commentContent.setText(comment.getContent());
-        commentTime.setText(new SimpleDateFormat("yyyy年M月d日 HH:mm").format(comment.getCreated_at()));
+        commentTime.setText(UtilAction.fmt.date(comment.getCreated_at()));
     }
 
     @Override

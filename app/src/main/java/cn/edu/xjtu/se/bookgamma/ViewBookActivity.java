@@ -91,7 +91,7 @@ public class ViewBookActivity extends AppCompatActivity {
         setTitle(book.getName());
         bookName.setText(book.getName());
         bookPage.setText(String.valueOf(book.getPages()));
-        bookCreatedAt.setText(UtilAction.fmt.date(book.getFinish_time()));
+        bookCreatedAt.setText(UtilAction.fmt.date(book.getCreated_at()));
         imageLoader.displayImage(book.getImage(), bookCover, UtilAction.getDisplayImageOptions());
         bookCompletedAt.setText(UtilAction.fmt.date(book.getFinish_time()));
         pageWheel.setItems(UtilAction.srange(1, book.getPages()));

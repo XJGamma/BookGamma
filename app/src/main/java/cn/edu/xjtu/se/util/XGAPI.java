@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.annotations.SerializedName;
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -565,7 +566,8 @@ public class XGAPI {
             @Override
             public void onSuccess(String str) {
                 DataCheckReturn dcr = getReturn(context, str, DataCheckReturn.class);
-
+                dataPush(context, dcr.getPushList());
+                dataPull(context, dcr.getPullList());
             }
 
             @Override
@@ -667,8 +669,68 @@ public class XGAPI {
         }
     }
 
-    public static void dataPush() {
-        xgHttp.post(DATA_PUSH_URL, new XGHttp.MOkCallBack() {
+    public static class DataContent {
+        private String data;
+        private List<String> attach;
+
+        public DataContent(String data, List<String> attach) {
+            this.data = data;
+            this.attach = attach;
+        }
+
+        public String getData() {
+            return data;
+        }
+
+        public void setData(String data) {
+            this.data = data;
+        }
+
+        public List<String> getAttach() {
+            return attach;
+        }
+
+        public void setAttach(List<String> attach) {
+            this.attach = attach;
+        }
+    }
+
+    public static String toDataContent(Book book) {
+        String data = gson.toJson(book);
+        String cover = ""; // book.image
+
+        List<String> attach = new ArrayList<>();
+        attach.add(cover);
+
+        return gson.toJson(new DataContent(data, attach));
+    }
+
+    public static String toDataContent(Comment comment) {
+        String data = gson.toJson(comment);
+        return gson.toJson(new DataContent(data, new ArrayList<String>()));
+    }
+
+    public static void dataPush(Context context, List<Date> pushList) {
+        String name = XGUserInfo.getName();
+        String token = XGUserInfo.getToken();
+        List<DataCell> list = new ArrayList<>();
+        List<Book> books = DBDao.findBooksAll();
+        List<Comment> comments = DBDao.findCommentsAll();
+        for (Date date: pushList) {
+            for (Book book: books) {
+                if (date.compareTo(book.getCreated_at()) == 0) {
+                    list.add(new DataCell(book.getCreated_at(), book.getUpdated_at(), toDataContent(book)));
+                }
+            }
+            for (Comment comment: comments) {
+                if (date.compareTo(comment.getCreated_at()) == 0) {
+                    list.add(new DataCell(comment.getCreated_at(), comment.getUpdated_at(), toDataContent(comment)));
+                }
+            }
+        }
+        DataPushParameter dpp = new DataPushParameter(name, token, list);
+        String json = gson.toJson(dpp);
+        xgHttp.post(DATA_PUSH_URL, json, new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
 
@@ -735,10 +797,15 @@ public class XGAPI {
         }
     }
 
-    public static void dataPull() {
-        xgHttp.post(DATA_PULL_URL, new XGHttp.MOkCallBack() {
+    public static void dataPull(final Context context, List<Date> pullList) {
+        String name = XGUserInfo.getName();
+        String token = XGUserInfo.getToken();
+        DataPullParameter dpp = new DataPullParameter(name, token, pullList);
+        String json = gson.toJson(dpp);
+        xgHttp.post(DATA_PULL_URL, json, new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
+                DataPullReturn dpr = getReturn(context, str, DataPullReturn.class);
 
             }
 
