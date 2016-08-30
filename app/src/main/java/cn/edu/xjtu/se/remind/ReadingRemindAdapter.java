@@ -128,11 +128,11 @@ public class ReadingRemindAdapter extends ArrayAdapter<ReadingRemind> {
                 }
             });
             convertView.setTag(viewHolder);
-            viewHolder.switcher.setTag(readingRemind);
+            //viewHolder.switcher.setTag(readingRemind);
 
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            viewHolder.switcher.setTag(readingRemind);
+            //viewHolder.switcher.setTag(readingRemind);
         }
 
         imageLoader.displayImage(readingRemind.getImage(), viewHolder.bookImage, UtilAction.getDisplayImageOptions());
