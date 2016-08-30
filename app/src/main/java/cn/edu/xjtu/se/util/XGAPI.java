@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.squareup.okhttp.HttpUrl;
@@ -25,7 +26,7 @@ public class XGAPI {
     public static final String TAG = XGAPI.class.getName();
 
     public static XGHttp xgHttp = XGHttp.getInstance();
-    public static Gson gson = new Gson();
+    public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
     public static String BASE_URL = "https://139.129.24.222:3000";
 
@@ -945,11 +946,12 @@ public class XGAPI {
                 DataSyncReturn dsr = getReturn(context, str, DataSyncReturn.class);
                 adoptDataPull(dsr.getPullList());
                 dataPush(context, dsr.getPushList());
+                UtilAction.toast.s(context, "同步成功！");
             }
 
             @Override
             public void onError() {
-
+                UtilAction.toast.s(context, "同步遇到问题！");
             }
         });
     }

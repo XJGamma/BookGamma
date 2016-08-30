@@ -139,10 +139,10 @@ public class DBDao {
     public static List<Comment> findCommentsAll() {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.query("Comments", null, null, null, null, null, null);
+        Cursor cursor = db.query("BookComments", null, null, null, null, null, null);
         List<Comment> list = new ArrayList<>();
         while (cursor.moveToNext()) {
-            if (Cursor2Book(cursor) != null) {
+            if (Cursor2Comment(cursor) != null) {
                 list.add(Cursor2Comment(cursor));
             }
         }

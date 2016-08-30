@@ -24,6 +24,7 @@ public class AccountActivity extends AppCompatActivity {
     private ImageView ivImage;
     private TextView tvName;
     private Button btnLogout;
+    private Button btnSync;
 
 
     @Override
@@ -33,9 +34,17 @@ public class AccountActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         ivImage = (ImageView) findViewById(R.id.account_image);
         tvName = (TextView) findViewById(R.id.account_name);
         btnLogout = (Button) findViewById(R.id.account_logout);
+        btnSync = (Button) findViewById(R.id.account_sync);
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +53,12 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
+        btnSync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                XGAPI.dataSync(AccountActivity.this);
+            }
+        });
     }
 
     @Override
