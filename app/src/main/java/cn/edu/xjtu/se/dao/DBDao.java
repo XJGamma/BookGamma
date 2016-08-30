@@ -22,9 +22,17 @@ public class DBDao {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    static public long addBook(Book book) {
+        return addBook(book.getName(), book.getPages(), book.getFinish_time(), book.getIsbn(), book.getImage(), book.getCreated_at(), book.getUpdated_at());
+    }
+
     static public long addBook(String bookName, int pages, Date finish_time, String isbn, String image) {
+        Date now = new Date();
+        return addBook(bookName, pages, finish_time, isbn, image, now, now);
+    }
+
+    static public long addBook(String bookName, int pages, Date finish_time, String isbn, String image, Date created_at, Date updated_at) {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", bookName);
@@ -34,9 +42,8 @@ public class DBDao {
         values.put("current_page", 1);
         values.put("finish_time", dateFormat.format(finish_time));
         values.put("total_reading_time", 0);
-        Date now = new Date();
-        values.put("created_at", dateFormat.format(now));
-        values.put("updated_at", dateFormat.format(now));
+        values.put("created_at", dateFormat.format(created_at));
+        values.put("updated_at", dateFormat.format(updated_at));
         long rowID = db.insert("Books", null, values);
         db.close();
         dbHelper.close();
@@ -145,15 +152,23 @@ public class DBDao {
         return list;
     }
 
+    public static long addComment(Comment comment) {
+        return addComment(comment.getBook_id(), comment.getContent(), comment.getCreated_at(), comment.getUpdated_at());
+    }
+
     public static long addComment(int book_id, String content) {
+        Date now = new Date();
+        return addComment(book_id, content, now, now);
+    }
+
+    public static long addComment(int book_id, String content, Date created_at, Date updated_at) {
         DBHelper dbHelper = new DBHelper(XGApplication.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("book_id", book_id);
         values.put("content", content);
-        Date now = new Date();
-        values.put("created_at", dateFormat.format(now));
-        values.put("updated_at", dateFormat.format(now));
+        values.put("created_at", dateFormat.format(created_at));
+        values.put("updated_at", dateFormat.format(updated_at));
         long rowID = db.insert("BookComments", null, values);
         db.close();
         dbHelper.close();

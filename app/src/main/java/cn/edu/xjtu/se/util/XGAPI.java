@@ -12,11 +12,14 @@ import com.squareup.okhttp.HttpUrl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.edu.xjtu.se.bean.Book;
 import cn.edu.xjtu.se.bean.Comment;
 import cn.edu.xjtu.se.dao.DBDao;
+import cn.edu.xjtu.se.scanner.Intents;
 
 /**
  * Created by Jingkai Tang on 8/29/16.
@@ -670,12 +673,22 @@ public class XGAPI {
     }
 
     public static class DataContent {
+        private String tag;
         private String data;
         private List<String> attach;
 
-        public DataContent(String data, List<String> attach) {
+        public DataContent(String tag, String data, List<String> attach) {
+            this.tag = tag;
             this.data = data;
             this.attach = attach;
+        }
+
+        public String getTag() {
+            return tag;
+        }
+
+        public void setTag(String tag) {
+            this.tag = tag;
         }
 
         public String getData() {
@@ -702,12 +715,12 @@ public class XGAPI {
         List<String> attach = new ArrayList<>();
         attach.add(cover);
 
-        return gson.toJson(new DataContent(data, attach));
+        return gson.toJson(new DataContent(book.getClass().getName(), data, attach));
     }
 
     public static String toDataContent(Comment comment) {
         String data = gson.toJson(comment);
-        return gson.toJson(new DataContent(data, new ArrayList<String>()));
+        return gson.toJson(new DataContent(comment.getClass().getName(), data, new ArrayList<String>()));
     }
 
     public static void dataPush(Context context, List<Date> pushList) {
@@ -806,7 +819,7 @@ public class XGAPI {
             @Override
             public void onSuccess(String str) {
                 DataPullReturn dpr = getReturn(context, str, DataPullReturn.class);
-
+                adoptDataPull(dpr.getList());
             }
 
             @Override
@@ -814,6 +827,34 @@ public class XGAPI {
 
             }
         });
+    }
+
+    public static void adoptDataPull(List<DataCell> list) {
+        Map<Integer, Integer> bookIdMap = new HashMap<>();
+        for (DataCell dc: list) {
+            String content = dc.getContent();
+            DataContent dataContent = gson.fromJson(content, DataContent.class);
+            if (dataContent.getTag() == Book.class.getName()) {
+                Book book = gson.fromJson(dataContent.getData(), Book.class);
+                long id = DBDao.addBook(book);
+                if (id > -1) {
+                    bookIdMap.put(book.getId(), (int) id);
+                }
+            }
+        }
+
+        for (DataCell dc: list) {
+            String content = dc.getContent();
+            DataContent dataContent = gson.fromJson(content, DataContent.class);
+            if (dataContent.getTag() == Comment.class.getName()) {
+                // 这里会有id的问题，简单处理了一下
+                Comment comment = gson.fromJson(dataContent.getData(), Comment.class);
+                if (bookIdMap.containsKey(comment.getBook_id())) {
+                    comment.setBook_id(bookIdMap.get(comment.getBook_id()));
+                }
+                DBDao.addComment(comment);
+            }
+        }
     }
 
     public static String DATA_SYNC_URL = BASE_URL + "/data/sync";
@@ -883,11 +924,15 @@ public class XGAPI {
         }
     }
 
-    public static void dataSync() {
-        xgHttp.post(DATA_SYNC_URL, new XGHttp.MOkCallBack() {
+    public static void dataSync(final Context context) {
+        DataCheckParameter dcp = DataCheckParameter.getDataCheckParameter();
+        String json = gson.toJson(dcp);
+        xgHttp.post(DATA_SYNC_URL, json, new XGHttp.MOkCallBack() {
             @Override
             public void onSuccess(String str) {
-
+                DataSyncReturn dsr = getReturn(context, str, DataSyncReturn.class);
+                adoptDataPull(dsr.getPullList());
+                dataPush(context, dsr.getPushList());
             }
 
             @Override
